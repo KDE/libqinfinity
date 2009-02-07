@@ -16,6 +16,7 @@ QtIoWatch::QtIoWatch( int socket,
     GDestroyNotify destroy_notify,
     QObject *parent )
     : QObject( parent )
+    , m_socket( socket )
     , m_handler( handler )
     , m_user_data( user_data )
     , m_incomingNotifier( 0 )

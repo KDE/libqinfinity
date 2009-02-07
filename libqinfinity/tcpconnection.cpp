@@ -46,7 +46,7 @@ TcpConnection::Status TcpConnection::getStatus() const
 
     connection = INF_TCP_CONNECTION(gobject());
     g_object_get( G_OBJECT(connection),
-        "status", &status,
+        "status", &infStatus,
            NULL );
 
     switch( infStatus )
