@@ -14,7 +14,9 @@ set(QInfinity_SRCS
 	ipaddress.cpp
 	tcpconnection.cpp
 	xmlconnection.cpp
-	xmppconnection.cpp)
+	xmppconnection.cpp
+	communicationmanager.cpp
+	browser.cpp)
 
 QT4_AUTOMOC(${QInfinity_SRCS})
 
