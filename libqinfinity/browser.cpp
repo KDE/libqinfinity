@@ -32,7 +32,15 @@ void Browser::setupSignals()
     g_signal_connect( G_OBJECT(this->gobject()),
         "begin-subscribe", G_CALLBACK(Browser::begin_subscribe_cb),
         this );
+    g_signal_connect( G_OBJECT(this->gobject()),
+        "node-added", G_CALLBACK(Browser::node_added_cb),
+        this );
+    g_signal_connect( G_OBJECT(this->gobject()),
+        "node-removed", G_CALLBACK(Browser::node_added_cb),
+        this );
 }
+
+// GObject signals
 
 void Browser::signalBeginExplore( InfcBrowserIter *infIter,
     InfcExploreRequest *request )
@@ -46,6 +54,18 @@ void Browser::signalBeginSubscribe( InfcBrowserIter *infIter,
 {
     BrowserIter iter( infIter, INFC_BROWSER(this->gobject()), this );
     emit(beginSubscribe( QPointer<BrowserIter>(&iter), request ));
+}
+
+void Browser::signalNodeAdded( InfcBrowserIter *infIter )
+{
+    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()), this );
+    emit(nodeAdded( QPointer<BrowserIter>(&iter) ));
+}
+
+void Browser::signalNodeRemoved( InfcBrowserIter *infIter )
+{
+    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()), this );
+    emit(nodeRemoved( QPointer<BrowserIter>(&iter) ));
 }
 
 void Browser::begin_explore_cb( InfcBrowser *browser,
@@ -62,6 +82,20 @@ void Browser::begin_subscribe_cb( InfcBrowser *browser,
     void *user_data )
 {
     static_cast<Browser*>(user_data)->signalBeginSubscribe( iter, request );
+}
+
+void Browser::node_added_cb( InfcBrowser *browser,
+    InfcBrowserIter *iter,
+    void *user_data )
+{
+    static_cast<Browser*>(user_data)->signalNodeAdded( iter );
+}
+
+void Browser::node_removed_cb( InfcBrowser *browser,
+    InfcBrowserIter *iter,
+    void *user_data )
+{
+    static_cast<Browser*>(user_data)->signalNodeRemoved( iter );
 }
 
 }

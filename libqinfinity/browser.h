@@ -62,10 +62,14 @@ class Browser
 
     private:
         void setupSignals();
+
         void signalBeginExplore( InfcBrowserIter *infIter,
             InfcExploreRequest *request );
         void signalBeginSubscribe( InfcBrowserIter *iter,
             InfcNodeRequest *request );
+        void signalNodeAdded( InfcBrowserIter *infIter );
+        void signalNodeRemoved( InfcBrowserIter *infIter );
+
         static void begin_explore_cb( InfcBrowser *browser,
             InfcBrowserIter *iter,
             InfcExploreRequest *request,
@@ -73,6 +77,12 @@ class Browser
         static void begin_subscribe_cb( InfcBrowser *browser,
             InfcBrowserIter *iter,
             InfcNodeRequest *request,
+            void *user_data );
+        static void node_added_cb( InfcBrowser *browser,
+            InfcBrowserIter *iter,
+            void *user_data );
+        static void node_removed_cb( InfcBrowser *browser,
+            InfcBrowserIter *iter,
             void *user_data );
 
 };
