@@ -1,17 +1,22 @@
 #include "sessionproxy.h"
+#include "session.h"
 
 #include <libinfinity/client/infc-session-proxy.h>
 
 namespace QInfinity
 {
 
-SessionProxy::SessionProxy( InfSessionProxy *infProxy )
-    : QGObject( G_OBJECT(infProxy) )
+SessionProxy::SessionProxy( InfSessionProxy *infProxy,
+    QObject *parent )
+    : QObject( parent )
+    , QGObject( G_OBJECT(infProxy) )
 {
 }
 
-SessionProxy::SessionProxy( const SessionProxy &other )
-    : QGObject( other.gobject() )
+SessionProxy::SessionProxy( const SessionProxy &other,
+    QObject *parent )
+    : QObject( parent )
+    , QGObject( other.gobject() )
 {
 }
 
@@ -25,9 +30,9 @@ InfcUserRequest *SessionProxy::joinUser( const GParameter *params,
         error );
 }
 
-InfSession *SessionProxy::session() const
+Session *SessionProxy::session() const
 {
-    return infc_session_proxy_get_session( INFC_SESSION_PROXY(gobject()) );
+    return new Session( infc_session_proxy_get_session( INFC_SESSION_PROXY(gobject()) ) );
 }
 
 }

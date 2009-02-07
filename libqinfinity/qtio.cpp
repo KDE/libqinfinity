@@ -1,7 +1,6 @@
 #include "qtio.h"
 #include "qtiowatch.h"
 
-#include <libinfinity/common/inf-io.h>
 #include <glib-object.h>
 
 #include <QDebug>
