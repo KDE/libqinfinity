@@ -1,10 +1,21 @@
 PROJECT(libqinfinity)
 
 find_package(Libinfinity REQUIRED)
+find_package(Qt4 REQUIRED)
 
-set(LIBS ${LIBS} ${LIBINFINITY_LIBRARIES})
+INCLUDE(${QT_USE_FILE})
+
+set(LIBS ${LIBS} ${LIBINFINITY_LIBRARIES} ${QT_LIBRARIES})
 set(QInfinity_SRCS
-	init.cpp)
+	init.cpp
+	qgobject.cpp
+	qtio.cpp
+	qtiowatch.cpp
+	ipaddress.cpp
+	tcpconnection.cpp
+	xmlconnection.cpp)
+
+QT4_AUTOMOC(${QInfinity_SRCS})
 
 include_directories(${LIBINFINITY_INCLUDES})
 

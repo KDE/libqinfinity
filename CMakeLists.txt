@@ -1,2 +1,2 @@
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/CMakeModules)
-SUBDIRS(libqinfinity)
+SUBDIRS(libqinfinity test)
