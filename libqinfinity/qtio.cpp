@@ -1,6 +1,8 @@
 #include "qtio.h"
 #include "qtiowatch.h"
 
+#include <QDebug>
+
 namespace QInfinity
 {
 
@@ -116,6 +118,7 @@ QtIo::QtIo( QObject *parent )
     : QObject( parent )
     , m_gobject( qinf_qt_io_new() )
 {
+    m_gobject->cpp_class = this;
 }
 
 QtIo::~QtIo()
@@ -130,6 +133,7 @@ void QtIo::watch( InfNativeSocket *socket,
     gpointer user_data,
     GDestroyNotify notify )
 {
+    qDebug() << "Adding watch: fd is " << *socket;
     QtIoWatch *watch;
 
     if( !socketToWatchMap.contains(*socket) )
@@ -141,11 +145,17 @@ void QtIo::watch( InfNativeSocket *socket,
             notify,
             this );
         socketToWatchMap[*socket] = watch;
-        return;
     }
+    else
+    {
+        watch = socketToWatchMap[*socket];
+        watch->setEvents( events );
+    }
+}
 
-    watch = socketToWatchMap[*socket];
-    watch->setEvents( events );
+GObject *QtIo::gobject() const
+{
+    return (GObject*)m_gobject;
 }
 
 }

@@ -1,8 +1,10 @@
 #include "qtiowatch.h"
 
-#include <QSocketNotifier>
+#include <QAbstractEventDispatcher>
 
 #include "qtiowatch.moc"
+
+#include <QDebug>
 
 namespace QInfinity
 {
@@ -14,10 +16,13 @@ QtIoWatch::QtIoWatch( int socket,
     GDestroyNotify destroy_notify,
     QObject *parent )
     : QObject( parent )
+    , m_handler( handler )
+    , m_user_data( user_data )
     , m_incomingNotifier( 0 )
     , m_outgoingNotifier( 0 )
     , m_errorNotifier( 0 )
 {
+    setEvents( events );
 }
 
 QtIoWatch::~QtIoWatch()
@@ -27,6 +32,7 @@ QtIoWatch::~QtIoWatch()
 
 void QtIoWatch::setEvents( InfIoEvent events )
 {
+    qDebug() << "Set events";
     if( events & INF_IO_INCOMING )
         setIncomingEvent( true );
     else
@@ -45,67 +51,83 @@ void QtIoWatch::setEvents( InfIoEvent events )
 
 void QtIoWatch::setIncomingEvent( bool enable )
 {
-    if( enable && !m_incomingNotifier )
+    if( enable )
     {
-        m_incomingNotifier = new QSocketNotifier( m_socket,
-            QSocketNotifier::Read,
-            this );
-        connect( m_incomingNotifier, SIGNAL(activated()),
-            this, SLOT(slotIncomingActivated()) );
+        if( !m_incomingNotifier )
+        {
+            m_incomingNotifier = new QSocketNotifier( m_socket,
+                QSocketNotifier::Read,
+                this );
+            connect( m_incomingNotifier, SIGNAL(activated(int)),
+                this, SLOT(incomingActivated(int)) );
+        }
+
+        m_incomingNotifier->setEnabled( true );
     }
-    else if( !enable && m_incomingNotifier )
+    else if( m_incomingNotifier )
     {
-        delete m_incomingNotifier;
-        m_incomingNotifier = 0;
+        m_incomingNotifier->setEnabled( false );
     }
 }
 
 void QtIoWatch::setOutgoingEvent( bool enable )
 {
-    if( enable && !m_outgoingNotifier )
+    if( enable )
     {
-        m_outgoingNotifier = new QSocketNotifier( m_socket,
-            QSocketNotifier::Read,
-            this );
-        connect( m_outgoingNotifier, SIGNAL(activated()),
-            this, SLOT(slotoutgoingActivated()) );
+        if( !m_outgoingNotifier )
+        {
+            m_outgoingNotifier = new QSocketNotifier( m_socket,
+                QSocketNotifier::Write,
+                this );
+            connect( m_outgoingNotifier, SIGNAL(activated(int)),
+                this, SLOT(outgoingActivated(int)) );
+        }
+
+        m_outgoingNotifier->setEnabled( true );
     }
-    else if( !enable && m_outgoingNotifier )
+    else if( m_outgoingNotifier )
     {
-        delete m_outgoingNotifier;
-        m_incomingNotifier = 0;
+        m_outgoingNotifier->setEnabled( false );
     }
 }
 
 void QtIoWatch::setErrorEvent( bool enable )
 {
-    if( enable && !m_errorNotifier )
+    if( enable )
     {
-        m_errorNotifier = new QSocketNotifier( m_socket,
-            QSocketNotifier::Read,
-            this );
-        connect( m_errorNotifier, SIGNAL(activated()),
-            this, SLOT(slotErrorActivated()) );
+        if( !m_errorNotifier )
+        {
+            m_errorNotifier = new QSocketNotifier( m_socket,
+                QSocketNotifier::Exception,
+                this );
+            connect( m_errorNotifier, SIGNAL(activated(int)),
+                this, SLOT(errorActivated(int)) );
+        }
+
+        m_errorNotifier->setEnabled( true );
     }
-    else if( !enable && m_errorNotifier )
+    else if( m_errorNotifier )
     {
-        delete m_errorNotifier;
-        m_errorNotifier = 0;
+        m_errorNotifier->setEnabled( false );
     }
 }
 
-void QtIoWatch::incomingActivated()
+void QtIoWatch::incomingActivated( int socket )
 {
+    qDebug() << "Activated";
     m_handler( &m_socket, INF_IO_INCOMING, m_user_data );
 }
 
-void QtIoWatch::outgoingActivated()
+void QtIoWatch::outgoingActivated( int socket )
 {
+    qDebug() << "Activated";
     m_handler( &m_socket, INF_IO_OUTGOING, m_user_data );
+    m_outgoingNotifier->setEnabled( false );
 }
 
-void QtIoWatch::errorActivated()
+void QtIoWatch::errorActivated( int socket )
 {
+    qDebug() << "Activated";
     m_handler( &m_socket, INF_IO_ERROR, m_user_data );
 }
 

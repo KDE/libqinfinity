@@ -4,26 +4,28 @@ namespace QInfinity
 {
 
 IpAddress::IpAddress( unsigned int raw_address )
-    : QGObject()
+    : m_gobject( inf_ip_address_new_raw4( raw_address ) )
 {
-    InfIpAddress *infObj;
-
-    infObj = inf_ip_address_new_raw4( raw_address );
-    setGobject( G_OBJECT(infObj) );
 }
 
 IpAddress::IpAddress( const char *address_string )
-    : QGObject()
+    : m_gobject( inf_ip_address_new_from_string( address_string ) )
 {
-    InfIpAddress *infObj;
+}
 
-    infObj = inf_ip_address_new_from_string( address_string );
-    setGobject( G_OBJECT(infObj) );
+IpAddress::~IpAddress()
+{
+    inf_ip_address_free(m_gobject);
 }
 
 const char *IpAddress::toString()
 {
     return inf_ip_address_to_string( (const InfIpAddress*)(gobject()) );
+}
+
+InfIpAddress *IpAddress::gobject() const
+{
+    return m_gobject;
 }
 
 }

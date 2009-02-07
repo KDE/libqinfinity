@@ -16,11 +16,36 @@ class TcpConnection
     : public QObject
     , public QGObject
 {
+    Q_OBJECT
 
     public:
+        enum Status
+        {
+            Connecting,
+            Connected,
+            Closed
+        };
+
         TcpConnection( QtIo &io,
-            IpAddress &ipAddress,
+            const IpAddress &ipAddress,
+            unsigned int port,
             QObject *parent = 0 );
+
+        bool open();
+        void close();
+        Status getStatus() const;
+    
+    Q_SIGNALS:
+        void statusChanged();
+    
+    private:
+        void setupSignals();
+
+        // Signal callbacks
+        void emitStatusChanged();
+        static void status_changed_cb( InfTcpConnection *connection,
+            const char *property,
+            void *user_data );
     
 };
 

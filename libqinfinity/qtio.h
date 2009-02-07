@@ -50,6 +50,7 @@ class QtIo
             InfIoFunc func,
             gpointer user_data,
             GDestroyNotify notify );
+        GObject *gobject() const;
     
     private:
         QInfQtIo *m_gobject;

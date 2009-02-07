@@ -19,7 +19,7 @@ QGObject::QGObject( GObject *obj,
 QGObject::~QGObject()
 {
     if( m_own_gobj && m_gobject )
-        delete m_gobject;
+        g_object_unref( m_gobject );
 }
 
 GObject *QGObject::gobject() const

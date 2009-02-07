@@ -3,6 +3,7 @@
 
 #include <libinfinity/common/inf-io.h>
 
+#include <QSocketNotifier>
 #include <QObject>
 
 class QSocketNotifier;
@@ -33,11 +34,12 @@ class QtIoWatch
         void setErrorEvent( bool enable );
     
     private Q_SLOTS:
-        void incomingActivated();
-        void outgoingActivated();
-        void errorActivated();
+        void incomingActivated( int socket );
+        void outgoingActivated( int socket );
+        void errorActivated( int socket );
 
     private:
+
         int m_socket;
         InfIoFunc m_handler;
         void *m_user_data;
