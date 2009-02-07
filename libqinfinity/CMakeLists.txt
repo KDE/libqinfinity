@@ -17,7 +17,8 @@ set(QInfinity_SRCS
 	xmppconnection.cpp
 	communicationmanager.cpp
 	browser.cpp
-	browseriter.cpp)
+	browseriter.cpp
+	sessionproxy.cpp)
 
 QT4_AUTOMOC(${QInfinity_SRCS})
 

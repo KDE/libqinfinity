@@ -60,10 +60,11 @@ void Browser::signalBeginSubscribe( InfcBrowserIter *infIter,
 }
 
 void Browser::signalSubscribeSession( InfcBrowserIter *infIter,
-    InfcSessionProxy *proxy )
+    InfcSessionProxy *infProxy )
 {
     BrowserIter iter( infIter, INFC_BROWSER(this->gobject()), this );
-    emit(subscribeSession( QPointer<BrowserIter>(&iter), proxy ));
+    emit(subscribeSession( QPointer<BrowserIter>(&iter),
+        SessionProxy( infProxy ) ));
 }
 
 void Browser::signalNodeAdded( InfcBrowserIter *infIter )

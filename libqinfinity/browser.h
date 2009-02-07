@@ -2,6 +2,7 @@
 #define QINFINITY_BROWSER_H
 
 #include "qgobject.h"
+#include "sessionproxy.h"
 
 #include <QObject>
 #include <QPointer>
@@ -59,7 +60,7 @@ class Browser
         void beginSubscribe( QPointer<BrowserIter> iter,
             InfcNodeRequest *request );
         void subscribeSession( QPointer<BrowserIter> iter,
-            InfcSessionProxy *session_proxy );
+            SessionProxy proxy );
         void nodeAdded( QPointer<BrowserIter> iter );
         void nodeRemoved( QPointer<BrowserIter> iter );
 
