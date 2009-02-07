@@ -24,13 +24,18 @@ class XmlConnection
 
     Q_SIGNALS:
         void error();
+        void statusChanged();
 
     private:
         void registerSignals();
 
         void signalError();
+        void signalStatusChanged();
 
         static void error_cb( const GError *error,
+            void *user_data );
+        static void status_changed_cb( InfXmlConnection *infConnection,
+            const char *property,
             void *user_data );
 
 };

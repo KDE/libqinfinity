@@ -1,6 +1,8 @@
 #include "xmppconnection.h"
 #include "tcpconnection.h"
 
+#include "xmppconnection.moc"
+
 namespace QInfinity
 {
 

@@ -26,6 +26,7 @@ void XmlConnection::registerSignals()
         return;
 
     g_signal_connect(gobject(), "error", G_CALLBACK(XmlConnection::error_cb), this);
+    g_signal_connect(gobject(), "notify::status", G_CALLBACK(XmlConnection::status_changed_cb), this);
 }
 
 void XmlConnection::signalError()
@@ -33,7 +34,19 @@ void XmlConnection::signalError()
     emit(error());
 }
 
+void XmlConnection::signalStatusChanged()
+{
+    emit(statusChanged());
+}
+
 void XmlConnection::error_cb( const GError *error,
+    void *user_data )
+{
+    static_cast<XmlConnection*>(user_data)->signalError();
+}
+
+void XmlConnection::status_changed_cb( InfXmlConnection *infConnection,
+    const char *property,
     void *user_data )
 {
     static_cast<XmlConnection*>(user_data)->signalError();

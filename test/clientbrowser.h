@@ -3,6 +3,7 @@
 
 #include "init.h"
 #include "tcpconnection.h"
+#include "xmppconnection.h"
 
 #include <QObject>
 #include <QApplication>
@@ -16,6 +17,7 @@ class MyBrowser
 
     public:
         MyBrowser( QInfinity::QtIo &io );
+        ~MyBrowser();
     
     public Q_SLOTS:
         void statusChanged();
@@ -25,6 +27,7 @@ class MyBrowser
 
         QInfinity::QtIo *m_io;
         QInfinity::TcpConnection *connection;
+        QInfinity::XmppConnection *xmppConnection;
 
 };
 

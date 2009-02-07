@@ -33,7 +33,6 @@ QtIoWatch::~QtIoWatch()
 
 void QtIoWatch::setEvents( InfIoEvent events )
 {
-    qDebug() << "Set events";
     if( events & INF_IO_INCOMING )
         setIncomingEvent( true );
     else
@@ -115,20 +114,17 @@ void QtIoWatch::setErrorEvent( bool enable )
 
 void QtIoWatch::incomingActivated( int socket )
 {
-    qDebug() << "Activated";
     m_handler( &m_socket, INF_IO_INCOMING, m_user_data );
 }
 
 void QtIoWatch::outgoingActivated( int socket )
 {
-    qDebug() << "Activated";
     m_handler( &m_socket, INF_IO_OUTGOING, m_user_data );
     m_outgoingNotifier->setEnabled( false );
 }
 
 void QtIoWatch::errorActivated( int socket )
 {
-    qDebug() << "Activated";
     m_handler( &m_socket, INF_IO_ERROR, m_user_data );
 }
 

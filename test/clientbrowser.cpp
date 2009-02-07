@@ -5,11 +5,26 @@
 MyBrowser::MyBrowser( QInfinity::QtIo &io )
     : m_io( &io )
     , connection( new QInfinity::TcpConnection( io, QInfinity::IpAddress( "127.0.0.1" ), 6523 ) )
+    , xmppConnection( new QInfinity::XmppConnection( *connection,
+        QInfinity::XmppConnection::Client,
+        "localhost",
+        "localhost",
+        QInfinity::XmppConnection::PreferTls,
+        0,
+        0,
+        0,
+        this ) )
 {
     setupSignals();
     connection->open();
     std::cout << "running\n";
     fflush(stdout);
+}
+
+MyBrowser::~MyBrowser()
+{
+    delete xmppConnection;
+    delete connection;
 }
 
 void MyBrowser::statusChanged()

@@ -133,7 +133,6 @@ void QtIo::watch( InfNativeSocket *socket,
     gpointer user_data,
     GDestroyNotify notify )
 {
-    qDebug() << "Adding watch: fd is " << *socket;
     QtIoWatch *watch;
 
     if( !socketToWatchMap.contains(*socket) )
