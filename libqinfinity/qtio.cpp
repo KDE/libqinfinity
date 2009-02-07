@@ -1,10 +1,33 @@
 #include "qtio.h"
 #include "qtiowatch.h"
 
+#include <libinfinity/common/inf-io.h>
+#include <glib-object.h>
+
 #include <QDebug>
 
 namespace QInfinity
 {
+
+G_BEGIN_DECLS
+
+#define QINF_TYPE_QT_IO                 (qinf_qt_io_get_type())
+#define QINF_QT_IO(obj)                    (G_TYPE_CHECK_INSTANCE_CAST((obj), QINF_TYPE_QT_IO, QInfQtIo))
+
+G_END_DECLS
+
+struct _QInfQtIoClass {
+    GObjectClass parent_class;
+};
+
+struct _QInfQtIo {
+    GObject parent;    
+    QtIo *cpp_class;
+    int destroy_cpp_class;
+};
+
+
+GType qinf_qt_io_get_type();
 
 static GObjectClass *parent_class;
 
