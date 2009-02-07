@@ -10,6 +10,7 @@ typedef struct _InfcBrowser InfcBrowser;
 typedef struct _InfcBrowserIter InfcBrowserIter;
 typedef struct _InfcExploreRequest InfcExploreRequest;
 typedef struct _InfcNodeRequest InfcNodeRequest;
+typedef struct _InfcSessionProxy InfcSessionProxy;
 
 namespace QInfinity
 {
@@ -57,6 +58,8 @@ class Browser
          */
         void beginSubscribe( QPointer<BrowserIter> iter,
             InfcNodeRequest *request );
+        void subscribeSession( QPointer<BrowserIter> iter,
+            InfcSessionProxy *session_proxy );
         void nodeAdded( QPointer<BrowserIter> iter );
         void nodeRemoved( QPointer<BrowserIter> iter );
 
@@ -67,6 +70,8 @@ class Browser
             InfcExploreRequest *request );
         void signalBeginSubscribe( InfcBrowserIter *iter,
             InfcNodeRequest *request );
+        void signalSubscribeSession( InfcBrowserIter *infIter,
+            InfcSessionProxy *proxy );
         void signalNodeAdded( InfcBrowserIter *infIter );
         void signalNodeRemoved( InfcBrowserIter *infIter );
 
@@ -77,6 +82,10 @@ class Browser
         static void begin_subscribe_cb( InfcBrowser *browser,
             InfcBrowserIter *iter,
             InfcNodeRequest *request,
+            void *user_data );
+        static void subscribe_session_cb( InfcBrowser *browser,
+            InfcBrowserIter *iter,
+            InfcSessionProxy *proxy,
             void *user_data );
         static void node_added_cb( InfcBrowser *browser,
             InfcBrowserIter *iter,

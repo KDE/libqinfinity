@@ -33,6 +33,9 @@ void Browser::setupSignals()
         "begin-subscribe", G_CALLBACK(Browser::begin_subscribe_cb),
         this );
     g_signal_connect( G_OBJECT(this->gobject()),
+        "subscribe-session", G_CALLBACK(Browser::subscribe_session_cb),
+        this );
+    g_signal_connect( G_OBJECT(this->gobject()),
         "node-added", G_CALLBACK(Browser::node_added_cb),
         this );
     g_signal_connect( G_OBJECT(this->gobject()),
@@ -54,6 +57,13 @@ void Browser::signalBeginSubscribe( InfcBrowserIter *infIter,
 {
     BrowserIter iter( infIter, INFC_BROWSER(this->gobject()), this );
     emit(beginSubscribe( QPointer<BrowserIter>(&iter), request ));
+}
+
+void Browser::signalSubscribeSession( InfcBrowserIter *infIter,
+    InfcSessionProxy *proxy )
+{
+    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()), this );
+    emit(subscribeSession( QPointer<BrowserIter>(&iter), proxy ));
 }
 
 void Browser::signalNodeAdded( InfcBrowserIter *infIter )
@@ -82,6 +92,14 @@ void Browser::begin_subscribe_cb( InfcBrowser *browser,
     void *user_data )
 {
     static_cast<Browser*>(user_data)->signalBeginSubscribe( iter, request );
+}
+
+void Browser::subscribe_session_cb( InfcBrowser *browser,
+    InfcBrowserIter *iter,
+    InfcSessionProxy *proxy,
+    void *user_data )
+{
+    static_cast<Browser*>(user_data)->signalSubscribeSession( iter, proxy );
 }
 
 void Browser::node_added_cb( InfcBrowser *browser,
