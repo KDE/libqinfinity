@@ -13,7 +13,8 @@ set(QInfinity_SRCS
 	qtiowatch.cpp
 	ipaddress.cpp
 	tcpconnection.cpp
-	xmlconnection.cpp)
+	xmlconnection.cpp
+	xmppconnection.cpp)
 
 QT4_AUTOMOC(${QInfinity_SRCS})
 

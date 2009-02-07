@@ -47,5 +47,6 @@ int main( int argc, char **argv )
     MyBrowser browser( io );
 
     return app.exec();
+    QInfinity::deinit();
 }
 
