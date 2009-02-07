@@ -17,10 +17,19 @@ class XmlConnection
     Q_OBJECT
 
     public:
+        enum Status
+        {
+            Closed,
+            Closing,
+            Open,
+            Opening
+        };
+
         XmlConnection( InfXmlConnection *infXmlConnection,
             QObject *parent = 0 );
 
         void close();
+        Status getStatus() const;
 
     Q_SIGNALS:
         void error();

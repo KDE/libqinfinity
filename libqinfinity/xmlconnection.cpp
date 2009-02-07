@@ -20,6 +20,35 @@ void XmlConnection::close()
     inf_xml_connection_close( infXmlConnection );
 }
 
+XmlConnection::Status XmlConnection::getStatus() const
+{
+    InfXmlConnectionStatus infStatus;
+    Status status;
+    InfXmlConnection *connection;
+
+    connection = INF_XML_CONNECTION(gobject());
+    g_object_get( G_OBJECT(connection),
+        "status", &infStatus,
+           NULL );
+
+    switch( infStatus )
+    {
+        case INF_XML_CONNECTION_CLOSED:
+            status = Closed;
+            break;
+        case INF_XML_CONNECTION_CLOSING:
+            status = Closing;
+            break;
+        case INF_XML_CONNECTION_OPEN:
+            status = Open;
+            break;
+        default:
+            status = Opening;
+    }
+
+    return status;
+}
+
 void XmlConnection::registerSignals()
 {
     if( !gobject() )
