@@ -22,6 +22,7 @@ Browser::Browser( QtIo &io,
         (InfCommunicationManager*)comm_manager.gobject(),
         (InfXmlConnection*)connection.gobject() ) )
 {
+    setupSignals();
 }
 
 void Browser::setupSignals()
