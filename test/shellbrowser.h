@@ -4,6 +4,8 @@
 #include "init.h"
 #include "tcpconnection.h"
 #include "xmppconnection.h"
+#include "communicationmanager.h"
+#include "browser.h"
 
 #include <QObject>
 #include <QApplication>
@@ -28,6 +30,8 @@ class MyBrowser
         QInfinity::QtIo *m_io;
         QInfinity::TcpConnection *connection;
         QInfinity::XmppConnection *xmppConnection;
+        QInfinity::CommunicationManager *commMgr;
+        QInfinity::Browser *browser;
 
 };
 

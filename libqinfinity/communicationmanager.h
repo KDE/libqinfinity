@@ -24,7 +24,7 @@ class CommunicationManager
          * deleted when the CommunicationManager is deleted.  If you dont want
          * to store this CommunicationManager, you can set this to false.
          */
-        CommunicationManager( bool own_gobject = true, QObject *parent = 0 );
+        CommunicationManager( QObject *parent = 0, bool own_gobject = true  );
         CommunicationManager( InfCommunicationManager *infCommManager, QObject *parent = 0 );
         CommunicationManager( const CommunicationManager &other );
 

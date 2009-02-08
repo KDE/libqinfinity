@@ -14,6 +14,8 @@ MyBrowser::MyBrowser( QInfinity::QtIo &io )
         0,
         0,
         this ) )
+    , commMgr( new QInfinity::CommunicationManager() )
+    , browser( 0 )
 {
     setupSignals();
     connection->open();
@@ -23,8 +25,11 @@ MyBrowser::MyBrowser( QInfinity::QtIo &io )
 
 MyBrowser::~MyBrowser()
 {
+    if( browser )
+        delete browser;
     delete xmppConnection;
     delete connection;
+    delete commMgr;
 }
 
 void MyBrowser::statusChanged()
@@ -39,6 +44,7 @@ void MyBrowser::statusChanged()
             break;
         case QInfinity::TcpConnection::Connected:
             std::cout << "Connected\n";
+            browser = new QInfinity::Browser( *m_io, *commMgr, *xmppConnection );
             break;
         case QInfinity::TcpConnection::Closed:
             std::cout << "Closed\n";
@@ -61,7 +67,8 @@ int main( int argc, char **argv )
     QInfinity::QtIo io;
     MyBrowser browser( io );
 
-    return app.exec();
+    app.exec();
     QInfinity::deinit();
+    return 0;
 }
 

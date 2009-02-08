@@ -18,9 +18,9 @@ Browser::Browser( QtIo &io,
     XmlConnection &connection,
     QObject *parent )
     : QObject( parent )
-    , QGObject( (GObject*)infc_browser_new( (InfIo*)io.gobject(),
-        (InfCommunicationManager*)comm_manager.gobject(),
-        (InfXmlConnection*)connection.gobject() ) )
+    , QGObject( (GObject*)infc_browser_new( INF_IO(io.gobject()),
+        INF_COMMUNICATION_MANAGER(comm_manager.gobject()),
+        INF_XML_CONNECTION(connection.gobject()) ) )
 {
     setupSignals();
 }

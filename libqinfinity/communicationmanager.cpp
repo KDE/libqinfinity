@@ -5,8 +5,8 @@
 namespace QInfinity
 {
 
-CommunicationManager::CommunicationManager( bool own_gobject,
-    QObject *parent )
+CommunicationManager::CommunicationManager( QObject *parent,
+    bool own_gobject )
     : QObject( parent )
     , QGObject( G_OBJECT(inf_communication_manager_new()), own_gobject )
 {
