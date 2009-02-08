@@ -1,6 +1,6 @@
-#include "clientbrowser.h"
+#include "shellbrowser.h"
 
-#include "clientbrowser.moc"
+#include "shellbrowser.moc"
 
 MyBrowser::MyBrowser( QInfinity::QtIo &io )
     : m_io( &io )
