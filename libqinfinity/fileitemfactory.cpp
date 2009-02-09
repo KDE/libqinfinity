@@ -1,5 +1,6 @@
 #include "fileitemfactory.h"
 #include "browseriter.h"
+#include "xmlconnection.h"
 
 namespace QInfinity
 {
@@ -39,6 +40,11 @@ const BrowserIter &NodeItem::iter() const
     return m_iter;
 }
 
+int NodeItem::type() const
+{
+    return FileItemFactory::NodeItem;
+}
+
 ConnectionItem::ConnectionItem( XmlConnection &connection,
     const QString &text )
     : QStandardItem( text )
@@ -54,25 +60,36 @@ ConnectionItem::ConnectionItem( XmlConnection &connection,
 {
 }
 
+XmlConnection &ConnectionItem::connection() const
+{
+    return *m_connection;
+}
+
+int ConnectionItem::type() const
+{
+    return FileItemFactory::ConnectionItem;
+}
+
 FileItemFactory::FileItemFactory( QObject *parent )
     : QObject( parent )
 {
 }
 
-QStandardItem *FileItemFactory::newDirectoryItem( const BrowserIter &node )
+FileItemFactory::~FileItemFactory()
 {
-    return new NodeItem( node );
 }
 
-QStandardItem *FileItemFactory::newNoteItem( const BrowserIter &node )
+QStandardItem *FileItemFactory::newNodeItem( const BrowserIter &node )
 {
-    return new NodeItem( node );
+    QInfinity::NodeItem *item = new QInfinity::NodeItem( node );
+    return item;
 }
 
 QStandardItem *FileItemFactory::newConnectionItem( XmlConnection &connection,
     const QString &name )
 {
-    return new ConnectionItem( connection, name );
+    QInfinity::ConnectionItem *item = new QInfinity::ConnectionItem( connection, name );
+    return item;
 }
 
 }

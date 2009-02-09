@@ -15,6 +15,9 @@ namespace QInfinity
 
 class CommunicationManager;
 
+/**
+ * @brief Represents an editing session.
+ */
 class Session
     : public QObject
     , public QGObject

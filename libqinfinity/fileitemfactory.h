@@ -10,7 +10,6 @@
 namespace QInfinity
 {
 
-class BrowserIter;
 class XmlConnection;
 
 /**
@@ -34,12 +33,16 @@ class NodeItem
             const QString &text );
 
         const BrowserIter &iter() const;
+        int type() const;
 
     private:
         BrowserIter m_iter;
 
 };
 
+/**
+ * @brief Convenience QStandardItem class for representing an XmlConneciton.
+ */
 class ConnectionItem
     : public QStandardItem
 {
@@ -51,22 +54,36 @@ class ConnectionItem
             const QString &text );
 
         XmlConnection &connection() const;
+        int type() const;
 
     private:
         XmlConnection *m_connection;
         
 };
 
+/**
+ * @brief Handles creation of new file items
+ */
 class FileItemFactory
     : public QObject
 {
 
     public:
+        enum ItemType
+        {
+            NodeItem = 1001,
+            ConnectionItem = 1002
+        };
+
         FileItemFactory( QObject *parent = 0);
         virtual ~FileItemFactory();
 
-        virtual QStandardItem *newDirectoryItem( const BrowserIter &node );
-        virtual QStandardItem *newNoteItem( const BrowserIter &node );
+        /**
+         * @brief Create a new node item.
+         *
+         * Use the BrowserIter interface to distinguish node types.
+         */
+        virtual QStandardItem *newNodeItem( const BrowserIter &node );
         virtual QStandardItem *newConnectionItem( XmlConnection &connection,
             const QString &name );
 

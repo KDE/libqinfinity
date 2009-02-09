@@ -15,6 +15,9 @@ namespace QInfinity
 
 class Session;
 
+/**
+ * @brief Used for retrieving newly created sessions.
+ */
 class SessionProxy
     : public QObject
     , public QGObject

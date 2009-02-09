@@ -7,9 +7,12 @@
 #include <QString>
 #include <QList>
 #include <QStandardItemModel>
+#include <QMap>
 
 namespace QInfinity
 {
+
+class Browser;
 
 /**
  * @brief A model for connections and their file hierarchy
@@ -47,6 +50,7 @@ class FileModel
     private:
         FileItemFactory *m_itemFactory;
         QList<XmlConnection*> m_connections;
+        QMap<Browser*, XmlConnection*> browserToConnectionMap;
 
 };
 

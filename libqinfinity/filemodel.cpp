@@ -1,4 +1,5 @@
 #include "filemodel.h"
+#include "browser.h"
 
 namespace QInfinity
 {
@@ -41,6 +42,13 @@ FileModel::FileModel( FileItemFactory *itemFactory,
 
 FileModel::~FileModel()
 {
+    QList<Browser*> browsers;
+    QList<Browser*>::Iterator browserItr;
+    
+    browsers = browserToConnectionMap.keys();
+    for( browserItr = browsers.begin(); browserItr != browsers.end(); browserItr++ )
+        delete *browserItr;
+    
     delete m_itemFactory;
 }
 
