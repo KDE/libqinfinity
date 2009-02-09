@@ -1,6 +1,11 @@
 #ifndef QINFINITY_FILE_MODEL_H
 #define QINFINITY_FILE_MODEL_H
 
+#include "xmlconnection.h"
+#include "fileitemfactory.h"
+
+#include <QString>
+#include <QList>
 #include <QStandardItemModel>
 
 namespace QInfinity
@@ -14,7 +19,34 @@ class FileModel
 {
 
     public:
-        FileModel
+        FileModel( QObject *parent = 0 );
+        FileModel( FileItemFactory *itemFactory,
+            QObject *parent = 0 );
+        FileModel( QList<XmlConnection*> connections,
+            QObject *parent = 0 );
+        FileModel( FileItemFactory *itemFactory,
+            QList<XmlConnection*> connections,
+            QObject *parent = 0 );
+        ~FileModel();
+
+        /**
+         * @brief Use factory for creating items.
+         *
+         * If factory is NULL then FileItemFactory is used.
+         * factory will be reparented.
+         */
+        void setFileItemFactory( FileItemFactory *factory );
+        FileItemFactory &itemFactory() const;
+        /**
+         * @brief Add connection with name for model to represent.
+         */
+        void addConnection( XmlConnection &connection,
+            const QString &name );
+        const QList<XmlConnection*> connections;
+
+    private:
+        FileItemFactory *m_itemFactory;
+        QList<XmlConnection*> m_connections;
 
 };
 

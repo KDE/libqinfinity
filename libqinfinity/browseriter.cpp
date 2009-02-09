@@ -31,6 +31,30 @@ BrowserIter::BrowserIter( const BrowserIter &other,
     m_infBrowserIter.node = other.infBrowserIter()->node;
 }
 
+BrowserIter &BrowserIter::operator++()
+{
+    next();
+    return *this;
+}
+
+BrowserIter BrowserIter::operator++( int dummy )
+{
+    next();
+    return *this;
+}
+
+BrowserIter &BrowserIter::operator--()
+{
+    prev();
+    return *this;
+}
+
+BrowserIter BrowserIter::operator--( int dummy )
+{
+    prev();
+    return *this;
+}
+
 bool BrowserIter::next()
 {
     return infc_browser_iter_get_next( m_infBrowser, &m_infBrowserIter ) != 0;

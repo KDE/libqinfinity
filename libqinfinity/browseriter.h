@@ -31,6 +31,11 @@ class BrowserIter
             QObject *parent = 0 );
         BrowserIter( const BrowserIter &other,
             QObject *parent = 0 );
+
+        BrowserIter &operator++();
+        BrowserIter operator++( int );
+        BrowserIter &operator--();
+        BrowserIter operator--( int );
         
         bool next();
         bool prev();

@@ -19,7 +19,9 @@ set(QInfinity_SRCS
 	browser.cpp
 	browseriter.cpp
 	sessionproxy.cpp
-	session.cpp)
+	session.cpp
+	filemodel.cpp
+	fileitemfactory.cpp)
 
 set(QInfinity_HDRS
 	init.h
@@ -34,7 +36,9 @@ set(QInfinity_HDRS
 	communicationmanager.h
 	browser.h
 	sessionproxy.h
-	session.h)
+	session.h
+	filemodel.h
+	fileitemfactory.h)
 
 QT4_AUTOMOC(${QInfinity_SRCS})
 
