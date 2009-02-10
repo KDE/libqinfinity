@@ -3,6 +3,7 @@ PROJECT(libqinfinity)
 find_package(Libinfinity REQUIRED)
 find_package(Qt4 REQUIRED)
 
+set(QT_USE_QTNETWORK true)
 INCLUDE(${QT_USE_FILE})
 
 set(LIBS ${LIBS} ${LIBINFINITY_LIBRARIES} ${QT_LIBRARIES})

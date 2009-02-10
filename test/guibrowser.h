@@ -1,6 +1,7 @@
 #ifndef QINFINITY_TEST_GUIBROWSER_H
 #define QINFINITY_TEST_GUIBROWSER_H
 
+#include "init.h"
 #include "qtio.h"
 #include "ipaddress.h"
 #include "tcpconnection.h"
@@ -20,22 +21,27 @@ class Connection
     Q_OBJECT
 
     public:
-        Connection( const QString &hostname,
+        Connection( QInfinity::QtIo &io,
+            const QString &hostname,
             unsigned int port,
             QObject *parent = 0 );
 
-        void setup();
+        void open();
     
     Q_SIGNALS:
-        void hostnameLookedUp( const QHostAddress &address,
-            unsigned int port );
+        void connected();
     
     private Q_SLOTS:
         void slotHostnameLookedUp( const QHostInfo &hostInfo );
+        void slotXmlConnectionStatusChanged();
+        void slotXmlConnectionError( const QString &message );
 
     private:
         QString hostname;
         unsigned int port;
+        QInfinity::QtIo *io;
+        QInfinity::TcpConnection *tcpConnection;
+        QInfinity::XmppConnection *xmppConnection;
 
 };
 
@@ -50,11 +56,9 @@ class MyBrowser
     public Q_SLOTS:
         void connectToHost( const QString &hostname,
             unsigned int port );
-        void connectToHost( const QHostAddress &address,
-            unsigned int port );
 
     private Q_SLOTS:
-        void slotConnectionStatusChanged();
+        void slotConnectionConnected();
     
     private:
         QInfinity::QtIo io;

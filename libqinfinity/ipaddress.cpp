@@ -3,7 +3,12 @@
 namespace QInfinity
 {
 
-IpAddress::IpAddress( unsigned int raw_address )
+IpAddress::IpAddress( const QHostAddress &address )
+    : m_gobject( inf_ip_address_new_from_string( address.toString().toAscii() ) )
+{
+}
+
+IpAddress::IpAddress( quint32 raw_address )
     : m_gobject( inf_ip_address_new_raw4( raw_address ) )
 {
 }

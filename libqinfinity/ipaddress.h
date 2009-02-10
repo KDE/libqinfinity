@@ -3,6 +3,8 @@
 
 #include <libinfinity/common/inf-ip-address.h>
 
+#include <QHostAddress>
+
 namespace QInfinity
 {
 
@@ -13,7 +15,8 @@ class IpAddress
 {
 
     public:
-        IpAddress( unsigned int raw_address );
+        IpAddress( const QHostAddress &address );
+        IpAddress( quint32 raw_address );
         IpAddress( const char *address_string );
         ~IpAddress();
 

@@ -10,6 +10,7 @@ XmlConnection::XmlConnection( InfXmlConnection *infXmlConnection,
     : QObject( parent )
     , QGObject( G_OBJECT(infXmlConnection) )
 {
+    registerSignals();
 }
 
 void XmlConnection::close()
@@ -20,7 +21,7 @@ void XmlConnection::close()
     inf_xml_connection_close( infXmlConnection );
 }
 
-XmlConnection::Status XmlConnection::getStatus() const
+XmlConnection::Status XmlConnection::status() const
 {
     InfXmlConnectionStatus infStatus;
     Status status;
@@ -42,8 +43,11 @@ XmlConnection::Status XmlConnection::getStatus() const
         case INF_XML_CONNECTION_OPEN:
             status = Open;
             break;
-        default:
+        case INF_XML_CONNECTION_OPENING:
             status = Opening;
+            break;
+        default:
+            status = Closed;
     }
 
     return status;
@@ -58,9 +62,10 @@ void XmlConnection::registerSignals()
     g_signal_connect(gobject(), "notify::status", G_CALLBACK(XmlConnection::status_changed_cb), this);
 }
 
-void XmlConnection::signalError()
+void XmlConnection::signalError( const GError *err )
 {
-    emit(error());
+    QString message = err->message;
+    emit(error( message ));
 }
 
 void XmlConnection::signalStatusChanged()
@@ -71,14 +76,14 @@ void XmlConnection::signalStatusChanged()
 void XmlConnection::error_cb( const GError *error,
     void *user_data )
 {
-    static_cast<XmlConnection*>(user_data)->signalError();
+    static_cast<XmlConnection*>(user_data)->signalError( error );
 }
 
 void XmlConnection::status_changed_cb( InfXmlConnection *infConnection,
     const char *property,
     void *user_data )
 {
-    static_cast<XmlConnection*>(user_data)->signalError();
+    static_cast<XmlConnection*>(user_data)->signalStatusChanged();
 }
 
 }

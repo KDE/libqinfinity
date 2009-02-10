@@ -29,16 +29,16 @@ class XmlConnection
             QObject *parent = 0 );
 
         void close();
-        Status getStatus() const;
+        Status status() const;
 
     Q_SIGNALS:
-        void error();
+        void error( const QString &message );
         void statusChanged();
 
     private:
         void registerSignals();
 
-        void signalError();
+        void signalError( const GError *error );
         void signalStatusChanged();
 
         static void error_cb( const GError *error,
