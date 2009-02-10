@@ -35,8 +35,7 @@ class Browser
     Q_OBJECT
 
     public:
-        Browser( QtIo &io,
-            CommunicationManager &comm_manager,
+        Browser( CommunicationManager &comm_manager,
             XmlConnection &connection,
             QObject *parent = 0 );
     

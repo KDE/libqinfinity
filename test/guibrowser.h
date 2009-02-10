@@ -27,6 +27,8 @@ class Connection
             QObject *parent = 0 );
 
         void open();
+        const QString &hostname() const;
+        QInfinity::XmppConnection &xmppConnection() const;
     
     Q_SIGNALS:
         void connected();
@@ -37,11 +39,11 @@ class Connection
         void slotXmlConnectionError( const QString &message );
 
     private:
-        QString hostname;
+        QString m_hostname;
         unsigned int port;
         QInfinity::QtIo *io;
         QInfinity::TcpConnection *tcpConnection;
-        QInfinity::XmppConnection *xmppConnection;
+        QInfinity::XmppConnection *m_xmppConnection;
 
 };
 

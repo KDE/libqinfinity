@@ -21,6 +21,8 @@ class QtIo
 {
 
     public:
+        static QtIo *instance();
+
         QtIo( QObject *parent = 0 );
         virtual ~QtIo();
 

@@ -9,18 +9,28 @@ Connection::Connection( QInfinity::QtIo &io,
     unsigned int port,
     QObject *parent )
     : QObject( parent )
-    , hostname( hostname )
+    , m_hostname( hostname )
     , port( port )
     , io( &io )
     , tcpConnection( 0 )
-    , xmppConnection( 0 )
+    , m_xmppConnection( 0 )
 {
 }
 
 void Connection::open()
 {
-    QHostInfo::lookupHost( hostname, this,
+    QHostInfo::lookupHost( hostname(), this,
         SLOT(slotHostnameLookedUp(QHostInfo)) );
+}
+
+const QString &Connection::hostname() const
+{
+    return m_hostname;
+}
+
+QInfinity::XmppConnection &Connection::xmppConnection() const
+{
+    return *m_xmppConnection;
 }
 
 void Connection::slotHostnameLookedUp( const QHostInfo &hostInfo )
@@ -30,16 +40,16 @@ void Connection::slotHostnameLookedUp( const QHostInfo &hostInfo )
         QInfinity::IpAddress( hostInfo.addresses()[0] ),
         port,
         this );
-    xmppConnection = new QInfinity::XmppConnection( *tcpConnection,
+    m_xmppConnection = new QInfinity::XmppConnection( *tcpConnection,
         QInfinity::XmppConnection::Client,
         "localhost", "localhost",
         QInfinity::XmppConnection::PreferTls,
         0, 0, 0,
         this );
 
-    connect( xmppConnection, SIGNAL(statusChanged()),
+    connect( m_xmppConnection, SIGNAL(statusChanged()),
         this, SLOT(slotXmlConnectionStatusChanged()) );
-    connect( xmppConnection, SIGNAL(error( const QString& )),
+    connect( m_xmppConnection, SIGNAL(error( const QString& )),
         this, SLOT(slotXmlConnectionError( const QString& )) );
 
     tcpConnection->open();
@@ -47,7 +57,7 @@ void Connection::slotHostnameLookedUp( const QHostInfo &hostInfo )
 
 void Connection::slotXmlConnectionStatusChanged()
 {
-    switch( xmppConnection->status() )
+    switch( m_xmppConnection->status() )
     {
         case QInfinity::XmlConnection::Open:
             qDebug() << "Open";
@@ -69,6 +79,9 @@ void Connection::slotXmlConnectionError( const QString &message )
 
 MyBrowser::MyBrowser()
 {
+    QTreeView *treeView = new QTreeView();
+    treeView->setModel( &fileModel );
+    treeView->setVisible( true );
 }
 
 void MyBrowser::connectToHost( const QString &hostname,
@@ -81,7 +94,8 @@ void MyBrowser::connectToHost( const QString &hostname,
 
 void MyBrowser::slotConnectionConnected()
 {
-    qDebug() << "Connected.";
+    Connection *connection = dynamic_cast<Connection*>(sender());
+    fileModel.addConnection( connection->xmppConnection(), connection->hostname() );
 }
 
 int main( int argc, char **argv )

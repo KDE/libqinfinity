@@ -44,7 +44,7 @@ void MyBrowser::statusChanged()
             break;
         case QInfinity::TcpConnection::Connected:
             std::cout << "Connected\n";
-            browser = new QInfinity::Browser( *m_io, *commMgr, *xmppConnection );
+            browser = new QInfinity::Browser( *commMgr, *xmppConnection );
             break;
         case QInfinity::TcpConnection::Closed:
             std::cout << "Closed\n";

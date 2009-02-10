@@ -136,6 +136,12 @@ QInfQtIo *qinf_qt_io_new()
     return QINF_QT_IO(object);
 }
 
+QtIo *QtIo::instance()
+{
+    static QtIo *io = new QtIo;
+    return io;
+}
+
 QtIo::QtIo( QObject *parent )
     : QObject( parent )
     , m_gobject( qinf_qt_io_new() )

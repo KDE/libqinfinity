@@ -46,6 +46,7 @@ class NodeItem
 class ConnectionItem
     : public QStandardItem
 {
+
     public:
         ConnectionItem( XmlConnection &connection,
             const QString &text );
@@ -83,8 +84,8 @@ class FileItemFactory
          *
          * Use the BrowserIter interface to distinguish node types.
          */
-        virtual QStandardItem *newNodeItem( const BrowserIter &node );
-        virtual QStandardItem *newConnectionItem( XmlConnection &connection,
+        virtual QInfinity::NodeItem *newNodeItem( const BrowserIter &node );
+        virtual QInfinity::ConnectionItem *newConnectionItem( XmlConnection &connection,
             const QString &name );
 
 };

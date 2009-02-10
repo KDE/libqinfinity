@@ -36,6 +36,7 @@ class BrowserIter
         BrowserIter operator++( int );
         BrowserIter &operator--();
         BrowserIter operator--( int );
+        BrowserIter &operator=( const BrowserIter &other );
         
         bool next();
         bool prev();
