@@ -79,13 +79,13 @@ FileItemFactory::~FileItemFactory()
 {
 }
 
-NodeItem *FileItemFactory::newNodeItem( const BrowserIter &node )
+NodeItem *FileItemFactory::createNodeItem( const BrowserIter &node )
 {
     QInfinity::NodeItem *item = new QInfinity::NodeItem( node );
     return item;
 }
 
-ConnectionItem *FileItemFactory::newConnectionItem( XmlConnection &connection,
+ConnectionItem *FileItemFactory::createConnectionItem( XmlConnection &connection,
     const QString &name )
 {
     QInfinity::ConnectionItem *item = new QInfinity::ConnectionItem( connection, name );

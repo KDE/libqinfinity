@@ -10,6 +10,8 @@ namespace QInfinity
 
 ConnectionIndex::ConnectionIndex( XmlConnection &connection,
     Browser &browser )
+    : m_xmlConnection( &connection )
+    , m_browser( &browser )
 {
 }
 
@@ -23,7 +25,7 @@ Browser &ConnectionIndex::browser() const
     return *m_browser;
 }
 
-NodeItem *ConnectionIndex::getNodeFromIter( const BrowserIter &iter ) const
+NodeItem *ConnectionIndex::itemFromIter( const BrowserIter &iter ) const
 {
     if( nodeIdToNodeItemMap.contains( iter.infBrowserIter()->node_id ) )
         return nodeIdToNodeItemMap[iter.infBrowserIter()->node_id];
@@ -94,9 +96,12 @@ FileModel::~FileModel()
 void FileModel::addConnection( XmlConnection &connection,
     const QString &name )
 {
+    Browser *browser;
     ConnectionIndex *index;
-    Browser *browser = new Browser( comm_mgr, connection, this );
+
+    browser = new Browser( comm_mgr, connection, this );
     index = new ConnectionIndex( connection, *browser );
+
     browserToConnectionMap[browser] = index;
     connect( browser, SIGNAL(nodeAdded(QPointer<BrowserIter>)),
         this, SLOT(slotNodeAdded(QPointer<BrowserIter>)) );
@@ -109,6 +114,31 @@ const QList<XmlConnection*> FileModel::connections() const
 
 void FileModel::slotNodeAdded( QPointer<BrowserIter> itr )
 {
+    NodeItem *item;
+    Browser *browser;
+
+    item = m_itemFactory->createNodeItem( *itr );
+    browser = dynamic_cast<Browser*>(sender());
+    indexIter( *itr, *browser, *item );
+}
+
+void FileModel::indexIter( const BrowserIter &iter,
+    Browser &browser,
+    NodeItem &item )
+{
+    ConnectionIndex *index;
+
+    index = browserToConnectionMap[&browser];
+    index->indexIter( iter, item );
+}
+
+NodeItem *FileModel::itemFromBrowserIter( const BrowserIter &iter,
+    Browser &browser )
+{
+    ConnectionIndex *index;
+    
+    index = browserToConnectionMap[&browser];
+    return index->itemFromIter( iter );
 }
 
 }

@@ -84,8 +84,8 @@ class FileItemFactory
          *
          * Use the BrowserIter interface to distinguish node types.
          */
-        virtual QInfinity::NodeItem *newNodeItem( const BrowserIter &node );
-        virtual QInfinity::ConnectionItem *newConnectionItem( XmlConnection &connection,
+        virtual QInfinity::NodeItem *createNodeItem( const BrowserIter &node );
+        virtual QInfinity::ConnectionItem *createConnectionItem( XmlConnection &connection,
             const QString &name );
 
 };

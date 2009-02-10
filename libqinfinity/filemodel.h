@@ -28,10 +28,9 @@ class ConnectionIndex
 
         XmlConnection &connection() const;
         Browser &browser() const;
-        NodeItem *getNodeFromIter( const BrowserIter &iter ) const;
+        NodeItem *itemFromIter( const BrowserIter &iter ) const;
         void indexIter( const BrowserIter &iter,
             NodeItem &node );
-
     
     private:
         XmlConnection *m_xmlConnection;
@@ -78,6 +77,12 @@ class FileModel
         void slotNodeAdded( QPointer<BrowserIter> itr );
 
     private:
+        void indexIter( const BrowserIter &iter,
+            Browser &browser,
+            NodeItem &item );
+        NodeItem *itemFromBrowserIter( const BrowserIter &iter,
+            Browser &browser );
+
         FileItemFactory *m_itemFactory;
         QList<XmlConnection*> m_connections;
         QMap<Browser*, ConnectionIndex*> browserToConnectionMap;
