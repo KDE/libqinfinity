@@ -1,0 +1,13 @@
+*.moc
+*.o
+*.so*
+*.so.*
+*.swp
+CMakeFiles
+guibrowser
+shellbrowser
+Makefile
+cmake_install.cmake
+install_manifest.txt
+CMakeCache.txt
+

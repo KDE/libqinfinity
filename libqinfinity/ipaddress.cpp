@@ -23,9 +23,15 @@ IpAddress::~IpAddress()
     inf_ip_address_free(m_gobject);
 }
 
-const char *IpAddress::toString()
+QString IpAddress::toString()
 {
-    return inf_ip_address_to_string( (const InfIpAddress*)(gobject()) );
+    QString str;
+    char *c_str; 
+
+    c_str = inf_ip_address_to_string( (const InfIpAddress*)(gobject()) );
+    str = c_str;
+    g_free( c_str );
+    return str;
 }
 
 InfIpAddress *IpAddress::gobject() const

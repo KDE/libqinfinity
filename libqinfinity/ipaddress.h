@@ -4,6 +4,7 @@
 #include <libinfinity/common/inf-ip-address.h>
 
 #include <QHostAddress>
+#include <QString>
 
 namespace QInfinity
 {
@@ -20,7 +21,7 @@ class IpAddress
         IpAddress( const char *address_string );
         ~IpAddress();
 
-        const char *toString();
+        QString toString();
         InfIpAddress *gobject() const;
     
     private:
