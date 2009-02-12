@@ -28,7 +28,8 @@ QtIoWatch::QtIoWatch( int socket,
 
 QtIoWatch::~QtIoWatch()
 {
-    m_destroy_notify( m_user_data );
+    if( m_destroy_notify )
+        m_destroy_notify( m_user_data );
 }
 
 void QtIoWatch::setEvents( InfIoEvent events )

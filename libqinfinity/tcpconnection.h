@@ -30,10 +30,11 @@ class TcpConnection
             const IpAddress &ipAddress,
             unsigned int port,
             QObject *parent = 0 );
+        ~TcpConnection();
 
         bool open();
         void close();
-        Status getStatus() const;
+        Status status() const;
     
     Q_SIGNALS:
         void statusChanged();

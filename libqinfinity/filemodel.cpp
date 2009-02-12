@@ -105,6 +105,9 @@ void FileModel::addConnection( XmlConnection &connection,
     browserToConnectionMap[browser] = index;
     connect( browser, SIGNAL(nodeAdded(QPointer<BrowserIter>)),
         this, SLOT(slotNodeAdded(QPointer<BrowserIter>)) );
+
+    insertRow( 0, m_itemFactory->createConnectionItem( connection,
+        name ) );
 }
 
 const QList<XmlConnection*> FileModel::connections() const

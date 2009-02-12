@@ -36,7 +36,7 @@ void MyBrowser::statusChanged()
 {
     std::cout << "Status changed\n";
     QInfinity::TcpConnection::Status status;
-    status = connection->getStatus();
+    status = connection->status();
     switch( status )
     {
         case QInfinity::TcpConnection::Connecting:

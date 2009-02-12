@@ -17,6 +17,12 @@ Connection::Connection( QInfinity::QtIo &io,
 {
 }
 
+Connection::~Connection()
+{
+    delete tcpConnection;
+    delete m_xmppConnection;
+}
+
 void Connection::open()
 {
     QHostInfo::lookupHost( hostname(), this,
@@ -79,15 +85,20 @@ void Connection::slotXmlConnectionError( const QString &message )
 
 MyBrowser::MyBrowser()
 {
-    QTreeView *treeView = new QTreeView();
+    treeView = new QTreeView();
     treeView->setModel( &fileModel );
     treeView->setVisible( true );
+}
+
+MyBrowser::~MyBrowser()
+{
+    delete treeView;
 }
 
 void MyBrowser::connectToHost( const QString &hostname,
     unsigned int port )
 {
-    Connection *connection = new Connection( io, hostname, port, this );
+    Connection *connection = new Connection( *QInfinity::QtIo::instance(), hostname, port, this );
     connect( connection, SIGNAL(connected()), this, SLOT(slotConnectionConnected()) );
     connection->open();
 }
@@ -106,6 +117,7 @@ int main( int argc, char **argv )
     browser.connectToHost( "localhost", 6523 );
 
     app.exec();
+    QInfinity::deinit();
     return 0;
 }
 

@@ -22,6 +22,12 @@ TcpConnection::TcpConnection( QtIo &io,
     setupSignals();
 }
 
+TcpConnection::~TcpConnection()
+{
+    if( status() != Closed )
+        close();
+}
+
 bool TcpConnection::open()
 {
     InfTcpConnection *connection;
@@ -38,7 +44,7 @@ void TcpConnection::close()
     inf_tcp_connection_close(connection);
 }
 
-TcpConnection::Status TcpConnection::getStatus() const
+TcpConnection::Status TcpConnection::status() const
 {
     InfTcpConnectionStatus infStatus;
     Status status;

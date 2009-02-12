@@ -25,6 +25,7 @@ class Connection
             const QString &hostname,
             unsigned int port,
             QObject *parent = 0 );
+        ~Connection();
 
         void open();
         const QString &hostname() const;
@@ -54,6 +55,7 @@ class MyBrowser
 
     public:
         MyBrowser();
+        ~MyBrowser();
 
     public Q_SLOTS:
         void connectToHost( const QString &hostname,
@@ -63,7 +65,7 @@ class MyBrowser
         void slotConnectionConnected();
     
     private:
-        QInfinity::QtIo io;
+        QTreeView *treeView;
         QInfinity::FileModel fileModel;
 
 };

@@ -151,6 +151,12 @@ QtIo::QtIo( QObject *parent )
 
 QtIo::~QtIo()
 {
+    QList<QtIoWatch*> watches;
+    QList<QtIoWatch*>::Iterator watchItr;
+
+    for( watchItr = watches.begin(); watchItr != watches.end(); watchItr++ )
+        delete *watchItr;
+
     m_gobject->destroy_cpp_class = 0;
     g_object_unref( m_gobject );
 }
