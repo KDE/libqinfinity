@@ -74,7 +74,7 @@ class FileModel
         const QList<XmlConnection*> connections() const;
 
     private Q_SLOTS:
-        void slotNodeAdded( QPointer<BrowserIter> itr );
+        void slotNodeAdded( const BrowserIter &itr );
 
     private:
         void indexIter( const BrowserIter &iter,

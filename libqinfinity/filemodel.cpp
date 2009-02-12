@@ -98,16 +98,21 @@ void FileModel::addConnection( XmlConnection &connection,
 {
     Browser *browser;
     ConnectionIndex *index;
+    ConnectionItem *connItem;
+    NodeItem *nodeItem;
 
     browser = new Browser( comm_mgr, connection, this );
     index = new ConnectionIndex( connection, *browser );
 
     browserToConnectionMap[browser] = index;
-    connect( browser, SIGNAL(nodeAdded(QPointer<BrowserIter>)),
-        this, SLOT(slotNodeAdded(QPointer<BrowserIter>)) );
+    connect( browser, SIGNAL(nodeAdded( const BrowserIter&)),
+        this, SLOT(slotNodeAdded( const BrowserIter&)) );
 
-    insertRow( 0, m_itemFactory->createConnectionItem( connection,
-        name ) );
+    connItem = m_itemFactory->createConnectionItem( connection,
+        name );
+    insertRow( 0, connItem );
+    BrowserIter rootNode( *browser );
+
 }
 
 const QList<XmlConnection*> FileModel::connections() const
@@ -115,14 +120,14 @@ const QList<XmlConnection*> FileModel::connections() const
     return m_connections;
 }
 
-void FileModel::slotNodeAdded( QPointer<BrowserIter> itr )
+void FileModel::slotNodeAdded( const BrowserIter &itr )
 {
     NodeItem *item;
     Browser *browser;
 
-    item = m_itemFactory->createNodeItem( *itr );
+    item = m_itemFactory->createNodeItem( itr );
     browser = dynamic_cast<Browser*>(sender());
-    indexIter( *itr, *browser, *item );
+    indexIter( itr, *browser, *item );
 }
 
 void FileModel::indexIter( const BrowserIter &iter,

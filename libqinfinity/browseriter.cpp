@@ -4,28 +4,22 @@
 namespace QInfinity
 {
 
-BrowserIter::BrowserIter( const Browser &browser,
-    QObject *parent )
-    : QObject( parent )
-    , m_infBrowser( INFC_BROWSER(browser.gobject()) )
+BrowserIter::BrowserIter( const Browser &browser )
+    : m_infBrowser( INFC_BROWSER(browser.gobject()) )
 {
     infc_browser_iter_get_root( m_infBrowser, &m_infBrowserIter );
 }
 
 BrowserIter::BrowserIter( const InfcBrowserIter *infIter,
-    InfcBrowser *infBrowser,
-    QObject *parent )
-    : QObject( parent )
-    , m_infBrowser( infBrowser )
+    InfcBrowser *infBrowser )
+    : m_infBrowser( infBrowser )
 {
     m_infBrowserIter.node_id = infIter->node_id;
     m_infBrowserIter.node = infIter->node;
 }
 
-BrowserIter::BrowserIter( const BrowserIter &other,
-    QObject *parent )
-    : QObject( parent )
-    , m_infBrowser( other.infBrowser() )
+BrowserIter::BrowserIter( const BrowserIter &other )
+    : m_infBrowser( other.infBrowser() )
 {
     m_infBrowserIter.node_id = other.infBrowserIter()->node_id;
     m_infBrowserIter.node = other.infBrowserIter()->node;

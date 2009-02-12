@@ -46,7 +46,7 @@ class Browser
          * The iter is only valid for the life of the signal
          * handler.
          */
-        void beginExplore( QPointer<BrowserIter> iter,
+        void beginExplore( const BrowserIter &iter,
             InfcExploreRequest *request );
         /**
          * @brief A subscription request has been made.
@@ -56,12 +56,12 @@ class Browser
          * The iter is only valid for the life of the signal
          * handler
          */
-        void beginSubscribe( QPointer<BrowserIter> iter,
+        void beginSubscribe( const BrowserIter &iter,
             InfcNodeRequest *request );
-        void subscribeSession( QPointer<BrowserIter> iter,
+        void subscribeSession( const BrowserIter &iter,
             SessionProxy proxy );
-        void nodeAdded( QPointer<BrowserIter> iter );
-        void nodeRemoved( QPointer<BrowserIter> iter );
+        void nodeAdded( const BrowserIter &iter );
+        void nodeRemoved( const BrowserIter &iter );
 
     private:
         void setupSignals();

@@ -48,35 +48,35 @@ void Browser::setupSignals()
 void Browser::signalBeginExplore( InfcBrowserIter *infIter,
     InfcExploreRequest *request )
 {
-    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()), this );
-    emit(beginExplore( QPointer<BrowserIter>(&iter), request ));
+    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()) );
+    emit(beginExplore( iter, request ));
 }
 
 void Browser::signalBeginSubscribe( InfcBrowserIter *infIter,
     InfcNodeRequest *request )
 {
-    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()), this );
-    emit(beginSubscribe( QPointer<BrowserIter>(&iter), request ));
+    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()) );
+    emit(beginSubscribe( iter, request ));
 }
 
 void Browser::signalSubscribeSession( InfcBrowserIter *infIter,
     InfcSessionProxy *infProxy )
 {
-    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()), this );
-    emit(subscribeSession( QPointer<BrowserIter>(&iter),
+    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()) );
+    emit(subscribeSession( iter,
         SessionProxy( infProxy, this ) ));
 }
 
 void Browser::signalNodeAdded( InfcBrowserIter *infIter )
 {
-    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()), this );
-    emit(nodeAdded( QPointer<BrowserIter>(&iter) ));
+    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()) );
+    emit(nodeAdded( iter ));
 }
 
 void Browser::signalNodeRemoved( InfcBrowserIter *infIter )
 {
-    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()), this );
-    emit(nodeRemoved( QPointer<BrowserIter>(&iter) ));
+    BrowserIter iter( infIter, INFC_BROWSER(this->gobject()) );
+    emit(nodeRemoved( iter ));
 }
 
 void Browser::begin_explore_cb( InfcBrowser *browser,

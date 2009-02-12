@@ -79,6 +79,12 @@ FileItemFactory::~FileItemFactory()
 {
 }
 
+NodeItem *FileItemFactory::createRootNodeItem( const BrowserIter &node )
+{
+    QInfinity::NodeItem *item = new QInfinity::NodeItem( node, "/" );
+    return item;
+}
+
 NodeItem *FileItemFactory::createNodeItem( const BrowserIter &node )
 {
     QInfinity::NodeItem *item = new QInfinity::NodeItem( node );

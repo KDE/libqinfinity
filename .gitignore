@@ -1,4 +1,5 @@
 *.moc
+docs
 *.o
 *.so*
 *.so.*
