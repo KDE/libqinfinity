@@ -142,12 +142,6 @@ bool FileModel::hasChildren( const QModelIndex &parent ) const
     return false;
 }
 
-void FileModel::connectView( QAbstractItemView &view )
-{
-    connect( &view, SIGNAL(activated( const QModelIndex& )),
-        this, SLOT(itemActivated( const QModelIndex& )) );
-}
-
 void FileModel::itemActivated( const QModelIndex &parent )
 {
     if( !parent.isValid() )

@@ -74,7 +74,6 @@ class FileModel
             const QString &name );
         const QList<XmlConnection*> connections() const;
         bool hasChildren( const QModelIndex &parent = QModelIndex() ) const;
-        void connectView( QAbstractItemView &view );
 
     public Q_SLOTS:
         void itemActivated( const QModelIndex &parent = QModelIndex() );

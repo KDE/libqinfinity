@@ -85,7 +85,6 @@ MyBrowser::MyBrowser()
     treeView = new QTreeView();
     treeView->setModel( &fileModel );
     treeView->setVisible( true );
-    fileModel.connectView( *treeView );
     connect( treeView, SIGNAL(expanded( const QModelIndex& )),
         &fileModel, SLOT(itemActivated( const QModelIndex& )) );
 }
