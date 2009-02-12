@@ -10,6 +10,7 @@ set(LIBS ${LIBS} ${LIBINFINITY_LIBRARIES} ${QT_LIBRARIES})
 set(QInfinity_SRCS
 	init.cpp
 	qgobject.cpp
+	wrapperstore.cpp
 	qtio.cpp
 	qtiowatch.cpp
 	ipaddress.cpp
@@ -27,6 +28,7 @@ set(QInfinity_SRCS
 set(QInfinity_HDRS
 	init.h
 	qgobject.h
+	wrapperstore.h
 	qtio.h
 	qtiowatch.h
 	ipaddress.h

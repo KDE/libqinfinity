@@ -1,6 +1,8 @@
 #ifndef QINFINITY_QGOBJECT_H
 #define QINFINITY_QGOBJECT_H
 
+#include <QMap>
+
 #include <glib-object.h>
 
 namespace QInfinity
