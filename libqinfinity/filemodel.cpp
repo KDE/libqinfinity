@@ -1,7 +1,7 @@
 #include "filemodel.h"
 #include "browser.h"
 
-#include <QStack>
+#include <QDebug>
 
 #include "filemodel.moc"
 
@@ -112,7 +112,9 @@ void FileModel::addConnection( XmlConnection &connection,
         name );
     insertRow( 0, connItem );
     BrowserIter rootNode( *browser );
-
+    nodeItem = m_itemFactory->createRootNodeItem( rootNode );
+    indexIter( rootNode, *browser, *nodeItem );
+    connItem->setChild( 0, nodeItem );
 }
 
 const QList<XmlConnection*> FileModel::connections() const
@@ -120,14 +122,60 @@ const QList<XmlConnection*> FileModel::connections() const
     return m_connections;
 }
 
+bool FileModel::hasChildren( const QModelIndex &parent ) const
+{
+    if( !parent.isValid() )
+        return true;
+    QStandardItem *stdItem = itemFromIndex(parent);
+    NodeItem *nodeItem;
+
+    if( stdItem->type() == FileItemFactory::ConnectionItem )
+    {
+        return true;
+    }
+    if( stdItem->type() == FileItemFactory::NodeItem )
+    {
+        nodeItem = dynamic_cast<NodeItem*>(stdItem);
+        return nodeItem->isDirectory();
+    }
+
+    return false;
+}
+
+void FileModel::connectView( QAbstractItemView &view )
+{
+    connect( &view, SIGNAL(activated( const QModelIndex& )),
+        this, SLOT(itemActivated( const QModelIndex& )) );
+}
+
+void FileModel::itemActivated( const QModelIndex &parent )
+{
+    if( !parent.isValid() )
+        return;
+    QStandardItem *stdItem = itemFromIndex(parent);
+    
+    if( stdItem->type() == FileItemFactory::NodeItem )
+        dynamic_cast<NodeItem*>(stdItem)->activate();
+}
+
 void FileModel::slotNodeAdded( const BrowserIter &itr )
 {
-    NodeItem *item;
+    NodeItem *item, *parentItem;
     Browser *browser;
+    BrowserIter parentItr( itr );
 
     item = m_itemFactory->createNodeItem( itr );
     browser = dynamic_cast<Browser*>(sender());
     indexIter( itr, *browser, *item );
+
+    parentItr.parent();
+    parentItem = itemFromBrowserIter( parentItr, *browser );
+    if( !parentItem )
+    {
+        qDebug() << "Couldnt find parent to add node to.";
+        return;
+    }
+    parentItem->insertRow( 0, item );
 }
 
 void FileModel::indexIter( const BrowserIter &iter,
@@ -147,6 +195,17 @@ NodeItem *FileModel::itemFromBrowserIter( const BrowserIter &iter,
     
     index = browserToConnectionMap[&browser];
     return index->itemFromIter( iter );
+}
+
+NodeItem *FileModel::indexToNodeItem( const QModelIndex &parent ) const
+{
+    if( !parent.isValid() )
+        return 0;
+    QStandardItem *stdItem = static_cast<QStandardItem*>(parent.internalPointer());
+    if( stdItem->type() == FileItemFactory::NodeItem )
+        return dynamic_cast<NodeItem*>(stdItem);
+    else
+        return 0;
 }
 
 }

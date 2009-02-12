@@ -2,6 +2,8 @@
 #include "browseriter.h"
 #include "xmlconnection.h"
 
+#include <QDebug>
+
 namespace QInfinity
 {
 
@@ -43,6 +45,17 @@ const BrowserIter &NodeItem::iter() const
 int NodeItem::type() const
 {
     return FileItemFactory::NodeItem;
+}
+
+bool NodeItem::isDirectory()
+{
+    return m_iter.isDirectory();
+}
+
+void NodeItem::activate()
+{
+    if( !m_iter.isExplored() )
+        m_iter.explore();
 }
 
 ConnectionItem::ConnectionItem( XmlConnection &connection,

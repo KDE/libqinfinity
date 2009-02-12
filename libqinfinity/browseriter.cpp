@@ -80,6 +80,12 @@ bool BrowserIter::parent()
         return infc_browser_iter_get_parent( m_infBrowser, &m_infBrowserIter ) != 0;
 }
 
+bool BrowserIter::isDirectory()
+{
+    if( m_infBrowser )
+        return infc_browser_iter_is_subdirectory( m_infBrowser, &m_infBrowserIter ) != 0;
+}
+
 InfcExploreRequest *BrowserIter::explore()
 {
     if( m_infBrowser )

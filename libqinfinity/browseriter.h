@@ -36,6 +36,7 @@ class BrowserIter
         bool prev();
         bool child();
         bool parent();
+        bool isDirectory();
         InfcExploreRequest *explore();
         bool isExplored();
         const char *name();

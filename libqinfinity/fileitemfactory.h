@@ -34,6 +34,8 @@ class NodeItem
 
         const BrowserIter &iter() const;
         int type() const;
+        bool isDirectory();
+        void activate();
 
     private:
         BrowserIter m_iter;

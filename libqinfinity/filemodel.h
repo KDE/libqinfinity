@@ -10,6 +10,7 @@
 #include <QStandardItemModel>
 #include <QMap>
 #include <QPointer>
+#include <QAbstractItemView>
 
 namespace QInfinity
 {
@@ -72,6 +73,11 @@ class FileModel
         void addConnection( XmlConnection &connection,
             const QString &name );
         const QList<XmlConnection*> connections() const;
+        bool hasChildren( const QModelIndex &parent = QModelIndex() ) const;
+        void connectView( QAbstractItemView &view );
+
+    public Q_SLOTS:
+        void itemActivated( const QModelIndex &parent = QModelIndex() );
 
     private Q_SLOTS:
         void slotNodeAdded( const BrowserIter &itr );
@@ -82,6 +88,7 @@ class FileModel
             NodeItem &item );
         NodeItem *itemFromBrowserIter( const BrowserIter &iter,
             Browser &browser );
+        NodeItem *indexToNodeItem( const QModelIndex &index ) const;
 
         FileItemFactory *m_itemFactory;
         QList<XmlConnection*> m_connections;
