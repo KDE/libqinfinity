@@ -5,8 +5,7 @@
 namespace QInfinity
 {
 
-TcpConnection::TcpConnection( QtIo &io,
-    const IpAddress &address,
+TcpConnection::TcpConnection( const IpAddress &address,
     unsigned int port,
     QObject *parent )
     : QObject( parent )
@@ -14,7 +13,7 @@ TcpConnection::TcpConnection( QtIo &io,
     InfTcpConnection *infObject;
 
     infObject = INF_TCP_CONNECTION(g_object_new( INF_TYPE_TCP_CONNECTION,
-        "io", io.gobject(),
+        "io", QtIo::instance()->gobject(),
         "remote-address", address.gobject(),
         "remote-port", port,
         NULL ));

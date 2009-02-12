@@ -2,9 +2,8 @@
 
 #include "shellbrowser.moc"
 
-MyBrowser::MyBrowser( QInfinity::QtIo &io )
-    : m_io( &io )
-    , connection( new QInfinity::TcpConnection( io, QInfinity::IpAddress( "127.0.0.1" ), 6523 ) )
+MyBrowser::MyBrowser()
+    : connection( new QInfinity::TcpConnection( QInfinity::IpAddress( "127.0.0.1" ), 6523 ) )
     , xmppConnection( new QInfinity::XmppConnection( *connection,
         QInfinity::XmppConnection::Client,
         "localhost",
@@ -64,8 +63,7 @@ int main( int argc, char **argv )
     QApplication app( argc, argv );
 
     QInfinity::init();
-    QInfinity::QtIo io;
-    MyBrowser browser( io );
+    MyBrowser browser();
 
     app.exec();
     QInfinity::deinit();

@@ -26,8 +26,7 @@ class TcpConnection
             Closed
         };
 
-        TcpConnection( QtIo &io,
-            const IpAddress &ipAddress,
+        TcpConnection( const IpAddress &ipAddress,
             unsigned int port,
             QObject *parent = 0 );
         ~TcpConnection();

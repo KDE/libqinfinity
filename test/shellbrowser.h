@@ -18,7 +18,7 @@ class MyBrowser
     Q_OBJECT
 
     public:
-        MyBrowser( QInfinity::QtIo &io );
+        MyBrowser();
         ~MyBrowser();
     
     public Q_SLOTS:
@@ -27,7 +27,6 @@ class MyBrowser
     private:
         void setupSignals();
 
-        QInfinity::QtIo *m_io;
         QInfinity::TcpConnection *connection;
         QInfinity::XmppConnection *xmppConnection;
         QInfinity::CommunicationManager *commMgr;

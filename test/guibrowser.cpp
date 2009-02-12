@@ -4,14 +4,12 @@
 
 #include "guibrowser.moc"
 
-Connection::Connection( QInfinity::QtIo &io,
-    const QString &hostname,
+Connection::Connection( const QString &hostname,
     unsigned int port,
     QObject *parent )
     : QObject( parent )
     , m_hostname( hostname )
     , port( port )
-    , io( &io )
     , tcpConnection( 0 )
     , m_xmppConnection( 0 )
 {
@@ -42,8 +40,7 @@ QInfinity::XmppConnection &Connection::xmppConnection() const
 void Connection::slotHostnameLookedUp( const QHostInfo &hostInfo )
 {
     qDebug() << "Connecting to " << hostInfo.addresses()[0].toString();
-    tcpConnection = new QInfinity::TcpConnection( *io,
-        QInfinity::IpAddress( hostInfo.addresses()[0] ),
+    tcpConnection = new QInfinity::TcpConnection( QInfinity::IpAddress( hostInfo.addresses()[0] ),
         port,
         this );
     m_xmppConnection = new QInfinity::XmppConnection( *tcpConnection,
@@ -98,7 +95,7 @@ MyBrowser::~MyBrowser()
 void MyBrowser::connectToHost( const QString &hostname,
     unsigned int port )
 {
-    Connection *connection = new Connection( *QInfinity::QtIo::instance(), hostname, port, this );
+    Connection *connection = new Connection( hostname, port, this );
     connect( connection, SIGNAL(connected()), this, SLOT(slotConnectionConnected()) );
     connection->open();
 }

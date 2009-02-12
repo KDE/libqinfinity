@@ -21,8 +21,7 @@ class Connection
     Q_OBJECT
 
     public:
-        Connection( QInfinity::QtIo &io,
-            const QString &hostname,
+        Connection( const QString &hostname,
             unsigned int port,
             QObject *parent = 0 );
         ~Connection();
@@ -42,7 +41,6 @@ class Connection
     private:
         QString m_hostname;
         unsigned int port;
-        QInfinity::QtIo *io;
         QInfinity::TcpConnection *tcpConnection;
         QInfinity::XmppConnection *m_xmppConnection;
 
