@@ -23,7 +23,8 @@ set(QInfinity_SRCS
 	sessionproxy.cpp
 	session.cpp
 	filemodel.cpp
-	fileitemfactory.cpp)
+	fileitemfactory.cpp
+	noteplugin.cpp)
 
 set(QInfinity_HDRS
 	init.h
@@ -41,7 +42,8 @@ set(QInfinity_HDRS
 	sessionproxy.h
 	session.h
 	filemodel.h
-	fileitemfactory.h)
+	fileitemfactory.h
+	noteplugin.h)
 
 QT4_AUTOMOC(${QInfinity_SRCS})
 
