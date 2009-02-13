@@ -19,6 +19,18 @@ class CommunicationManager
 
     public:
         /**
+         * @brief Create manager making use of object store.
+         */
+        static CommunicationManager *create( QObject *parent = 0,
+            bool own_gobject = true );
+        /**
+         * @brief Create manager making use of object store.
+         */
+        static CommunicationManager *create( InfCommunicationManager *inf_mgr,
+            QObject *parent = 0,
+            bool own_gobject = true );
+
+        /**
          * @brief Create a new Communication Manager.
          * @param own_gobject Take ownership of the created GObject.
          *

@@ -8,6 +8,7 @@ NotePlugin::NotePlugin( QString name )
 {
     m_infPlugin.note_type = m_name.toAscii();
     m_infPlugin.session_new = NotePlugin::create_session_cb;
+    m_infPlugin.user_data = this;
 }
 
 NotePlugin::~NotePlugin()
@@ -20,6 +21,7 @@ InfSession *NotePlugin::create_session_cb( InfIo *io,
     InfXmlConnection *sync_connection,
     void *user_data )
 {
+    NotePlugin *plugin = static_cast<NotePlugin*>(user_data);
 }
 
 }
