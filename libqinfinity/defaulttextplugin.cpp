@@ -1,5 +1,5 @@
 #include "defaulttextplugin.h"
-#include "textbuffer.h"
+#include "textdefaultbuffer.h"
 #include "textsession.h"
 #include "communicationjoinedgroup.h"
 #include "xmlconnection.h"
@@ -16,7 +16,12 @@ Session *DefaultTextPlugin::createSession( CommunicationManager *commMgr,
     CommunicationJoinedGroup *syncGroup,
     XmlConnection *syncConnection )
 {
-
+    TextBuffer *buffer = new TextDefaultBuffer( "utf-8" );
+    TextSession *textSession = new TextSession( *commMgr,
+        *buffer,
+        *syncGroup,
+        *syncConnection );
+    return textSession;
 }
 
 }

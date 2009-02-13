@@ -29,6 +29,7 @@ set(QInfinity_SRCS
 	fileitemfactory.cpp
 	buffer.cpp
 	textbuffer.cpp
+	textdefaultbuffer.cpp
 	noteplugin.cpp
 	defaulttextplugin.cpp)
 
@@ -53,6 +54,7 @@ set(QInfinity_HDRS
 	fileitemfactory.h
 	buffer.h
 	textbuffer.h
+	textdefaultbuffer.h
 	noteplugin.h
 	defaulttextplugin.h)
 

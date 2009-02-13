@@ -16,7 +16,6 @@ class TextBuffer
         static TextBuffer *create( InfTextBuffer *infBuffer,
             QObject *parent = 0 );
         
-        TextBuffer( QString encoding );
     protected:
         TextBuffer( InfTextBuffer *infBuffer,
             QObject *parent = 0 );
