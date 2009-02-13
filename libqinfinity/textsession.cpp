@@ -31,6 +31,11 @@ TextSession::TextSession( CommunicationManager &commMgr,
 {
 }
 
+Session::Type TextSession::type() const
+{
+    return Text;
+}
+
 TextSession::TextSession( InfTextSession *infSession,
     QObject *parent )
     : Session( INF_SESSION(infSession), parent )

@@ -31,6 +31,12 @@ class Session
             Closed
         };
 
+        enum Type
+        {
+            BaseSession,
+            Text
+        };
+
         static Status infStatusToCpp( InfSessionStatus );
         static Session *create( InfSession *session,
             QObject *parent = 0 );
@@ -41,6 +47,7 @@ class Session
         CommunicationManager *communicationManager() const;
         void close();
         Status status() const;
+        virtual Type type() const;
 
     Q_SIGNALS:
         void closing();

@@ -61,6 +61,11 @@ Session::Status Session::status() const
         inf_session_get_status( INF_SESSION(gobject()) ) );
 }
 
+Session::Type Session::type() const
+{
+    return BaseSession;
+}
+
 void Session::setupSignals()
 {
     g_signal_connect( G_OBJECT(gobject()),

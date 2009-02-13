@@ -25,6 +25,9 @@ class TextSession
             TextBuffer &textBuffer,
             CommunicationJoinedGroup &commGroup,
             XmlConnection &connection );
+
+        Session::Type type() const;
+
     protected:
         TextSession( InfTextSession *infSession,
             QObject *parent = 0 );
