@@ -18,6 +18,7 @@ class CommunicationManager
 {
 
     public:
+        static CommunicationManager *create( QObject *parent = 0 );
         /**
          * @brief Create manager making use of object store.
          */
@@ -25,6 +26,8 @@ class CommunicationManager
             QObject *parent = 0,
             bool own_gobject = true );
 
+        CommunicationManager( QObject *parent = 0, bool own_gobject = true );
+    protected:
         /**
          * @brief Create a new Communication Manager.
          * @param own_gobject Take ownership of the created GObject.
@@ -33,7 +36,6 @@ class CommunicationManager
          * deleted when the CommunicationManager is deleted.  If you dont want
          * to store this CommunicationManager, you can set this to false.
          */
-        CommunicationManager( QObject *parent = 0, bool own_gobject = true );
         CommunicationManager( InfCommunicationManager *infCommManager, QObject *parent = 0 );
         CommunicationManager( const CommunicationManager &other );
 

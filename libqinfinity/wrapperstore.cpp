@@ -59,6 +59,8 @@ void WrapperStore::storeWrapper( GObject *obj,
     if( index )
         delete index;
     // We should be overwriting keys so ne need to clear
+    connect( wrapper, SIGNAL(destroyed(QObject*)),
+        this, SLOT(wrapperDestroyed(QObject*)) );
     index = new WrapperIndex( wrapper, own_wrapper );    
     gobjToWrapperMap[obj] = index;
     qToGobjMap[wrapper] = obj;
@@ -70,8 +72,8 @@ QGObject *WrapperStore::takeWrapper( GObject *obj )
     WrapperIndex *index = findWrapperIndex( obj );
     if( !index )
         return 0;
-    gobjToWrapperMap[obj] = 0;
-    qToGobjMap[index->wrapper()] = 0;
+    gobjToWrapperMap.remove( obj );
+    qToGobjMap.remove( index->wrapper() );
     qobj = index->wrapper();
     delete index;
     return qobj;
@@ -88,17 +90,18 @@ WrapperStore::~WrapperStore()
 
     indexes = gobjToWrapperMap.values();
     for( indexItr = indexes.begin(); indexItr != indexes.end(); indexItr++ )
-        delete *indexItr;
+    {
+            delete *indexItr;
+    }
 }
 
 void WrapperStore::wrapperDestroyed( QObject *obj )
 {
     WrapperIndex *index;
     QGObject *qobj = dynamic_cast<QGObject*>(obj);
-    GObject *gobj = qToGobjMap[qobj];
+    GObject *gobj = findGobject( qobj );
     if( !gobj )
     {
-        qDebug() << "Destroy notice from un-indexed QObject.";
         return;
     }
     index = findWrapperIndex( gobj );
@@ -108,16 +111,23 @@ void WrapperStore::wrapperDestroyed( QObject *obj )
         return;
     }
     index->setOwner( false );
-    qToGobjMap[qobj] = 0;
-    gobjToWrapperMap[gobj] = 0;
+    qToGobjMap.remove( qobj );
+    gobjToWrapperMap.remove( gobj );
     delete index;
 }
 
 WrapperIndex *WrapperStore::findWrapperIndex( GObject *obj )
 {
-    WrapperIndex *index = gobjToWrapperMap[obj];
-    if( index )
-        return index;
+    if( gobjToWrapperMap.contains( obj ) )
+        return gobjToWrapperMap[obj];
+    else
+        return 0;
+}
+
+GObject *WrapperStore::findGobject( QGObject *obj )
+{
+    if( qToGobjMap.contains( obj ) )
+        return qToGobjMap[obj];
     else
         return 0;
 }

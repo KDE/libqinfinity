@@ -31,12 +31,12 @@ Session::Session( InfSession *infSession,
     setupSignals();
 }
 
-CommunicationManager Session::communicationManager() const
+CommunicationManager *Session::communicationManager() const
 {
     InfCommunicationManager *commMgr;
 
     commMgr = inf_session_get_communication_manager( INF_SESSION(gobject()) );
-    return CommunicationManager( commMgr );
+    return CommunicationManager::create( commMgr );
 }
 
 void Session::close()

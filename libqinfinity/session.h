@@ -36,7 +36,7 @@ class Session
         Session( InfSession *infSession,
             QObject *parent = 0 );
 
-        CommunicationManager communicationManager() const;
+        CommunicationManager *communicationManager() const;
         void close();
         Status status() const;
 

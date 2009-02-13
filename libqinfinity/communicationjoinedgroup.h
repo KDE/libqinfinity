@@ -17,6 +17,7 @@ class CommunicationJoinedGroup
             QObject *parent = 0,
             bool own_gobject = false );
 
+    protected:
         CommunicationJoinedGroup( InfCommunicationJoinedGroup *infGroup,
             QObject *parent = 0,
             bool own_gobject = false );

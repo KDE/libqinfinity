@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QPointer>
 
 #include <glib-object.h>
 
@@ -24,7 +25,7 @@ class WrapperIndex
         void setOwner( bool own_object );
 
     private:
-        QGObject *m_wrapper;
+        QPointer<QGObject> m_wrapper;
         bool m_own_object;
 
 };
@@ -56,6 +57,7 @@ class WrapperStore
 
     private:
         WrapperIndex *findWrapperIndex( GObject *obj );
+        GObject *findGobject( QGObject *obj );
 
         QMap<GObject*, WrapperIndex*> gobjToWrapperMap;
         QMap<QGObject*, GObject*> qToGobjMap;
