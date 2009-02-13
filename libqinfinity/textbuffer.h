@@ -1,17 +1,25 @@
 #ifndef QINFINITY_TEXT_BUFFER_H
 #define QINFINITY_TEXT_BUFFER_H
 
-#include "qgobject.h"
+#include "buffer.h"
+
+#include <libinftext/inf-text-buffer.h>
 
 namespace QInfinity
 {
 
 class TextBuffer
-    : public QGObject
+    : public Buffer
 {
 
     public:
-        TextBuffer( InfTextBuffer *infBuffer );
+        static TextBuffer *create( InfTextBuffer *infBuffer,
+            QObject *parent = 0 );
+        
+        TextBuffer( QString encoding );
+    protected:
+        TextBuffer( InfTextBuffer *infBuffer,
+            QObject *parent = 0 );
 
 };
 

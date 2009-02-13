@@ -1,12 +1,13 @@
 PROJECT(libqinfinity)
 
 find_package(Libinfinity REQUIRED)
+find_package(Libinftext REQUIRED)
 find_package(Qt4 REQUIRED)
 
 set(QT_USE_QTNETWORK true)
 INCLUDE(${QT_USE_FILE})
 
-set(LIBS ${LIBS} ${LIBINFINITY_LIBRARIES} ${QT_LIBRARIES})
+set(LIBS ${LIBS} ${LIBINFINITY_LIBRARIES} ${LIBINFTEXT_LIBRARIES} ${QT_LIBRARIES})
 set(QInfinity_SRCS
 	init.cpp
 	qgobject.cpp
@@ -23,9 +24,13 @@ set(QInfinity_SRCS
 	browseriter.cpp
 	sessionproxy.cpp
 	session.cpp
+	textsession.cpp
 	filemodel.cpp
 	fileitemfactory.cpp
-	noteplugin.cpp)
+	buffer.cpp
+	textbuffer.cpp
+	noteplugin.cpp
+	defaulttextplugin.cpp)
 
 set(QInfinity_HDRS
 	init.h
@@ -43,13 +48,17 @@ set(QInfinity_HDRS
 	browser.h
 	sessionproxy.h
 	session.h
+	textsession.h
 	filemodel.h
 	fileitemfactory.h
-	noteplugin.h)
+	buffer.h
+	textbuffer.h
+	noteplugin.h
+	defaulttextplugin.h)
 
 QT4_AUTOMOC(${QInfinity_SRCS})
 
-include_directories(${LIBINFINITY_INCLUDES})
+include_directories(${LIBINFINITY_INCLUDES} ${LIBINFTEXT_INCLUDES})
 
 ADD_LIBRARY(qinfinity SHARED ${QInfinity_SRCS})
 

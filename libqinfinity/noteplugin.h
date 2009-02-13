@@ -40,7 +40,7 @@ class NotePlugin
          */
         virtual Session *createSession( CommunicationManager *commMgr,
             CommunicationJoinedGroup *syncGroup,
-            XmlConnection *sync_connection ) = 0;
+            XmlConnection *syncConnection ) = 0;
     
     private:
         static InfSession *create_session_cb( InfIo *io,
