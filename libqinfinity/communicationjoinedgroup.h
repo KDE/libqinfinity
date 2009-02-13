@@ -14,8 +14,8 @@ class CommunicationJoinedGroup
 
     public:
         static CommunicationJoinedGroup *create( InfCommunicationJoinedGroup *infGroup,
-            QObject *parent,
-            bool own_gobject = true );
+            QObject *parent = 0,
+            bool own_gobject = false );
 
         CommunicationJoinedGroup( InfCommunicationJoinedGroup *infGroup,
             QObject *parent = 0,

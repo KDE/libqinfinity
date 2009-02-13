@@ -1,5 +1,8 @@
 #include "noteplugin.h"
 #include "communicationmanager.h"
+#include "communicationjoinedgroup.h"
+#include "xmlconnection.h"
+#include "session.h"
 
 namespace QInfinity
 {
@@ -24,6 +27,10 @@ InfSession *NotePlugin::create_session_cb( InfIo *io,
 {
     NotePlugin *plugin = static_cast<NotePlugin*>(user_data);
     CommunicationManager *commMgr = CommunicationManager::create( comm_mgr );
+    CommunicationJoinedGroup *joinedGroup = CommunicationJoinedGroup::create( sync_group );
+    XmlConnection *connection = XmlConnection::create( sync_connection );
+    Session *session =  plugin->createSession( commMgr, joinedGroup, connection );
+    return INF_SESSION(session->gobject());
 }
 
 }
