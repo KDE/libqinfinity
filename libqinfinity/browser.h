@@ -4,14 +4,13 @@
 #include "qgobject.h"
 #include "sessionproxy.h"
 
-#include <QObject>
-#include <QPointer>
-
 typedef struct _InfcBrowser InfcBrowser;
 typedef struct _InfcBrowserIter InfcBrowserIter;
 typedef struct _InfcExploreRequest InfcExploreRequest;
 typedef struct _InfcNodeRequest InfcNodeRequest;
 typedef struct _InfcSessionProxy InfcSessionProxy;
+
+class QObject;
 
 namespace QInfinity
 {
@@ -29,8 +28,7 @@ class BrowserIter;
  * the nodes on a server, use BrowserIter.
  */
 class Browser
-    : public QObject
-    , public QGObject
+    : public QGObject
 {
     Q_OBJECT
 

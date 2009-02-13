@@ -54,9 +54,12 @@ static void qinf_qt_io_finalize( GObject *object )
 {
     QInfQtIo *io;
 
-    io = QINF_QT_IO(io);
+    io = QINF_QT_IO(object);
     if( io->destroy_cpp_class && io->cpp_class )
+    {
+        io->cpp_class->setOwner( false );
         delete io->cpp_class;
+    }
 
     G_OBJECT_CLASS(parent_class)->finalize(object);
 }
@@ -64,10 +67,14 @@ static void qinf_qt_io_finalize( GObject *object )
 static void qinf_qt_io_init( GTypeInstance *instance,
     gpointer g_class )
 {
+    GObjectClass *object_class;
+    object_class = G_OBJECT_CLASS(g_class);
     QInfQtIo *io;
+    parent_class = G_OBJECT_CLASS(g_type_class_peek_parent(g_class));
     io = (QInfQtIo*)instance;
     io->cpp_class = 0;
     io->destroy_cpp_class = 1;
+    object_class->finalize = qinf_qt_io_finalize;
 }
 
 static void qinf_qt_io_class_init( gpointer g_class,
@@ -138,13 +145,14 @@ QInfQtIo *qinf_qt_io_new()
 
 QtIo *QtIo::instance()
 {
-    static QtIo *io = new QtIo;
-    return io;
+    static QtIo io;
+    return &io;
 }
 
 QtIo::QtIo( QObject *parent )
     : QObject( parent )
     , m_gobject( qinf_qt_io_new() )
+    , own_gobject( true )
 {
     m_gobject->cpp_class = this;
 }
@@ -154,11 +162,13 @@ QtIo::~QtIo()
     QList<QtIoWatch*> watches;
     QList<QtIoWatch*>::Iterator watchItr;
 
+    watches = socketToWatchMap.values();
     for( watchItr = watches.begin(); watchItr != watches.end(); watchItr++ )
         delete *watchItr;
 
     m_gobject->destroy_cpp_class = 0;
-    g_object_unref( m_gobject );
+    if( own_gobject )
+        g_object_unref( m_gobject );
 }
 
 void QtIo::watch( InfNativeSocket *socket,
@@ -189,6 +199,11 @@ void QtIo::watch( InfNativeSocket *socket,
 GObject *QtIo::gobject() const
 {
     return (GObject*)m_gobject;
+}
+
+void QtIo::setOwner( bool own_gobject )
+{
+    own_gobject = true;
 }
 
 }

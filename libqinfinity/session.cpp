@@ -26,8 +26,7 @@ Session::Status Session::infStatusToCpp( InfSessionStatus infStatus )
 
 Session::Session( InfSession *infSession,
     QObject *parent )
-    : QObject( parent )
-    , QGObject( G_OBJECT(infSession), false )
+    : QGObject( G_OBJECT(infSession), false, parent )
 {
     setupSignals();
 }

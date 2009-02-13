@@ -14,8 +14,7 @@ namespace QInfinity
  * @brief Manages multiple communication sessions.
  */
 class CommunicationManager
-    : public QObject
-    , public QGObject
+    : public QGObject
 {
 
     public:

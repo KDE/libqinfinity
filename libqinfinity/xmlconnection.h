@@ -11,8 +11,7 @@ namespace QInfinity
 {
 
 class XmlConnection
-    : public QObject
-    , public QGObject
+    : public QGObject
 {
     Q_OBJECT
 

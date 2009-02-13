@@ -8,7 +8,7 @@ namespace QInfinity
 TcpConnection::TcpConnection( const IpAddress &address,
     unsigned int port,
     QObject *parent )
-    : QObject( parent )
+    : QGObject( parent )
 {
     InfTcpConnection *infObject;
 

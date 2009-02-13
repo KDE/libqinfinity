@@ -19,6 +19,7 @@ QtIoWatch::QtIoWatch( int socket,
     , m_socket( socket )
     , m_handler( handler )
     , m_user_data( user_data )
+    , m_destroy_notify( destroy_notify )
     , m_incomingNotifier( 0 )
     , m_outgoingNotifier( 0 )
     , m_errorNotifier( 0 )
@@ -28,6 +29,12 @@ QtIoWatch::QtIoWatch( int socket,
 
 QtIoWatch::~QtIoWatch()
 {
+    if( m_incomingNotifier )
+        delete m_incomingNotifier;
+    if( m_outgoingNotifier )
+        delete m_outgoingNotifier;
+    if( m_errorNotifier )
+        delete m_errorNotifier;
     if( m_destroy_notify )
         m_destroy_notify( m_user_data );
 }

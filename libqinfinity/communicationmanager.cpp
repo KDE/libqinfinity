@@ -7,15 +7,15 @@ namespace QInfinity
 
 CommunicationManager::CommunicationManager( QObject *parent,
     bool own_gobject )
-    : QObject( parent )
-    , QGObject( G_OBJECT(inf_communication_manager_new()), own_gobject )
+    : QGObject( G_OBJECT(inf_communication_manager_new()),
+        own_gobject,
+        parent )
 {
 }
 
 CommunicationManager::CommunicationManager( InfCommunicationManager *infCommManager,
     QObject *parent )
-    : QObject( parent )
-    , QGObject( G_OBJECT(infCommManager), false )
+    : QGObject( G_OBJECT(infCommManager), false, parent )
 {
 }
 

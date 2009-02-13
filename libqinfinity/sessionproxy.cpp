@@ -8,15 +8,13 @@ namespace QInfinity
 
 SessionProxy::SessionProxy( InfSessionProxy *infProxy,
     QObject *parent )
-    : QObject( parent )
-    , QGObject( G_OBJECT(infProxy) )
+    : QGObject( G_OBJECT(infProxy) )
 {
 }
 
 SessionProxy::SessionProxy( const SessionProxy &other,
     QObject *parent )
-    : QObject( parent )
-    , QGObject( other.gobject() )
+    : QGObject( other.gobject() )
 {
 }
 

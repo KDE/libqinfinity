@@ -13,8 +13,7 @@ namespace QInfinity
 {
 
 class TcpConnection
-    : public QObject
-    , public QGObject
+    : public QGObject
 {
     Q_OBJECT
 

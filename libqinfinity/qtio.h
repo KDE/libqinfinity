@@ -32,9 +32,11 @@ class QtIo
             gpointer user_data,
             GDestroyNotify notify );
         GObject *gobject() const;
+        void setOwner( bool own_gobject );
     
     private:
         QInfQtIo *m_gobject;
+        bool own_gobject;
         QMap<int, QtIoWatch*> socketToWatchMap;
 
 };

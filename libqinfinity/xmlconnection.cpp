@@ -7,8 +7,7 @@ namespace QInfinity
 
 XmlConnection::XmlConnection( InfXmlConnection *infXmlConnection,
     QObject *parent )
-    : QObject( parent )
-    , QGObject( G_OBJECT(infXmlConnection) )
+    : QGObject( G_OBJECT(infXmlConnection), parent )
 {
     registerSignals();
 }

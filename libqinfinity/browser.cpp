@@ -16,10 +16,10 @@ namespace QInfinity
 Browser::Browser( CommunicationManager &comm_manager,
     XmlConnection &connection,
     QObject *parent )
-    : QObject( parent )
-    , QGObject( (GObject*)infc_browser_new( INF_IO(QtIo::instance()->gobject()),
-        INF_COMMUNICATION_MANAGER(comm_manager.gobject()),
-        INF_XML_CONNECTION(connection.gobject()) ) )
+    : QGObject( (GObject*)infc_browser_new( INF_IO(QtIo::instance()->gobject()),
+            INF_COMMUNICATION_MANAGER(comm_manager.gobject()),
+            INF_XML_CONNECTION(connection.gobject()) ),
+        parent )
 {
     setupSignals();
 }

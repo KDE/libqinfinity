@@ -1,9 +1,9 @@
 #ifndef QINFINITY_QGOBJECT_H
 #define QINFINITY_QGOBJECT_H
 
-#include <QMap>
-
 #include <glib-object.h>
+
+#include <QObject>
 
 namespace QInfinity
 {
@@ -12,12 +12,14 @@ namespace QInfinity
  * @brief Base class for classes wrapping a gobject
  */
 class QGObject
+    : public QObject
 {
 
     public:
-        QGObject();
+        QGObject( QObject *parent = 0 );
         QGObject( GObject *obj,
-            bool own_gobj = true );
+            bool own_gobj = true,
+            QObject *parent = 0 );
         ~QGObject();
 
         GObject *gobject() const;
