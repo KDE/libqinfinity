@@ -30,7 +30,7 @@ InfcUserRequest *SessionProxy::joinUser( const GParameter *params,
 
 Session *SessionProxy::session() const
 {
-    return new Session( infc_session_proxy_get_session( INFC_SESSION_PROXY(gobject()) ) );
+    return Session::create( infc_session_proxy_get_session( INFC_SESSION_PROXY(gobject()) ) );
 }
 
 }

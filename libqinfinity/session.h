@@ -32,6 +32,8 @@ class Session
         };
 
         static Status infStatusToCpp( InfSessionStatus );
+        static Session *create( InfSession *session,
+            QObject *parent = 0 );
 
         Session( InfSession *infSession,
             QObject *parent = 0 );

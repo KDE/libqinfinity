@@ -1,9 +1,20 @@
 #include "session.h"
+#include "wrapperstore.h"
 
 #include "session.moc"
 
 namespace QInfinity
 {
+
+Session *Session::create( InfSession *infSession,
+    QObject *parent )
+{
+    WrapperStore *store = WrapperStore::instance();
+    Session *session = dynamic_cast<Session*>(store->findWrapper( G_OBJECT(infSession) ));
+    if( !session )
+        session = new Session( infSession, parent );
+    return session;
+}
 
 Session::Status Session::infStatusToCpp( InfSessionStatus infStatus )
 {
