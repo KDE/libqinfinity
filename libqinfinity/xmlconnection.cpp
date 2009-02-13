@@ -1,9 +1,20 @@
 #include "xmlconnection.h"
+#include "wrapperstore.h"
 
 #include "xmlconnection.moc"
 
 namespace QInfinity
 {
+
+XmlConnection *XmlConnection::create( InfXmlConnection *infXmlConnection,
+    QObject *parent )
+{
+    WrapperStore *store = WrapperStore::instance();
+    XmlConnection *connection = dynamic_cast<XmlConnection*>(store->findWrapper( G_OBJECT(infXmlConnection) ));
+    if( !connection )
+        connection = new XmlConnection( infXmlConnection, parent );
+    return connection;
+}
 
 XmlConnection::XmlConnection( InfXmlConnection *infXmlConnection,
     QObject *parent )

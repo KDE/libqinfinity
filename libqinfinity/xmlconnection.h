@@ -24,6 +24,9 @@ class XmlConnection
             Opening
         };
 
+        static XmlConnection *create( InfXmlConnection *infConnection,
+            QObject *parent = 0 );
+
         XmlConnection( InfXmlConnection *infXmlConnection,
             QObject *parent = 0 );
 

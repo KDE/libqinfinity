@@ -1,4 +1,5 @@
 #include "noteplugin.h"
+#include "communicationmanager.h"
 
 namespace QInfinity
 {
@@ -22,6 +23,7 @@ InfSession *NotePlugin::create_session_cb( InfIo *io,
     void *user_data )
 {
     NotePlugin *plugin = static_cast<NotePlugin*>(user_data);
+    CommunicationManager *commMgr = CommunicationManager::create( comm_mgr );
 }
 
 }

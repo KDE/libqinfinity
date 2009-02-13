@@ -1,4 +1,5 @@
 #include "qgobject.h"
+#include "wrapperstore.h"
 
 namespace QInfinity
 {
@@ -17,6 +18,8 @@ QGObject::QGObject( GObject *obj,
     , m_gobject( obj )
     , m_own_gobj( own_gobj )
 {
+    WrapperStore *store = WrapperStore::instance();
+    store->storeWrapper( obj, this, true );
 }
 
 QGObject::~QGObject()
@@ -35,6 +38,8 @@ void QGObject::setGobject( GObject *obj,
 {
     m_gobject = obj;
     m_own_gobj = own_gobj;
+    WrapperStore *store = WrapperStore::instance();
+    store->storeWrapper( obj, this, true );
 }
 
 }
