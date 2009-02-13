@@ -122,5 +122,11 @@ const InfcBrowserIter *BrowserIter::infBrowserIter() const
         return &m_infBrowserIter;
 }
 
+InfcBrowserIter *BrowserIter::infBrowserIter()
+{
+    if( m_infBrowser )
+        return &m_infBrowserIter;
+}
+
 }
 

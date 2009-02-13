@@ -3,6 +3,8 @@
 
 #include "qgobject.h"
 #include "sessionproxy.h"
+#include "noteplugin.h"
+#include "browseriter.h"
 
 typedef struct _InfcBrowser InfcBrowser;
 typedef struct _InfcBrowserIter InfcBrowserIter;
@@ -18,7 +20,6 @@ namespace QInfinity
 class QtIo;
 class CommunicationManager;
 class XmlConnection;
-class BrowserIter;
 
 /**
  * @brief Browse an infinote server.
@@ -36,6 +37,18 @@ class Browser
         Browser( CommunicationManager &comm_manager,
             XmlConnection &connection,
             QObject *parent = 0 );
+
+        /**
+         * @brief Add plugin to browser session.
+         */
+        bool addPlugin( NotePlugin &plugin );
+        InfcNodeRequest *addSubdirectory( BrowserIter parent,
+            const char *name );
+        InfcNodeRequest *addNote( BrowserIter parent,
+            const char *name,
+            NotePlugin &plugin,
+            bool initial_subscribe );
+
     
     Q_SIGNALS:
         /**

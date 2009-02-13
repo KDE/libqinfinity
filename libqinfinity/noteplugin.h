@@ -3,6 +3,7 @@
 
 #include <libinfinity/client/infc-note-plugin.h>
 
+#include <QObject>
 #include <QString>
 
 namespace QInfinity
@@ -22,10 +23,11 @@ class XmlConnection;
  * more information.
  */
 class NotePlugin
+    : public QObject
 {
 
     public:
-        NotePlugin( QString name );
+        NotePlugin( QString name, QObject *parent = 0 );
         virtual ~NotePlugin();
 
         /**
@@ -41,6 +43,8 @@ class NotePlugin
         virtual Session *createSession( CommunicationManager *commMgr,
             CommunicationJoinedGroup *syncGroup,
             XmlConnection *syncConnection ) = 0;
+
+        InfcNotePlugin *infPlugin();
     
     private:
         static InfSession *create_session_cb( InfIo *io,

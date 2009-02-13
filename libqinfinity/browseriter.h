@@ -43,6 +43,7 @@ class BrowserIter
         const char *path();
         InfcBrowser *infBrowser() const;
         const InfcBrowserIter *infBrowserIter() const;
+        InfcBrowserIter *infBrowserIter();
 
     private:
         InfcBrowser *m_infBrowser;

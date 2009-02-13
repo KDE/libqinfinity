@@ -7,8 +7,8 @@
 namespace QInfinity
 {
 
-DefaultTextPlugin::DefaultTextPlugin()
-    : NotePlugin( "InfTexPlugin" )
+DefaultTextPlugin::DefaultTextPlugin( QObject *parent )
+    : NotePlugin( "InfTexPlugin", parent )
 {
 }
 

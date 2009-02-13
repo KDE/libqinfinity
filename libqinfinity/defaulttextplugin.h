@@ -11,7 +11,7 @@ class DefaultTextPlugin
 {
 
     public:
-        DefaultTextPlugin();
+        DefaultTextPlugin( QObject *parent = 0 );
 
         Session *createSession( CommunicationManager *commMgr,
             CommunicationJoinedGroup *syncGroup,

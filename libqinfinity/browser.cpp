@@ -2,7 +2,6 @@
 #include "xmlconnection.h"
 #include "qtio.h"
 #include "communicationmanager.h"
-#include "browseriter.h"
 
 #include <libinfinity/client/infc-browser.h>
 #include <libinfinity/client/infc-explore-request.h>
@@ -22,6 +21,30 @@ Browser::Browser( CommunicationManager &comm_manager,
         parent )
 {
     setupSignals();
+}
+
+bool Browser::addPlugin( NotePlugin &plugin )
+{
+    return infc_browser_add_plugin( INFC_BROWSER(this->gobject()),
+        plugin.infPlugin() ) != 0;
+}
+
+InfcNodeRequest *Browser::addSubdirectory( BrowserIter parent,
+    const char *name )
+{
+    return infc_browser_add_subdirectory( INFC_BROWSER(this->gobject()),
+        parent.infBrowserIter(), name );
+}
+
+InfcNodeRequest *Browser::addNote( BrowserIter parent,
+    const char *name,
+    NotePlugin &plugin,
+    bool initial_subscribe )
+{
+    return infc_browser_add_note( INFC_BROWSER(this->gobject()),
+        parent.infBrowserIter(), name,
+        plugin.infPlugin(),
+        initial_subscribe );
 }
 
 void Browser::setupSignals()

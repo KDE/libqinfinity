@@ -7,8 +7,9 @@
 namespace QInfinity
 {
 
-NotePlugin::NotePlugin( QString name )
-    : m_name( name )
+NotePlugin::NotePlugin( QString name, QObject *parent )
+    : QObject( parent )
+    , m_name( name )
 {
     m_infPlugin.note_type = m_name.toAscii();
     m_infPlugin.session_new = NotePlugin::create_session_cb;
@@ -31,6 +32,11 @@ InfSession *NotePlugin::create_session_cb( InfIo *io,
     XmlConnection *connection = XmlConnection::create( sync_connection );
     Session *session =  plugin->createSession( commMgr, joinedGroup, connection );
     return INF_SESSION(session->gobject());
+}
+
+InfcNotePlugin *NotePlugin::infPlugin()
+{
+    return &m_infPlugin;
 }
 
 }
