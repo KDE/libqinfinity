@@ -25,8 +25,11 @@ class Connection
         QString name() const;
     
     Q_SIGNALS:
+        void connecting( Connection* );
+        void disconnecting( Connection* );
         void connected( Connection* );
-        void error();
+        void disconnected( Connection* );
+        void error( Connection*, QString );
     
     private Q_SLOTS:
         void slotHostnameLookedUp( const QHostInfo &hostInfo );

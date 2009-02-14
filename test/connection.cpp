@@ -48,6 +48,7 @@ void Connection::slotHostnameLookedUp( const QHostInfo &hostInfo )
     if( hostInfo.addresses().size() == 0 )
     {
         qDebug() << "Couldnt find hostname.";
+        emit(error( this, "Hostname Not Found" ));
         return;
     }
     qDebug() << "Connecting to " << hostInfo.addresses()[0].toString();
@@ -75,14 +76,19 @@ void Connection::slotXmlConnectionStatusChanged()
 {
     switch( m_xmppConnection->status() )
     {
+        case QInfinity::XmlConnection::Closing:
+            emit(disconnecting( this ));
+            break;
         case QInfinity::XmlConnection::Open:
             qDebug() << "Open";
             emit(connected( this ));
             break;
         case QInfinity::XmlConnection::Closed:
             qDebug() << "Closed";
+            emit(disconnected( this ));
             break;
         case QInfinity::XmlConnection::Opening:
+            emit(connecting( this ));
             qDebug() << "Opening";
             break;
     }
@@ -91,6 +97,6 @@ void Connection::slotXmlConnectionStatusChanged()
 void Connection::slotXmlConnectionError( const GError *err )
 {
     qDebug() << "connection error: " << err->message;
-    emit(error());
+    emit(error( this, QString(err->message) ));
 }
 

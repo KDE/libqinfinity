@@ -23,6 +23,7 @@
 #include <QMainWindow>
 #include <QAction>
 #include <QMenuBar>
+#include <QContextMenuEvent>
 
 #include <glib/gerror.h>
 
@@ -60,15 +61,27 @@ class BrowserMainWindow
         void slotNewConnection( bool checked = false );
         void slotCreateConnection( const QString &hostname,
             unsigned int port );
+        void slotConnectionConnecting( Connection *conn );
+        void slotConnectionDisconnecting( Connection *conn );
         void slotConnectionConnected( Connection *conn );
+        void slotConnectionDisconnected( Connection *conn );
+        void slotConnectionError( Connection *conn, QString message );
+
+    protected:
+        void contextMenuEvent( QContextMenuEvent *event );
     
     private:
         void setupUi();
         void setupActions();
+        void showContextMenu( const QPoint &globalPos );
 
         QAction *newConnectionAction;
+        QAction *newFolderAction;
+        QAction *newNoteAction;
+        QAction *deleteAction;
         QTreeView *treeView;
         QInfinity::FileModel *fileModel;
+        QLabel *statusLabel;
         
 };
 
