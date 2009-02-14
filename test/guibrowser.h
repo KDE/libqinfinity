@@ -8,6 +8,8 @@
 #include "xmppconnection.h"
 #include "filemodel.h"
 
+#include "connection.h"
+
 #include <QApplication>
 #include <QObject>
 #include <QList>
@@ -24,22 +26,26 @@
 
 #include <glib/gerror.h>
 
+class Ui_newConnectionWidget;
+
 class NewConnectionDialog
     : public QDialog
 {
+    Q_OBJECT
 
     public:
         NewConnectionDialog( QWidget *parent = 0 );
-        ~NewConnectionDialog();
+
+    Q_SIGNALS:
+        void createConnection( const QString &hostname,
+            unsigned int port );
+
+    private Q_SLOTS:
+        void slotOkClicked( bool );
+        void slotCancelClicked( bool );
 
     private:
-        void setupUi();
-
-        QLineEdit *nameLineEdit;
-        QLineEdit *hostnameLineEdit;
-        QLineEdit *portLineEdit;
-        QPushButton *okButton;
-        QPushButton *cancelButton;
+        Ui_newConnectionWidget *ui;
 };
 
 class BrowserMainWindow
@@ -52,66 +58,18 @@ class BrowserMainWindow
 
     private Q_SLOTS:
         void slotNewConnection( bool checked = false );
+        void slotCreateConnection( const QString &hostname,
+            unsigned int port );
+        void slotConnectionConnected( Connection *conn );
     
     private:
         void setupUi();
         void setupActions();
 
         QAction *newConnectionAction;
-        
-};
-
-class Connection
-    : public QObject
-{
-    Q_OBJECT
-
-    public:
-        Connection( const QString &hostname,
-            unsigned int port,
-            QObject *parent = 0 );
-        ~Connection();
-
-        void open();
-        const QString &hostname() const;
-        QInfinity::XmppConnection &xmppConnection() const;
-    
-    Q_SIGNALS:
-        void connected();
-    
-    private Q_SLOTS:
-        void slotHostnameLookedUp( const QHostInfo &hostInfo );
-        void slotXmlConnectionStatusChanged();
-        void slotXmlConnectionError( const GError *error );
-
-    private:
-        QString m_hostname;
-        unsigned int port;
-        QInfinity::TcpConnection *tcpConnection;
-        QInfinity::XmppConnection *m_xmppConnection;
-
-};
-
-class MyBrowser
-    : public QObject
-{
-    Q_OBJECT
-
-    public:
-        MyBrowser();
-        ~MyBrowser();
-
-    public Q_SLOTS:
-        void connectToHost( const QString &hostname,
-            unsigned int port );
-
-    private Q_SLOTS:
-        void slotConnectionConnected();
-    
-    private:
         QTreeView *treeView;
-        QInfinity::FileModel fileModel;
-
+        QInfinity::FileModel *fileModel;
+        
 };
 
 #endif
