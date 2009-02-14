@@ -25,14 +25,39 @@ void NewConnectionDialog::setupUi()
     hostnameLineEdit = new QLineEdit( this );
     portLineEdit = new QLineEdit( this );
 
-    QHBoxLayout *nameHorizLayout = new QHBoxLayout( this );
+    QHBoxLayout *nameHorizLayout = new QHBoxLayout();
     nameHorizLayout->addWidget( new QLabel( "Name" ) );
     nameHorizLayout->addWidget( nameLineEdit );
 
-    QVBoxLayout *mainLayout = new QVBoxLayout( this );
+    QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->addLayout( nameHorizLayout );
 
     setLayout( mainLayout );
+}
+
+BrowserMainWindow::BrowserMainWindow( QWidget *parent )
+    : QMainWindow( parent )
+{
+    setupActions();
+    setupUi();
+}
+
+void BrowserMainWindow::slotNewConnection( bool checked )
+{
+    NewConnectionDialog *dialog = new NewConnectionDialog( this );
+    dialog->setVisible( true );
+}
+
+void BrowserMainWindow::setupUi()
+{
+    menuBar()->addAction( newConnectionAction );
+}
+
+void BrowserMainWindow::setupActions()
+{
+    newConnectionAction = new QAction( "New Connection...", this );
+    connect( newConnectionAction, SIGNAL(triggered(bool)),
+        this, SLOT(slotNewConnection(bool)) );
 }
 
 Connection::Connection( const QString &hostname,
@@ -74,19 +99,19 @@ void Connection::slotHostnameLookedUp( const QHostInfo &hostInfo )
     tcpConnection = new QInfinity::TcpConnection( QInfinity::IpAddress( hostInfo.addresses()[0] ),
         port,
         this );
+
     m_xmppConnection = new QInfinity::XmppConnection( *tcpConnection,
         QInfinity::XmppConnection::Client,
         "localhost", "localhost",
-        QInfinity::XmppConnection::PreferTls,
+        QInfinity::XmppConnection::OnlyTls,
         0, 0, 0,
         this );
 
     connect( m_xmppConnection, SIGNAL(statusChanged()),
         this, SLOT(slotXmlConnectionStatusChanged()) );
-    connect( m_xmppConnection, SIGNAL(error( const QString& )),
-        this, SLOT(slotXmlConnectionError( const QString& )) );
 
     tcpConnection->open();
+
 }
 
 void Connection::slotXmlConnectionStatusChanged()
@@ -106,9 +131,9 @@ void Connection::slotXmlConnectionStatusChanged()
     }
 }
 
-void Connection::slotXmlConnectionError( const QString &message )
+void Connection::slotXmlConnectionError( const GError* )
 {
-    qDebug() << "Error" << message;
+    qDebug() << "connection error.";
 }
 
 MyBrowser::MyBrowser()

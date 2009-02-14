@@ -47,10 +47,8 @@ TcpConnection::Status TcpConnection::status() const
 {
     InfTcpConnectionStatus infStatus;
     Status status;
-    InfTcpConnection *connection;
 
-    connection = INF_TCP_CONNECTION(gobject());
-    g_object_get( G_OBJECT(connection),
+    g_object_get( gobject(),
         "status", &infStatus,
            NULL );
 
@@ -71,6 +69,9 @@ TcpConnection::Status TcpConnection::status() const
 
 void TcpConnection::setupSignals()
 {
+    if( !gobject() )
+        return;
+
     InfTcpConnection *connection;
 
     connection = INF_TCP_CONNECTION(gobject());

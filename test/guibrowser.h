@@ -18,6 +18,11 @@
 #include <QPushButton>
 #include <QDialog>
 #include <QLabel>
+#include <QMainWindow>
+#include <QAction>
+#include <QMenuBar>
+
+#include <glib/gerror.h>
 
 class NewConnectionDialog
     : public QDialog
@@ -35,6 +40,25 @@ class NewConnectionDialog
         QLineEdit *portLineEdit;
         QPushButton *okButton;
         QPushButton *cancelButton;
+};
+
+class BrowserMainWindow
+    : public QMainWindow
+{
+    Q_OBJECT
+
+    public:
+        BrowserMainWindow( QWidget *parent = 0 );
+
+    private Q_SLOTS:
+        void slotNewConnection( bool checked = false );
+    
+    private:
+        void setupUi();
+        void setupActions();
+
+        QAction *newConnectionAction;
+        
 };
 
 class Connection
@@ -58,7 +82,7 @@ class Connection
     private Q_SLOTS:
         void slotHostnameLookedUp( const QHostInfo &hostInfo );
         void slotXmlConnectionStatusChanged();
-        void slotXmlConnectionError( const QString &message );
+        void slotXmlConnectionError( const GError* );
 
     private:
         QString m_hostname;

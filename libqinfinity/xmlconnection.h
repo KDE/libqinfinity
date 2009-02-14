@@ -10,6 +10,8 @@
 namespace QInfinity
 {
 
+class TcpConnection;
+
 class XmlConnection
     : public QGObject
 {
@@ -29,12 +31,12 @@ class XmlConnection
 
         XmlConnection( InfXmlConnection *infXmlConnection,
             QObject *parent = 0 );
+        TcpConnection *tcpConnection();
 
         void close();
         Status status() const;
 
     Q_SIGNALS:
-        void error( const QString &message );
         void statusChanged();
 
     private:
@@ -48,6 +50,8 @@ class XmlConnection
         static void status_changed_cb( InfXmlConnection *infConnection,
             const char *property,
             void *user_data );
+
+        bool connected_to_error;
 
 };
 

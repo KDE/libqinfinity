@@ -128,7 +128,6 @@ void QtIoWatch::incomingActivated( int socket )
 void QtIoWatch::outgoingActivated( int socket )
 {
     m_handler( &m_socket, INF_IO_OUTGOING, m_user_data );
-    m_outgoingNotifier->setEnabled( false );
 }
 
 void QtIoWatch::errorActivated( int socket )

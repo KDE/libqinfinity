@@ -1,5 +1,8 @@
 #include "xmlconnection.h"
+#include "tcpconnection.h"
 #include "wrapperstore.h"
+
+#include <QDebug>
 
 #include "xmlconnection.moc"
 
@@ -19,8 +22,20 @@ XmlConnection *XmlConnection::create( InfXmlConnection *infXmlConnection,
 XmlConnection::XmlConnection( InfXmlConnection *infXmlConnection,
     QObject *parent )
     : QGObject( G_OBJECT(infXmlConnection), parent )
+    , connected_to_error( false )
 {
     registerSignals();
+}
+
+TcpConnection *XmlConnection::tcpConnection()
+{
+    InfTcpConnection *infTcpConnection;
+
+    g_object_get( gobject(),
+        "tcp-connection", &infTcpConnection,
+        NULL );
+
+    return dynamic_cast<TcpConnection*>(WrapperStore::instance()->findWrapper( G_OBJECT(infTcpConnection) ));
 }
 
 void XmlConnection::close()
@@ -65,17 +80,11 @@ XmlConnection::Status XmlConnection::status() const
 
 void XmlConnection::registerSignals()
 {
-    if( !gobject() )
-        return;
-
-    g_signal_connect(gobject(), "error", G_CALLBACK(XmlConnection::error_cb), this);
     g_signal_connect(gobject(), "notify::status", G_CALLBACK(XmlConnection::status_changed_cb), this);
 }
 
 void XmlConnection::signalError( const GError *err )
 {
-    QString message = err->message;
-    emit(error( message ));
 }
 
 void XmlConnection::signalStatusChanged()
