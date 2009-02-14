@@ -14,6 +14,28 @@
 #include <QTreeView>
 #include <QHostInfo>
 #include <QHostAddress>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QDialog>
+#include <QLabel>
+
+class NewConnectionDialog
+    : public QDialog
+{
+
+    public:
+        NewConnectionDialog( QWidget *parent = 0 );
+        ~NewConnectionDialog();
+
+    private:
+        void setupUi();
+
+        QLineEdit *nameLineEdit;
+        QLineEdit *hostnameLineEdit;
+        QLineEdit *portLineEdit;
+        QPushButton *okButton;
+        QPushButton *cancelButton;
+};
 
 class Connection
     : public QObject

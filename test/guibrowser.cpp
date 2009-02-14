@@ -1,8 +1,39 @@
 #include "guibrowser.h"
 
 #include <QDebug>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #include "guibrowser.moc"
+
+NewConnectionDialog::NewConnectionDialog( QWidget *parent )
+    : QDialog( parent )
+{
+    setupUi();
+}
+
+NewConnectionDialog::~NewConnectionDialog()
+{
+    delete nameLineEdit;
+    delete hostnameLineEdit;
+    delete portLineEdit;
+}
+
+void NewConnectionDialog::setupUi()
+{
+    nameLineEdit = new QLineEdit( this );
+    hostnameLineEdit = new QLineEdit( this );
+    portLineEdit = new QLineEdit( this );
+
+    QHBoxLayout *nameHorizLayout = new QHBoxLayout( this );
+    nameHorizLayout->addWidget( new QLabel( "Name" ) );
+    nameHorizLayout->addWidget( nameLineEdit );
+
+    QVBoxLayout *mainLayout = new QVBoxLayout( this );
+    mainLayout->addLayout( nameHorizLayout );
+
+    setLayout( mainLayout );
+}
 
 Connection::Connection( const QString &hostname,
     unsigned int port,
