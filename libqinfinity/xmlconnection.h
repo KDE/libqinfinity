@@ -38,6 +38,7 @@ class XmlConnection
 
     Q_SIGNALS:
         void statusChanged();
+        void error( const GError *error );
 
     private:
         void registerSignals();
@@ -45,7 +46,8 @@ class XmlConnection
         void signalError( const GError *error );
         void signalStatusChanged();
 
-        static void error_cb( const GError *error,
+        static void error_cb( InfXmlConnection *infConnection,
+            const GError *error,
             void *user_data );
         static void status_changed_cb( InfXmlConnection *infConnection,
             const char *property,

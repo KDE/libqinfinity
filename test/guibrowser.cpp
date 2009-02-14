@@ -109,6 +109,8 @@ void Connection::slotHostnameLookedUp( const QHostInfo &hostInfo )
 
     connect( m_xmppConnection, SIGNAL(statusChanged()),
         this, SLOT(slotXmlConnectionStatusChanged()) );
+    connect( m_xmppConnection, SIGNAL(error(const GError*)),
+        this, SLOT(slotXmlConnectionError(const GError*)) );
 
     tcpConnection->open();
 
@@ -131,9 +133,9 @@ void Connection::slotXmlConnectionStatusChanged()
     }
 }
 
-void Connection::slotXmlConnectionError( const GError* )
+void Connection::slotXmlConnectionError( const GError *err )
 {
-    qDebug() << "connection error.";
+    qDebug() << "connection error: " << err->message;
 }
 
 MyBrowser::MyBrowser()

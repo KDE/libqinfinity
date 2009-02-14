@@ -45,8 +45,8 @@ void TcpConnection::close()
 
 TcpConnection::Status TcpConnection::status() const
 {
-    InfTcpConnectionStatus infStatus;
-    Status status;
+    static InfTcpConnectionStatus infStatus;
+    static Status status;
 
     g_object_get( gobject(),
         "status", &infStatus,

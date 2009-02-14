@@ -21,8 +21,7 @@ XmlConnection *XmlConnection::create( InfXmlConnection *infXmlConnection,
 
 XmlConnection::XmlConnection( InfXmlConnection *infXmlConnection,
     QObject *parent )
-    : QGObject( G_OBJECT(infXmlConnection), parent )
-    , connected_to_error( false )
+    : QGObject( G_OBJECT(infXmlConnection), true, parent )
 {
     registerSignals();
 }
@@ -80,11 +79,13 @@ XmlConnection::Status XmlConnection::status() const
 
 void XmlConnection::registerSignals()
 {
+    g_signal_connect(gobject(), "error", G_CALLBACK(XmlConnection::error_cb), this);
     g_signal_connect(gobject(), "notify::status", G_CALLBACK(XmlConnection::status_changed_cb), this);
 }
 
 void XmlConnection::signalError( const GError *err )
 {
+    emit(error( err ));
 }
 
 void XmlConnection::signalStatusChanged()
@@ -92,7 +93,8 @@ void XmlConnection::signalStatusChanged()
     emit(statusChanged());
 }
 
-void XmlConnection::error_cb( const GError *error,
+void XmlConnection::error_cb( InfXmlConnection *infConnection,
+    const GError *error,
     void *user_data )
 {
     static_cast<XmlConnection*>(user_data)->signalError( error );

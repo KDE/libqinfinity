@@ -6,6 +6,7 @@
 #include "xmppconnection.h"
 #include "communicationmanager.h"
 #include "browser.h"
+#include "qtio.h"
 
 #include <QObject>
 #include <QApplication>

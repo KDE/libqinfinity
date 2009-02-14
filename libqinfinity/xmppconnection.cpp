@@ -41,7 +41,7 @@ XmppConnection::XmppConnection( TcpConnection &tcpConnection,
     Gsasl *sasl_context,
     const char *sasl_mechanisms,
        QObject *parent )
-    : XmlConnection( (InfXmlConnection*)inf_xmpp_connection_new(
+    : XmlConnection( INF_XML_CONNECTION(inf_xmpp_connection_new(
         INF_TCP_CONNECTION(tcpConnection.gobject()),
         XmppConnection::siteToInf( site ),
         local_hostname,
@@ -49,7 +49,7 @@ XmppConnection::XmppConnection( TcpConnection &tcpConnection,
         XmppConnection::securityPolicyToInf( securityPolicy ),
         cred,
         sasl_context,
-        sasl_mechanisms ), parent )
+        sasl_mechanisms )), parent )
 {
 }
 

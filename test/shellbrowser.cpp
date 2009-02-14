@@ -58,13 +58,53 @@ void MyBrowser::setupSignals()
         this, SLOT(statusChanged()) );
 }
 
+void notify_status_cb(InfTcpConnection *conn, const char *prop )
+{
+    qDebug() << "status";
+}
+
+void error_cb(InfXmppConnection *conn, GError *err, void *user_data)
+{
+    qDebug() << "err" << user_data;
+}
+
 int main( int argc, char **argv )
 {
     QApplication app( argc, argv );
 
     QInfinity::init();
-    MyBrowser browser();
 
+    QInfinity::QtIo *io = QInfinity::QtIo::instance();
+    InfIpAddress *addr = inf_ip_address_new_from_string( "127.0.0.1" );
+    InfTcpConnection *connection;
+    InfXmppConnection *xmpp;
+
+    connection = INF_TCP_CONNECTION(g_object_new(
+        INF_TYPE_TCP_CONNECTION,
+        "io", INF_IO(io->gobject()),
+        "remote-address", addr,
+        "remote-port", 6523,
+        NULL
+    ));
+
+    inf_ip_address_free(addr);
+
+    xmpp = INF_XMPP_CONNECTION(inf_xmpp_connection_new(
+        connection,
+        INF_XMPP_CONNECTION_CLIENT,
+        NULL,
+        "jabber.0x539.de",
+        INF_XMPP_CONNECTION_SECURITY_ONLY_TLS,
+        NULL,
+        NULL,
+        NULL
+    ));
+
+    g_signal_connect(G_OBJECT(xmpp), "error", G_CALLBACK(error_cb), (void*)1);
+    g_signal_connect(G_OBJECT(xmpp), "notify::status", G_CALLBACK(notify_status_cb), 0);
+
+    inf_tcp_connection_open( connection, 0 );
+    
     app.exec();
     QInfinity::deinit();
     return 0;

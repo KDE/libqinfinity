@@ -82,7 +82,7 @@ class Connection
     private Q_SLOTS:
         void slotHostnameLookedUp( const QHostInfo &hostInfo );
         void slotXmlConnectionStatusChanged();
-        void slotXmlConnectionError( const GError* );
+        void slotXmlConnectionError( const GError *error );
 
     private:
         QString m_hostname;
