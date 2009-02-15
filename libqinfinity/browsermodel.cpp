@@ -95,6 +95,14 @@ BrowserModel::~BrowserModel()
     delete m_itemFactory;
 }
 
+void BrowserModel::setItemFactory( BrowserItemFactory *factory )
+{
+    if( !factory )
+        return;
+
+    m_itemFactory = factory;
+}
+
 ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
     const QString &name )
 {

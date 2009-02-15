@@ -70,7 +70,7 @@ class BrowserModel
          * If factory is NULL then BrowserItemFactory is used.
          * factory will be reparented.
          */
-        void setBrowserItemFactory( BrowserItemFactory *factory );
+        void setItemFactory( BrowserItemFactory *factory );
         BrowserItemFactory &itemFactory() const;
         /**
          * @brief Add connection with name for model to represent.
