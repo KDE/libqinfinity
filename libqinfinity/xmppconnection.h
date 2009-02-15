@@ -38,8 +38,8 @@ class XmppConnection
 
         XmppConnection( TcpConnection &tcpConnection,
             Site site,
-            const char *local_hostname,
-            const char *remote_hostname,
+            const QString &local_hostname,
+            const QString &remote_hostname,
             SecurityPolicy securityPolicy,
             gnutls_certificate_credentials_t cred = 0,
             Gsasl *sasl_context = 0,
