@@ -47,6 +47,7 @@ set(QInfinity_HDRS
 	communicationmanager.h
 	communicationjoinedgroup.h
 	browser.h
+	browseriter.h
 	sessionproxy.h
 	session.h
 	textsession.h
