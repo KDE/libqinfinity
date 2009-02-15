@@ -6,7 +6,7 @@
 #include "ipaddress.h"
 #include "tcpconnection.h"
 #include "xmppconnection.h"
-#include "filemodel.h"
+#include "browsermodel.h"
 
 #include "connection.h"
 
@@ -80,7 +80,7 @@ class BrowserMainWindow
         QAction *newNoteAction;
         QAction *deleteAction;
         QTreeView *treeView;
-        QInfinity::FileModel *fileModel;
+        QInfinity::BrowserModel *fileModel;
         QLabel *statusLabel;
         
 };

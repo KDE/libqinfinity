@@ -67,7 +67,7 @@ class ConnectionItem
 /**
  * @brief Handles creation of new file items
  */
-class FileItemFactory
+class BrowserItemFactory
     : public QObject
 {
 
@@ -78,8 +78,8 @@ class FileItemFactory
             ConnectionItem = 1002
         };
 
-        FileItemFactory( QObject *parent = 0);
-        virtual ~FileItemFactory();
+        BrowserItemFactory( QObject *parent = 0);
+        virtual ~BrowserItemFactory();
 
         /**
          * @brief Create a new node item.

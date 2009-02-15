@@ -38,7 +38,7 @@ void NewConnectionDialog::slotCancelClicked( bool checked )
 
 BrowserMainWindow::BrowserMainWindow( QWidget *parent )
     : QMainWindow( parent )
-    , fileModel( new QInfinity::FileModel( this ) )
+    , fileModel( new QInfinity::BrowserModel( this ) )
 {
     setupActions();
     setupUi();

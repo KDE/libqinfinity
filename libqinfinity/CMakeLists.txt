@@ -25,8 +25,8 @@ set(QInfinity_SRCS
 	sessionproxy.cpp
 	session.cpp
 	textsession.cpp
-	filemodel.cpp
-	fileitemfactory.cpp
+	browsermodel.cpp
+	browseritemfactory.cpp
 	buffer.cpp
 	textbuffer.cpp
 	textdefaultbuffer.cpp
@@ -51,8 +51,8 @@ set(QInfinity_HDRS
 	sessionproxy.h
 	session.h
 	textsession.h
-	filemodel.h
-	fileitemfactory.h
+	browsermodel.h
+	browseritemfactory.h
 	buffer.h
 	textbuffer.h
 	textdefaultbuffer.h

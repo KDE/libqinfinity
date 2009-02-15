@@ -1,8 +1,6 @@
 #ifndef QINFINITY_FILE_MODEL_H
 #define QINFINITY_FILE_MODEL_H
 
-#include "xmlconnection.h"
-#include "fileitemfactory.h"
 #include "communicationmanager.h"
 
 #include <QString>
@@ -16,8 +14,13 @@ namespace QInfinity
 {
 
 class ConnectionItem;
-
+class XmlConnection;
+class BrowserItemFactory;
+class CommunicatonManager;
+class NodeItem;
+class ConnectionItem;
 class Browser;
+class BrowserIter;
 
 /**
  * @brief Manages data tied to a connection
@@ -45,30 +48,30 @@ class ConnectionIndex
 /**
  * @brief A model for connections and their file hierarchy
  */
-class FileModel
+class BrowserModel
     : public QStandardItemModel
 {
     Q_OBJECT
 
     public:
-        FileModel( QObject *parent = 0 );
-        FileModel( FileItemFactory *itemFactory,
+        BrowserModel( QObject *parent = 0 );
+        BrowserModel( BrowserItemFactory *itemFactory,
             QObject *parent = 0 );
-        FileModel( QList<XmlConnection*> connections,
+        BrowserModel( QList<XmlConnection*> connections,
             QObject *parent = 0 );
-        FileModel( FileItemFactory *itemFactory,
+        BrowserModel( BrowserItemFactory *itemFactory,
             QList<XmlConnection*> connections,
             QObject *parent = 0 );
-        ~FileModel();
+        ~BrowserModel();
 
         /**
          * @brief Use factory for creating items.
          *
-         * If factory is NULL then FileItemFactory is used.
+         * If factory is NULL then BrowserItemFactory is used.
          * factory will be reparented.
          */
-        void setFileItemFactory( FileItemFactory *factory );
-        FileItemFactory &itemFactory() const;
+        void setBrowserItemFactory( BrowserItemFactory *factory );
+        BrowserItemFactory &itemFactory() const;
         /**
          * @brief Add connection with name for model to represent.
          * @return ConnectionItem representing connection.
@@ -92,7 +95,7 @@ class FileModel
             Browser &browser );
         NodeItem *indexToNodeItem( const QModelIndex &index ) const;
 
-        FileItemFactory *m_itemFactory;
+        BrowserItemFactory *m_itemFactory;
         QList<XmlConnection*> m_connections;
         QMap<Browser*, ConnectionIndex*> browserToConnectionMap;
         CommunicationManager comm_mgr;

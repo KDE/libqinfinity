@@ -1,4 +1,4 @@
-#include "fileitemfactory.h"
+#include "browseritemfactory.h"
 #include "browseriter.h"
 #include "xmlconnection.h"
 
@@ -44,7 +44,7 @@ const BrowserIter &NodeItem::iter() const
 
 int NodeItem::type() const
 {
-    return FileItemFactory::NodeItem;
+    return BrowserItemFactory::NodeItem;
 }
 
 bool NodeItem::isDirectory()
@@ -80,31 +80,31 @@ XmlConnection &ConnectionItem::connection() const
 
 int ConnectionItem::type() const
 {
-    return FileItemFactory::ConnectionItem;
+    return BrowserItemFactory::ConnectionItem;
 }
 
-FileItemFactory::FileItemFactory( QObject *parent )
+BrowserItemFactory::BrowserItemFactory( QObject *parent )
     : QObject( parent )
 {
 }
 
-FileItemFactory::~FileItemFactory()
+BrowserItemFactory::~BrowserItemFactory()
 {
 }
 
-NodeItem *FileItemFactory::createRootNodeItem( const BrowserIter &node )
+NodeItem *BrowserItemFactory::createRootNodeItem( const BrowserIter &node )
 {
     QInfinity::NodeItem *item = new QInfinity::NodeItem( node, "/" );
     return item;
 }
 
-NodeItem *FileItemFactory::createNodeItem( const BrowserIter &node )
+NodeItem *BrowserItemFactory::createNodeItem( const BrowserIter &node )
 {
     QInfinity::NodeItem *item = new QInfinity::NodeItem( node );
     return item;
 }
 
-ConnectionItem *FileItemFactory::createConnectionItem( XmlConnection &connection,
+ConnectionItem *BrowserItemFactory::createConnectionItem( XmlConnection &connection,
     const QString &name )
 {
     QInfinity::ConnectionItem *item = new QInfinity::ConnectionItem( connection, name );

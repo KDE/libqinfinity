@@ -1,9 +1,11 @@
-#include "filemodel.h"
+#include "browsermodel.h"
 #include "browser.h"
+#include "xmlconnection.h"
+#include "browseritemfactory.h"
 
 #include <QDebug>
 
-#include "filemodel.moc"
+#include "browsermodel.moc"
 
 namespace QInfinity
 {
@@ -39,31 +41,31 @@ void ConnectionIndex::indexIter( const BrowserIter &iter,
     nodeIdToNodeItemMap[iter.infBrowserIter()->node_id] = &node;
 }
 
-FileModel::FileModel( QObject *parent )
+BrowserModel::BrowserModel( QObject *parent )
     : QStandardItemModel( parent )
-    , m_itemFactory( new FileItemFactory )
+    , m_itemFactory( new BrowserItemFactory )
 {
 }
 
-FileModel::FileModel( FileItemFactory *itemFactory,
+BrowserModel::BrowserModel( BrowserItemFactory *itemFactory,
     QObject *parent )
     : QStandardItemModel( parent )
     , m_itemFactory( itemFactory )
 {
     if( !m_itemFactory)
-        m_itemFactory = new FileItemFactory;
+        m_itemFactory = new BrowserItemFactory;
     m_itemFactory->setParent( this );
 }
 
-FileModel::FileModel( QList<XmlConnection*> connections,
+BrowserModel::BrowserModel( QList<XmlConnection*> connections,
     QObject *parent )
     : QStandardItemModel( parent )
-    , m_itemFactory( new FileItemFactory )
+    , m_itemFactory( new BrowserItemFactory )
     , m_connections( connections )
 {
 }
 
-FileModel::FileModel( FileItemFactory *itemFactory,
+BrowserModel::BrowserModel( BrowserItemFactory *itemFactory,
     QList<XmlConnection*> connections,
     QObject *parent )
     : QStandardItemModel( parent )
@@ -71,11 +73,11 @@ FileModel::FileModel( FileItemFactory *itemFactory,
     , m_connections( connections )
 {
     if( !m_itemFactory )
-        m_itemFactory = new FileItemFactory;
+        m_itemFactory = new BrowserItemFactory;
     m_itemFactory->setParent( this );
 }
 
-FileModel::~FileModel()
+BrowserModel::~BrowserModel()
 {
     QList<Browser*> browsers;
     QList<Browser*>::Iterator browserItr;
@@ -93,7 +95,7 @@ FileModel::~FileModel()
     delete m_itemFactory;
 }
 
-ConnectionItem *FileModel::addConnection( XmlConnection &connection,
+ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
     const QString &name )
 {
     Browser *browser;
@@ -118,23 +120,23 @@ ConnectionItem *FileModel::addConnection( XmlConnection &connection,
     return connItem;
 }
 
-const QList<XmlConnection*> FileModel::connections() const
+const QList<XmlConnection*> BrowserModel::connections() const
 {
     return m_connections;
 }
 
-bool FileModel::hasChildren( const QModelIndex &parent ) const
+bool BrowserModel::hasChildren( const QModelIndex &parent ) const
 {
     if( !parent.isValid() )
         return true;
     QStandardItem *stdItem = itemFromIndex(parent);
     NodeItem *nodeItem;
 
-    if( stdItem->type() == FileItemFactory::ConnectionItem )
+    if( stdItem->type() == BrowserItemFactory::ConnectionItem )
     {
         return true;
     }
-    if( stdItem->type() == FileItemFactory::NodeItem )
+    if( stdItem->type() == BrowserItemFactory::NodeItem )
     {
         nodeItem = dynamic_cast<NodeItem*>(stdItem);
         return nodeItem->isDirectory();
@@ -143,17 +145,17 @@ bool FileModel::hasChildren( const QModelIndex &parent ) const
     return false;
 }
 
-void FileModel::itemActivated( const QModelIndex &parent )
+void BrowserModel::itemActivated( const QModelIndex &parent )
 {
     if( !parent.isValid() )
         return;
     QStandardItem *stdItem = itemFromIndex(parent);
     
-    if( stdItem->type() == FileItemFactory::NodeItem )
+    if( stdItem->type() == BrowserItemFactory::NodeItem )
         dynamic_cast<NodeItem*>(stdItem)->activate();
 }
 
-void FileModel::slotNodeAdded( const BrowserIter &itr )
+void BrowserModel::slotNodeAdded( const BrowserIter &itr )
 {
     NodeItem *item, *parentItem;
     Browser *browser;
@@ -173,7 +175,7 @@ void FileModel::slotNodeAdded( const BrowserIter &itr )
     parentItem->insertRow( 0, item );
 }
 
-void FileModel::indexIter( const BrowserIter &iter,
+void BrowserModel::indexIter( const BrowserIter &iter,
     Browser &browser,
     NodeItem &item )
 {
@@ -183,7 +185,7 @@ void FileModel::indexIter( const BrowserIter &iter,
     index->indexIter( iter, item );
 }
 
-NodeItem *FileModel::itemFromBrowserIter( const BrowserIter &iter,
+NodeItem *BrowserModel::itemFromBrowserIter( const BrowserIter &iter,
     Browser &browser )
 {
     ConnectionIndex *index;
@@ -192,12 +194,12 @@ NodeItem *FileModel::itemFromBrowserIter( const BrowserIter &iter,
     return index->itemFromIter( iter );
 }
 
-NodeItem *FileModel::indexToNodeItem( const QModelIndex &parent ) const
+NodeItem *BrowserModel::indexToNodeItem( const QModelIndex &parent ) const
 {
     if( !parent.isValid() )
         return 0;
     QStandardItem *stdItem = static_cast<QStandardItem*>(parent.internalPointer());
-    if( stdItem->type() == FileItemFactory::NodeItem )
+    if( stdItem->type() == BrowserItemFactory::NodeItem )
         return dynamic_cast<NodeItem*>(stdItem);
     else
         return 0;
