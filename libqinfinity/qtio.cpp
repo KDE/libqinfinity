@@ -179,21 +179,17 @@ void QtIo::watch( InfNativeSocket *socket,
 {
     QtIoWatch *watch;
 
-    if( !socketToWatchMap.contains(*socket) )
+    if( socketToWatchMap.contains(*socket) )
     {
-        watch = new QtIoWatch( *socket,
-            events,
-            func,
-            user_data,
-            notify,
-            this );
-        socketToWatchMap[*socket] = watch;
+        socketToWatchMap[*socket]->deleteLater();
     }
-    else
-    {
-        watch = socketToWatchMap[*socket];
-        watch->setEvents( events );
-    }
+    watch = new QtIoWatch( *socket,
+        events,
+        func,
+        user_data,
+        notify,
+        this );
+    socketToWatchMap[*socket] = watch;
 }
 
 GObject *QtIo::gobject() const
