@@ -47,6 +47,7 @@ class NodeItem
  */
 class ConnectionItem
     : public QStandardItem
+    , public QObject
 {
 
     public:

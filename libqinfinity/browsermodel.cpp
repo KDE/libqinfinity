@@ -58,26 +58,6 @@ BrowserModel::BrowserModel( BrowserItemFactory *itemFactory,
     m_itemFactory->setParent( this );
 }
 
-BrowserModel::BrowserModel( QList<XmlConnection*> connections,
-    QObject *parent )
-    : QStandardItemModel( parent )
-    , m_itemFactory( new BrowserItemFactory )
-    , m_connections( connections )
-{
-}
-
-BrowserModel::BrowserModel( BrowserItemFactory *itemFactory,
-    QList<XmlConnection*> connections,
-    QObject *parent )
-    : QStandardItemModel( parent )
-    , m_itemFactory( itemFactory )
-    , m_connections( connections )
-{
-    if( !m_itemFactory )
-        m_itemFactory = new BrowserItemFactory;
-    m_itemFactory->setParent( this );
-}
-
 BrowserModel::~BrowserModel()
 {
     QList<Browser*> browsers;
@@ -116,22 +96,19 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
     index = new ConnectionIndex( connection, *browser );
 
     browserToConnectionMap[browser] = index;
+    connectionToBrowserMap[&connection] = browser;
     connect( browser, SIGNAL(nodeAdded( const BrowserIter&)),
         this, SLOT(slotNodeAdded( const BrowserIter&)) );
 
     connItem = m_itemFactory->createConnectionItem( connection,
         name );
+    connItem->setParent( this );
     insertRow( 0, connItem );
     BrowserIter rootNode( *browser );
     nodeItem = m_itemFactory->createRootNodeItem( rootNode );
     indexIter( rootNode, *browser, *nodeItem );
     connItem->setChild( 0, nodeItem );
     return connItem;
-}
-
-const QList<XmlConnection*> BrowserModel::connections() const
-{
-    return m_connections;
 }
 
 bool BrowserModel::hasChildren( const QModelIndex &parent ) const
@@ -169,6 +146,12 @@ const QList<NotePlugin*> BrowserModel::plugins() const
     return m_plugins;
 }
 
+void BrowserModel::removeConnectionIndex( const QModelIndex &index )
+{
+    removeConnectionItem( dynamic_cast<ConnectionItem*>(itemFromIndex(index)) );
+    removeRow( index.row() );
+}
+
 void BrowserModel::itemActivated( const QModelIndex &parent )
 {
     if( !parent.isValid() )
@@ -197,6 +180,18 @@ void BrowserModel::slotNodeAdded( const BrowserIter &itr )
         return;
     }
     parentItem->insertRow( 0, item );
+}
+
+void BrowserModel::removeConnectionItem( ConnectionItem *item )
+{
+    Browser *browser;
+    ConnectionIndex *index;
+    browser = connectionToBrowserMap[&item->connection()];
+    index = browserToConnectionMap[browser];
+    connectionToBrowserMap.remove(&index->connection());
+    browserToConnectionMap.remove(browser);
+    delete browser;
+    delete index;
 }
 
 void BrowserModel::indexIter( const BrowserIter &iter,

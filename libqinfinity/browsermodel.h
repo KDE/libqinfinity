@@ -49,12 +49,12 @@ class ConnectionIndex
  * @brief A model for connections and their file hierarchy
  *
  * The BrowserModel provides a model containing connections
- * added with BrowserModel::addConnection.  You add the plugins
+ * added with BrowserModel::addConnection.  Add the plugins
  * you wish to use with BrowserModel::addPlugin to allow
  * them to be added each connections' Browser.  You must also
- * call BrowserModel::itemActivated with a directories index
- * for it to become populated.  This is usually done by
- * connecting signals from a view to this slot.
+ * call BrowserModel::itemActivated on a directory for it to
+ * become populated.  This is usually done by connecting
+ * signals from a view to the BrowserModel::itemActivated.
  */
 class BrowserModel
     : public QStandardItemModel
@@ -65,11 +65,6 @@ class BrowserModel
         BrowserModel( QObject *parent = 0 );
         BrowserModel( BrowserItemFactory *itemFactory,
             QObject *parent = 0 );
-        BrowserModel( QList<XmlConnection*> connections,
-            QObject *parent = 0 );
-        BrowserModel( BrowserItemFactory *itemFactory,
-            QList<XmlConnection*> connections,
-            QObject *parent = 0 );
         ~BrowserModel();
 
         /**
@@ -79,6 +74,9 @@ class BrowserModel
          * factory will be reparented.
          */
         void setItemFactory( BrowserItemFactory *factory );
+        /**
+         * @brief Get factory used by this model.
+         */
         BrowserItemFactory &itemFactory() const;
         /**
          * @brief Add connection with name for model to represent.
@@ -86,10 +84,16 @@ class BrowserModel
          */
         ConnectionItem *addConnection( XmlConnection &connection,
             const QString &name );
-        const QList<XmlConnection*> connections() const;
         bool hasChildren( const QModelIndex &parent = QModelIndex() ) const;
+        /**
+         * @brief Add a plugin to connections in this model.
+         */
         void addPlugin( NotePlugin &plugin );
+        /**
+         * @brief Get added plugins.
+         */
         const QList<NotePlugin*> plugins() const;
+        void removeConnectionIndex( const QModelIndex &index );
 
     public Q_SLOTS:
         void itemActivated( const QModelIndex &parent = QModelIndex() );
@@ -98,6 +102,7 @@ class BrowserModel
         void slotNodeAdded( const BrowserIter &itr );
 
     private:
+        void removeConnectionItem( ConnectionItem *item );
         void indexIter( const BrowserIter &iter,
             Browser &browser,
             NodeItem &item );
@@ -108,8 +113,8 @@ class BrowserModel
             XmlConnection &connection );
 
         BrowserItemFactory *m_itemFactory;
-        QList<XmlConnection*> m_connections;
         QMap<Browser*, ConnectionIndex*> browserToConnectionMap;
+        QMap<XmlConnection*, Browser*> connectionToBrowserMap;
         CommunicationManager comm_mgr;
         QList<NotePlugin*> m_plugins;
         QList<Browser*> m_browsers;
