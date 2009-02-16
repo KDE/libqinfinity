@@ -7,7 +7,8 @@ namespace QInfinity
 
 TcpConnection::TcpConnection( const IpAddress &address,
     unsigned int port,
-    QObject *parent )
+    QObject *parent,
+    bool own_gobject )
     : QGObject( parent )
 {
     InfTcpConnection *infObject;
@@ -17,7 +18,7 @@ TcpConnection::TcpConnection( const IpAddress &address,
         "remote-address", address.gobject(),
         "remote-port", port,
         NULL ));
-    setGobject( G_OBJECT(infObject) );
+    setGobject( G_OBJECT(infObject), true );
     setupSignals();
 }
 

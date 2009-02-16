@@ -27,7 +27,8 @@ class TcpConnection
 
         TcpConnection( const IpAddress &ipAddress,
             unsigned int port,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = true );
         ~TcpConnection();
 
         bool open();

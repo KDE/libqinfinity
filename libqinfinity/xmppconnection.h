@@ -44,7 +44,8 @@ class XmppConnection
             gnutls_certificate_credentials_t cred = 0,
             Gsasl *sasl_context = 0,
             const char *sasl_mechanisms = 0,
-               QObject *parent = 0 );
+               QObject *parent = 0,
+               bool own_gobject = true );
 
 };
 

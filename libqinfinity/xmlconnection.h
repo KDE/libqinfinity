@@ -27,10 +27,12 @@ class XmlConnection
         };
 
         static XmlConnection *create( InfXmlConnection *infConnection,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = false );
 
         XmlConnection( InfXmlConnection *infXmlConnection,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = true );
         TcpConnection *tcpConnection();
 
         void close();

@@ -40,7 +40,8 @@ XmppConnection::XmppConnection( TcpConnection &tcpConnection,
     gnutls_certificate_credentials_t cred,
     Gsasl *sasl_context,
     const char *sasl_mechanisms,
-       QObject *parent )
+       QObject *parent,
+    bool own_gobject )
     : XmlConnection( INF_XML_CONNECTION(inf_xmpp_connection_new(
         INF_TCP_CONNECTION(tcpConnection.gobject()),
         XmppConnection::siteToInf( site ),
@@ -49,7 +50,7 @@ XmppConnection::XmppConnection( TcpConnection &tcpConnection,
         XmppConnection::securityPolicyToInf( securityPolicy ),
         cred,
         sasl_context,
-        sasl_mechanisms )), parent )
+        sasl_mechanisms )), parent, own_gobject )
 {
 }
 
