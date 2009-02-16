@@ -2,6 +2,7 @@
 #include "browser.h"
 #include "xmlconnection.h"
 #include "browseritemfactory.h"
+#include "noteplugin.h"
 
 #include <QDebug>
 
@@ -111,7 +112,7 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
     ConnectionItem *connItem;
     NodeItem *nodeItem;
 
-    browser = new Browser( comm_mgr, connection, this );
+    browser = createBrowser( comm_mgr, connection );
     index = new ConnectionIndex( connection, *browser );
 
     browserToConnectionMap[browser] = index;
@@ -151,6 +152,21 @@ bool BrowserModel::hasChildren( const QModelIndex &parent ) const
     }
 
     return false;
+}
+
+void BrowserModel::addPlugin( NotePlugin &plugin )
+{
+    m_plugins += &plugin;
+    QList<Browser*>::Iterator itr;
+    for( itr = m_browsers.begin(); itr != m_browsers.end(); itr++ )
+    {
+        (*itr)->addPlugin( plugin );
+    }
+}
+
+const QList<NotePlugin*> BrowserModel::plugins() const
+{
+    return m_plugins;
 }
 
 void BrowserModel::itemActivated( const QModelIndex &parent )
@@ -211,6 +227,19 @@ NodeItem *BrowserModel::indexToNodeItem( const QModelIndex &parent ) const
         return dynamic_cast<NodeItem*>(stdItem);
     else
         return 0;
+}
+
+Browser *BrowserModel::createBrowser( CommunicationManager &commMgr,
+    XmlConnection &connection )
+{
+    Browser *browser = new Browser( commMgr, connection, this );
+    QList<NotePlugin*> pluginList = plugins();
+    QList<NotePlugin*>::Iterator itr;
+    for( itr = pluginList.begin(); itr != pluginList.end(); itr++ )
+    {
+        browser->addPlugin( **itr );
+    }
+    return browser;
 }
 
 }
