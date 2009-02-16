@@ -31,6 +31,7 @@ class ConnectionIndex
     public:
         ConnectionIndex( XmlConnection &connection,
             Browser &browser );
+        ~ConnectionIndex();
 
         XmlConnection &connection() const;
         Browser &browser() const;
@@ -93,13 +94,15 @@ class BrowserModel
          * @brief Get added plugins.
          */
         const QList<NotePlugin*> plugins() const;
-        void removeConnectionIndex( const QModelIndex &index );
 
     public Q_SLOTS:
         void itemActivated( const QModelIndex &parent = QModelIndex() );
 
     private Q_SLOTS:
         void slotNodeAdded( const BrowserIter &itr );
+        void slotRowsAboutRemoved( const QModelIndex &parent,
+            int start,
+            int end );
 
     private:
         void removeConnectionItem( ConnectionItem *item );

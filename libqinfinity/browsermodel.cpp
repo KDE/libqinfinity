@@ -18,6 +18,10 @@ ConnectionIndex::ConnectionIndex( XmlConnection &connection,
 {
 }
 
+ConnectionIndex::~ConnectionIndex()
+{
+}
+
 XmlConnection &ConnectionIndex::connection() const
 {
     return *m_xmlConnection;
@@ -46,6 +50,8 @@ BrowserModel::BrowserModel( QObject *parent )
     : QStandardItemModel( parent )
     , m_itemFactory( new BrowserItemFactory )
 {
+    connect( this, SIGNAL(rowsAboutToBeRemoved(const QModelIndex&, int, int)),
+        this, SLOT(slotRowsAboutRemoved(const QModelIndex&, int, int)) );
 }
 
 BrowserModel::BrowserModel( BrowserItemFactory *itemFactory,
@@ -146,12 +152,6 @@ const QList<NotePlugin*> BrowserModel::plugins() const
     return m_plugins;
 }
 
-void BrowserModel::removeConnectionIndex( const QModelIndex &index )
-{
-    removeConnectionItem( dynamic_cast<ConnectionItem*>(itemFromIndex(index)) );
-    removeRow( index.row() );
-}
-
 void BrowserModel::itemActivated( const QModelIndex &parent )
 {
     if( !parent.isValid() )
@@ -180,6 +180,23 @@ void BrowserModel::slotNodeAdded( const BrowserIter &itr )
         return;
     }
     parentItem->insertRow( 0, item );
+}
+
+void BrowserModel::slotRowsAboutRemoved( const QModelIndex &parent,
+    int start,
+    int end )
+{
+    QModelIndex ndx;
+    QStandardItem *item;
+    for( ; start <= end; start++ )
+    {
+        ndx = index( start, 0, parent );
+        item = itemFromIndex( ndx );
+        if( item->type() == BrowserItemFactory::ConnectionItem )
+        {
+            removeConnectionItem( dynamic_cast<ConnectionItem*>(item) );
+        }
+    }
 }
 
 void BrowserModel::removeConnectionItem( ConnectionItem *item )
