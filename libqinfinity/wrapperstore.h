@@ -2,7 +2,7 @@
 #define QINFINITY_WRAPPER_STORE
 
 #include <QObject>
-#include <QMap>
+#include <QMultiHash>
 #include <QPointer>
 
 #include <glib-object.h>
@@ -12,30 +12,21 @@ namespace QInfinity
 
 class QGObject;
 
-class WrapperIndex
-{
-
-    public:
-        WrapperIndex( QGObject *wrapper,
-            bool own_object );
-        ~WrapperIndex();
-
-        QGObject *wrapper() const;
-        bool isOwner() const;
-        void setOwner( bool own_object );
-
-    private:
-        QPointer<QGObject> m_wrapper;
-        bool m_own_object;
-
-};
-
+/**
+ * @brief Maps gobject instances to its QGObject wrapper.
+ *
+ * The WrapperStore maps GObject instances to their QGObject
+ * wrappers.
+ */
 class WrapperStore
     : public QObject
 {
     Q_OBJECT
 
     public:
+        /**
+         * @brief Get an instance of the WrapperStore class.
+         */
         static WrapperStore *instance();
 
         /**
@@ -43,24 +34,25 @@ class WrapperStore
          * @return Found wrapper object, or NULL if none fond.
          */
         QGObject *findWrapper( GObject *obj );
+
+        /**
+         * @brief Store wrapper for gobject.
+         */
         void storeWrapper( GObject *obj,
             QGObject *wrapper,
             bool own_wrapper );
-        QGObject *takeWrapper( GObject *obj );
 
     protected:
         WrapperStore();
         ~WrapperStore();
 
-    private Q_SLOTS:
-        void wrapperDestroyed( QObject *obj = 0 );
-
     private:
-        WrapperIndex *findWrapperIndex( GObject *obj );
-        GObject *findGobject( QGObject *obj );
 
-        QMap<GObject*, WrapperIndex*> gobjToWrapperMap;
-        QMap<QGObject*, GObject*> qToGobjMap;
+        /*
+         * We can use a single-valued hash here because there
+         * should only be one stored wrapper per gobject instance.
+         */
+        QHash<GObject*, QPointer<QGObject> > gobjToWrapper;
 
 };
 
