@@ -26,7 +26,7 @@ class XmlConnection;
  *
  * The Browser contains functionality related to navigating
  * and monitoring nodes on an infinote server.  To navigate
- * the nodes on a server, use BrowserIter.
+ * the nodes on a server, use  a BrowserIter.
  */
 class Browser
     : public QGObject

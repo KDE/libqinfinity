@@ -17,10 +17,11 @@ class XmlConnection;
 /**
  * @brief Note plugin base class used to create sessions.
  *
- * If you plan on using a subclass of Session, you must re-implement
- * the createSession method in a subclass of this to create the
- * session subclass you would like to use.  See createSession for
- * more information.
+ * The job of the NotePlugin is to create a InfSession derived
+ * GObject, as well as a Session derived QGobject to wrap the
+ * session.  This allows the wrapping session to be stored in
+ * the WrapperStore so the SessionProxy representing the GObject
+ * session can retrieve the appropriate wrapper.
  */
 class NotePlugin
     : public QObject
@@ -33,17 +34,18 @@ class NotePlugin
         /**
          * @brief Create a new Sesion.
          *
-         * If you plan on using a subclass of Session (rather than the
-         * gobject instances) you must re-implement this to create
-         * the proper Session subclass.  This allows your session to
-         * be added to the shared object store for retrieval from the
-         * SessionProxy and Browser subclasses.  If this is not done you
-         * will always receive a base Session class.
+         * All sub classes should re-implement this method to wrap
+         * a GObject subclass of InfSession with the apropriate
+         * QGObject wrapper.  This method will be called when attempting
+         * to join a session using a Browser.
          */
         virtual Session *createSession( CommunicationManager *commMgr,
             CommunicationJoinedGroup *syncGroup,
             XmlConnection *syncConnection ) = 0;
 
+        /**
+         * @brief Get underlying note plugin.
+         */
         InfcNotePlugin *infPlugin();
     
     private:
