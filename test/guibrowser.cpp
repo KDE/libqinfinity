@@ -1,8 +1,10 @@
 #include "guibrowser.h"
+#include "createitemdialog.h"
 
 #include <QMessageBox>
 #include <QStatusBar>
 #include <QDebug>
+#include <QApplication>
 
 #include "ui_newconnectionwidget.h"
 #include "guibrowser.moc"
@@ -44,7 +46,7 @@ BrowserMainWindow::BrowserMainWindow( QWidget *parent )
     setupUi();
 }
 
-void BrowserMainWindow::slotNewConnection( bool checked )
+void BrowserMainWindow::slotNewConnection()
 {
     NewConnectionDialog *dialog = new NewConnectionDialog( this );
     connect( dialog, SIGNAL(createConnection( const QString&, unsigned int )),
@@ -103,6 +105,29 @@ void BrowserMainWindow::slotConnectionError( Connection *conn,
     QMessageBox::critical( this, "Connection error", full_msg );
 }
 
+void BrowserMainWindow::slotSelectionChanged( QItemSelection &selected,
+    QItemSelection &deselected )
+{
+    Q_UNUSED(deselected)
+    newConnectionAction->setEnabled( canCreateConnection( selected ) );
+    newFolderAction->setEnabled( canCreateFolder( selected ) );
+    newNoteAction->setEnabled( canCreateNote( selected ) );
+    deleteAction->setEnabled( canDeleteItem( selected ) );
+}
+
+void BrowserMainWindow::slotQuit()
+{
+    exit(0);
+}
+
+void BrowserMainWindow::slotCreateFolder()
+{
+    CreateItemDialog *dialog = new CreateItemDialog( "Create folder named: ",
+        this );
+    dialog->exec();
+    delete dialog;
+}
+
 void BrowserMainWindow::contextMenuEvent( QContextMenuEvent *event )
 {
     if( !event )
@@ -126,9 +151,8 @@ void BrowserMainWindow::setupUi()
 
 void BrowserMainWindow::setupActions()
 {
+    quitAction = new QAction( tr("&Quit"), this );
     newConnectionAction = new QAction( tr("&New Connection..."), this );
-    connect( newConnectionAction, SIGNAL(triggered(bool)),
-        this, SLOT(slotNewConnection(bool)) );
     newFolderAction = new QAction( tr("Create &Folder..."), this );
     newFolderAction->setEnabled( false );
     newNoteAction = new QAction( tr("Create &Note..."), this );
@@ -136,8 +160,16 @@ void BrowserMainWindow::setupActions()
     deleteAction = new QAction( tr("Delete"), this );
     deleteAction->setEnabled( false );
 
+    connect( quitAction, SIGNAL(triggered(bool)),
+        this, SLOT(slotQuit()) );
+    connect( newConnectionAction, SIGNAL(triggered(bool)),
+        this, SLOT(slotNewConnection()) );
+    connect( newFolderAction, SIGNAL(triggered(bool)),
+        this, SLOT(slotCreateFolder()) );
+
     QMenu *fileMenu = new QMenu( tr("&File"), this );
     fileMenu->addAction( newConnectionAction );
+    fileMenu->addAction( quitAction );
 
     menuBar()->addMenu( fileMenu );
 }
@@ -155,6 +187,26 @@ void BrowserMainWindow::showContextMenu( const QPoint &globalPos )
 
     }
     contextMenu->popup( globalPos );
+}
+
+bool BrowserMainWindow::canCreateConnection( QItemSelection &selected )
+{
+    return true;
+}
+
+bool BrowserMainWindow::canCreateFolder( QItemSelection &selected )
+{
+    return false;
+}
+
+bool BrowserMainWindow::canCreateNote( QItemSelection &selected )
+{
+    return false;
+}
+
+bool BrowserMainWindow::canDeleteItem( QItemSelection &selected )
+{
+    return false;
 }
 
 int main( int argc, char **argv )

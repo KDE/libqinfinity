@@ -7,7 +7,8 @@ INCLUDE(${QT_USE_FILE})
 include_directories(${LIBINFINITY_INCLUDES} ${CMAKE_SOURCE_DIR}/libqinfinity)
 
 QT4_AUTOMOC(guibrowser.cpp
-	connection.cpp)
+	connection.cpp
+	createitemdialog.cpp)
 
 set(guibrowser_UI
 	newconnectionwidget.ui)
@@ -15,6 +16,6 @@ set(guibrowser_UI
 QT4_WRAP_UI(guibrowser_UI_HDRS
 	${guibrowser_UI})
 
-add_executable(guibrowser guibrowser.cpp connection.cpp ${guibrowser_UI_HDRS})
+add_executable(guibrowser guibrowser.cpp connection.cpp createitemdialog.cpp ${guibrowser_UI_HDRS})
 target_link_libraries(guibrowser ${QT_LIBRARIES} ${LIBINFINITY_LIBRARIES} qinfinity)
 

@@ -58,7 +58,7 @@ class BrowserMainWindow
         BrowserMainWindow( QWidget *parent = 0 );
 
     private Q_SLOTS:
-        void slotNewConnection( bool checked = false );
+        void slotNewConnection();
         void slotCreateConnection( const QString &hostname,
             unsigned int port );
         void slotConnectionConnecting( Connection *conn );
@@ -66,6 +66,10 @@ class BrowserMainWindow
         void slotConnectionConnected( Connection *conn );
         void slotConnectionDisconnected( Connection *conn );
         void slotConnectionError( Connection *conn, QString message );
+        void slotSelectionChanged( QItemSelection &selected,
+            QItemSelection &deselected );
+        void slotQuit();
+        void slotCreateFolder();
 
     protected:
         void contextMenuEvent( QContextMenuEvent *event );
@@ -74,7 +78,12 @@ class BrowserMainWindow
         void setupUi();
         void setupActions();
         void showContextMenu( const QPoint &globalPos );
+        bool canCreateConnection( QItemSelection &selected );
+        bool canCreateFolder( QItemSelection &selected );
+        bool canCreateNote( QItemSelection &selected );
+        bool canDeleteItem( QItemSelection &selected );
 
+        QAction *quitAction;
         QAction *newConnectionAction;
         QAction *newFolderAction;
         QAction *newNoteAction;
