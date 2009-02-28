@@ -7,6 +7,7 @@
 #include "tcpconnection.h"
 #include "xmppconnection.h"
 #include "browsermodel.h"
+#include "browseritemfactory.h"
 
 #include "connection.h"
 
@@ -66,8 +67,8 @@ class BrowserMainWindow
         void slotConnectionConnected( Connection *conn );
         void slotConnectionDisconnected( Connection *conn );
         void slotConnectionError( Connection *conn, QString message );
-        void slotSelectionChanged( QItemSelection &selected,
-            QItemSelection &deselected );
+        void slotSelectionChanged( const QItemSelection &selected,
+            const QItemSelection &deselected );
         void slotQuit();
         void slotCreateFolder();
 
@@ -78,10 +79,10 @@ class BrowserMainWindow
         void setupUi();
         void setupActions();
         void showContextMenu( const QPoint &globalPos );
-        bool canCreateConnection( QItemSelection &selected );
-        bool canCreateFolder( QItemSelection &selected );
-        bool canCreateNote( QItemSelection &selected );
-        bool canDeleteItem( QItemSelection &selected );
+        bool canCreateConnection( const QItemSelection &selected );
+        bool canCreateFolder( const QItemSelection &selected );
+        bool canCreateNote( const QItemSelection &selected );
+        bool canDeleteItem( const QItemSelection &selected );
 
         QAction *quitAction;
         QAction *newConnectionAction;

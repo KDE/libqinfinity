@@ -5,6 +5,7 @@
 #include <QStatusBar>
 #include <QDebug>
 #include <QApplication>
+#include <QItemSelectionModel>
 
 #include "ui_newconnectionwidget.h"
 #include "guibrowser.moc"
@@ -105,8 +106,8 @@ void BrowserMainWindow::slotConnectionError( Connection *conn,
     QMessageBox::critical( this, "Connection error", full_msg );
 }
 
-void BrowserMainWindow::slotSelectionChanged( QItemSelection &selected,
-    QItemSelection &deselected )
+void BrowserMainWindow::slotSelectionChanged( const QItemSelection &selected,
+    const QItemSelection &deselected )
 {
     Q_UNUSED(deselected)
     newConnectionAction->setEnabled( canCreateConnection( selected ) );
@@ -142,7 +143,10 @@ void BrowserMainWindow::setupUi()
     treeView->setModel( fileModel );
     connect( treeView, SIGNAL(expanded(const QModelIndex&)),
         fileModel, SLOT(itemActivated(const QModelIndex&)) );
-
+    connect( treeView->selectionModel(), SIGNAL(
+            selectionChanged(const QItemSelection&, const QItemSelection&)),
+        this, SLOT(slotSelectionChanged(
+            const QItemSelection&, const QItemSelection&)) );
     setStatusBar( new QStatusBar( this ) );
     statusLabel = new QLabel();
     statusBar()->addWidget( statusLabel );
@@ -189,22 +193,28 @@ void BrowserMainWindow::showContextMenu( const QPoint &globalPos )
     contextMenu->popup( globalPos );
 }
 
-bool BrowserMainWindow::canCreateConnection( QItemSelection &selected )
+bool BrowserMainWindow::canCreateConnection( const QItemSelection &selected )
 {
     return true;
 }
 
-bool BrowserMainWindow::canCreateFolder( QItemSelection &selected )
+bool BrowserMainWindow::canCreateFolder( const QItemSelection &selected )
+{
+    QList<QModelIndex> indexes = selected.indexes();
+    if( indexes.size() != 1 )
+        return false;
+    QStandardItem *item = fileModel->itemFromIndex( indexes[0] );
+    if( item->type() != QInfinity::BrowserItemFactory::NodeItem )
+        return false;
+    return dynamic_cast<QInfinity::NodeItem*>(item)->isDirectory();
+}
+
+bool BrowserMainWindow::canCreateNote( const QItemSelection &selected )
 {
     return false;
 }
 
-bool BrowserMainWindow::canCreateNote( QItemSelection &selected )
-{
-    return false;
-}
-
-bool BrowserMainWindow::canDeleteItem( QItemSelection &selected )
+bool BrowserMainWindow::canDeleteItem( const QItemSelection &selected )
 {
     return false;
 }
