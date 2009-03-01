@@ -20,6 +20,7 @@ ConnectionIndex::ConnectionIndex( XmlConnection &connection,
 
 ConnectionIndex::~ConnectionIndex()
 {
+    delete m_browser;
 }
 
 XmlConnection &ConnectionIndex::connection() const
@@ -66,19 +67,12 @@ BrowserModel::BrowserModel( BrowserItemFactory *itemFactory,
 
 BrowserModel::~BrowserModel()
 {
-    QList<Browser*> browsers;
-    QList<Browser*>::Iterator browserItr;
     QList<ConnectionIndex*> connIdexes;
-    QList<ConnectionIndex*>::Iterator connIndexItr;
-    
-    browsers = browserToConnectionMap.keys();
-    for( browserItr = browsers.begin(); browserItr != browsers.end(); browserItr++ )
-        delete *browserItr;
-
+    ConnectionIndex *index;
     connIdexes = browserToConnectionMap.values();
-    for( connIndexItr = connIdexes.begin(); connIndexItr != connIdexes.end(); connIndexItr++ )
-        delete *connIndexItr;
     
+    foreach(index, connIdexes)
+        delete index;
     delete m_itemFactory;
 }
 
@@ -139,23 +133,15 @@ bool BrowserModel::hasChildren( const QModelIndex &parent ) const
 
 void BrowserModel::addPlugin( NotePlugin &plugin )
 {
-    m_plugins += &plugin;
-    QList<Browser*>::Iterator itr;
-    for( itr = m_browsers.begin(); itr != m_browsers.end(); itr++ )
-    {
-        (*itr)->addPlugin( plugin );
-    }
+    QList<ConnectionIndex*> connIndexes;
+    ConnectionIndex *index;
+    foreach( index, connIndexes )
+        index->browser().addPlugin( plugin );
 }
 
 const QList<NotePlugin*> BrowserModel::plugins() const
 {
     return m_plugins;
-}
-
-bool BrowserModel::createDirectory( QInfinity::NodeItem &parent,
-    const QString &name )
-{
-
 }
 
 void BrowserModel::itemActivated( const QModelIndex &parent )

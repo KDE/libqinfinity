@@ -24,6 +24,8 @@ class NotePlugin;
 
 /**
  * @brief Manages data tied to a connection
+ *
+ * This class will take ownership of its browser.
  */
 class ConnectionIndex
 {
@@ -42,7 +44,7 @@ class ConnectionIndex
     private:
         XmlConnection *m_xmlConnection;
         Browser *m_browser;
-        QMap<unsigned int, NodeItem*> nodeIdToNodeItemMap;
+        QHash<unsigned int, NodeItem*> nodeIdToNodeItemMap;
 
 };
 
@@ -114,7 +116,7 @@ class BrowserModel
         /**
          * @brief Call this when an item has been expanded.
          */
-        void itemActivated( const QModelIndex &parent = QModelIndex() );
+        void itemActivated( const QModelIndex &item = QModelIndex() );
 
     private Q_SLOTS:
         void slotNodeAdded( const BrowserIter &itr );
@@ -138,7 +140,6 @@ class BrowserModel
         QHash<XmlConnection*, Browser*> connectionToBrowserMap;
         CommunicationManager comm_mgr;
         QList<NotePlugin*> m_plugins;
-        QList<Browser*> m_browsers;
 
 };
 
