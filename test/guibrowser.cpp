@@ -28,15 +28,15 @@ void NewConnectionDialog::slotOkClicked( bool checked )
     {
         emit(createConnection( ui->hostnameLineEdit->text(),
             ui->portLineEdit->text().toUInt() ));
-        deleteLater();
     }
     else
         qDebug() << "invalid input.";
+    done(0);
 }
 
 void NewConnectionDialog::slotCancelClicked( bool checked )
 {
-    deleteLater();
+    done(0);
 }
 
 BrowserMainWindow::BrowserMainWindow( QWidget *parent )
@@ -52,7 +52,8 @@ void BrowserMainWindow::slotNewConnection()
     NewConnectionDialog *dialog = new NewConnectionDialog( this );
     connect( dialog, SIGNAL(createConnection( const QString&, unsigned int )),
         this, SLOT(slotCreateConnection( const QString&, unsigned int )) );
-    dialog->setVisible( true );
+    dialog->exec();
+    delete dialog;
 }
 
 void BrowserMainWindow::slotCreateConnection( const QString &hostname,

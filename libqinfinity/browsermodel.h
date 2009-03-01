@@ -137,7 +137,6 @@ class BrowserModel
 
         BrowserItemFactory *m_itemFactory;
         QHash<Browser*, ConnectionIndex*> browserToConnectionMap;
-        QHash<XmlConnection*, Browser*> connectionToBrowserMap;
         CommunicationManager comm_mgr;
         QList<NotePlugin*> m_plugins;
 

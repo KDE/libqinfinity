@@ -59,23 +59,32 @@ void NodeItem::activate()
 }
 
 ConnectionItem::ConnectionItem( XmlConnection &connection,
+    Browser &browser,
     const QString &text )
     : QStandardItem( text )
     , m_connection( &connection )
+    , m_browser( &browser )
 {
 }
 
 ConnectionItem::ConnectionItem( XmlConnection &connection,
+    Browser &browser,
     const QIcon &icon,
     const QString &text )
     : QStandardItem( icon, text )
     , m_connection( &connection )
+    , m_browser( &browser )
 {
 }
 
 XmlConnection &ConnectionItem::connection() const
 {
     return *m_connection;
+}
+
+Browser &ConnectionItem::browser() const
+{
+    return *m_browser;
 }
 
 int ConnectionItem::type() const
@@ -105,9 +114,12 @@ NodeItem *BrowserItemFactory::createNodeItem( const BrowserIter &node )
 }
 
 ConnectionItem *BrowserItemFactory::createConnectionItem( XmlConnection &connection,
+    Browser &browser,
     const QString &name )
 {
-    QInfinity::ConnectionItem *item = new QInfinity::ConnectionItem( connection, name );
+    QInfinity::ConnectionItem *item = new QInfinity::ConnectionItem( connection,
+        browser,
+        name );
     return item;
 }
 

@@ -96,11 +96,11 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
     index = new ConnectionIndex( connection, *browser );
 
     browserToConnectionMap[browser] = index;
-    connectionToBrowserMap[&connection] = browser;
     connect( browser, SIGNAL(nodeAdded( const BrowserIter&)),
         this, SLOT(slotNodeAdded( const BrowserIter&)) );
 
     connItem = m_itemFactory->createConnectionItem( connection,
+        *browser,
         name );
     connItem->setParent( this );
     insertRow( 0, connItem );
@@ -193,13 +193,14 @@ void BrowserModel::slotRowsAboutRemoved( const QModelIndex &parent,
 
 void BrowserModel::removeConnectionItem( ConnectionItem *item )
 {
-    Browser *browser;
+    if( !item )
+    {
+        qDebug() << "Cant remove null connection item.";
+        return;
+    }
     ConnectionIndex *index;
-    browser = connectionToBrowserMap[&item->connection()];
-    index = browserToConnectionMap[browser];
-    connectionToBrowserMap.remove(&index->connection());
-    browserToConnectionMap.remove(browser);
-    delete browser;
+    index = browserToConnectionMap[&item->browser()];
+    browserToConnectionMap.remove(&item->browser());
     delete index;
 }
 

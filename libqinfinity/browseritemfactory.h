@@ -44,6 +44,8 @@ class NodeItem
 
 /**
  * @brief Convenience QStandardItem class for representing an XmlConneciton.
+ *
+ * This class does not take ownership of any of its members.
  */
 class ConnectionItem
     : public QStandardItem
@@ -52,16 +54,20 @@ class ConnectionItem
 
     public:
         ConnectionItem( XmlConnection &connection,
+            Browser &browser,
             const QString &text );
         ConnectionItem( XmlConnection &connection,
+            Browser &browser,
             const QIcon &icon,
             const QString &text );
 
         XmlConnection &connection() const;
+        Browser &browser() const;
         int type() const;
 
     private:
         XmlConnection *m_connection;
+        Browser *m_browser;
         
 };
 
@@ -79,17 +85,27 @@ class BrowserItemFactory
             ConnectionItem = 1002
         };
 
+        /**
+         * @brief Create an item factory.
+         */
         BrowserItemFactory( QObject *parent = 0);
         virtual ~BrowserItemFactory();
 
         /**
-         * @brief Create a new node item.
-         *
-         * Use the BrowserIter interface to distinguish node types.
+         * @brief Create a new root node item.
          */
         virtual QInfinity::NodeItem *createRootNodeItem( const BrowserIter &node );
+
+        /**
+         * @brief Create a new node item.
+         */
         virtual QInfinity::NodeItem *createNodeItem( const BrowserIter &node );
+
+        /**
+         * @brief Create a new connection item.
+         */
         virtual QInfinity::ConnectionItem *createConnectionItem( XmlConnection &connection,
+            Browser &browser,
             const QString &name );
 
 };
