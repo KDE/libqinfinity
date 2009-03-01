@@ -123,9 +123,17 @@ void BrowserMainWindow::slotQuit()
 
 void BrowserMainWindow::slotCreateFolder()
 {
+    QModelIndexList indexes = selectedIndexes();
+    if( indexes.size() != 1 )
+    {
+        qDebug() << "Cant create folder without parent.";
+        return;
+    }
+    QInfinity::NodeItem *parentItem = nodeItemFromIndex( indexes[0] );
     CreateItemDialog *dialog = new CreateItemDialog( "Create folder named: ",
         this );
     dialog->exec();
+    
     delete dialog;
 }
 
@@ -217,6 +225,22 @@ bool BrowserMainWindow::canCreateNote( const QItemSelection &selected )
 bool BrowserMainWindow::canDeleteItem( const QItemSelection &selected )
 {
     return false;
+}
+
+QModelIndexList BrowserMainWindow::selectedIndexes() const
+{
+    return treeView->selectionModel()->selection().indexes();
+}
+
+QInfinity::NodeItem *BrowserMainWindow::nodeItemFromIndex( const QModelIndex &index ) const
+{
+    QStandardItem *item = fileModel->itemFromIndex( index );
+    if( item->type() != QInfinity::BrowserItemFactory::NodeItem )
+    {
+        qDebug() << "Cannot convert item of non NodeItem type to NodeItem.";
+        return 0;
+    }
+    return dynamic_cast<QInfinity::NodeItem*>(item);
 }
 
 int main( int argc, char **argv )

@@ -152,6 +152,12 @@ const QList<NotePlugin*> BrowserModel::plugins() const
     return m_plugins;
 }
 
+bool BrowserModel::createDirectory( QInfinity::NodeItem &parent,
+    const QString &name )
+{
+
+}
+
 void BrowserModel::itemActivated( const QModelIndex &parent )
 {
     if( !parent.isValid() )

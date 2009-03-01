@@ -6,7 +6,7 @@
 #include <QString>
 #include <QList>
 #include <QStandardItemModel>
-#include <QMap>
+#include <QHash>
 #include <QPointer>
 #include <QAbstractItemView>
 
@@ -63,9 +63,18 @@ class BrowserModel
     Q_OBJECT
 
     public:
+        /**
+         * @brief Create a new BrowserModel
+         */
         BrowserModel( QObject *parent = 0 );
+        /**
+         * @brief Create BrowserModel with specified BrowserItemFactory
+         */
         BrowserModel( BrowserItemFactory *itemFactory,
             QObject *parent = 0 );
+        /**
+         * @brief Destroy the BrowserModel
+         */
         ~BrowserModel();
 
         /**
@@ -94,8 +103,17 @@ class BrowserModel
          * @brief Get added plugins.
          */
         const QList<NotePlugin*> plugins() const;
+        
+        /**
+         * @brief Create a subdirectory of parent with name.
+         */
+        bool createDirectory( QInfinity::NodeItem &parent,
+            const QString &name );
 
     public Q_SLOTS:
+        /**
+         * @brief Call this when an item has been expanded.
+         */
         void itemActivated( const QModelIndex &parent = QModelIndex() );
 
     private Q_SLOTS:
@@ -116,8 +134,8 @@ class BrowserModel
             XmlConnection &connection );
 
         BrowserItemFactory *m_itemFactory;
-        QMap<Browser*, ConnectionIndex*> browserToConnectionMap;
-        QMap<XmlConnection*, Browser*> connectionToBrowserMap;
+        QHash<Browser*, ConnectionIndex*> browserToConnectionMap;
+        QHash<XmlConnection*, Browser*> connectionToBrowserMap;
         CommunicationManager comm_mgr;
         QList<NotePlugin*> m_plugins;
         QList<Browser*> m_browsers;

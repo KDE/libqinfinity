@@ -9,13 +9,20 @@ class QPushButton;
 class CreateItemDialog
     : public QDialog
 {
+    Q_OBJECT
 
     public:
         CreateItemDialog( const QString &text,
             QWidget *parent = 0 );
 
+        QString itemName() const;
+
+    private Q_SLOTS:
+        void cancel();
+        void ok();
+
     private:
-        QLineEdit *itemName;
+        QLineEdit *itemEdit;
         QPushButton *okButton;
         QPushButton *cancelButton;
 

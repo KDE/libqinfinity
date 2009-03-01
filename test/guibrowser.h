@@ -83,6 +83,8 @@ class BrowserMainWindow
         bool canCreateFolder( const QItemSelection &selected );
         bool canCreateNote( const QItemSelection &selected );
         bool canDeleteItem( const QItemSelection &selected );
+        QModelIndexList selectedIndexes() const;
+        QInfinity::NodeItem *nodeItemFromIndex( const QModelIndex &index ) const;
 
         QAction *quitAction;
         QAction *newConnectionAction;
