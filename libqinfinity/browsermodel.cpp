@@ -1,6 +1,7 @@
 #include "browsermodel.h"
 #include "browser.h"
 #include "xmlconnection.h"
+#include "tcpconnection.h"
 #include "browseritemfactory.h"
 #include "noteplugin.h"
 
@@ -20,7 +21,11 @@ ConnectionIndex::ConnectionIndex( XmlConnection &connection,
 
 ConnectionIndex::~ConnectionIndex()
 {
+    QInfinity::TcpConnection *tcpConn;
     delete m_browser;
+    tcpConn = m_xmlConnection->tcpConnection();
+    delete m_xmlConnection;
+    delete tcpConn;
 }
 
 XmlConnection &ConnectionIndex::connection() const

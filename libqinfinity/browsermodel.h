@@ -98,8 +98,9 @@ class BrowserModel
          * @brief Add connection with name for model to represent.
          * @return ConnectionItem representing connection.
          *
-         * The model does not take ownership of the connection.  The
-         * connection still must be free'd.
+         * The model will take ownership of the connection.  To delete
+         * the connection, remove the row containing the connection from
+         * the model.
          */
         ConnectionItem *addConnection( XmlConnection &connection,
             const QString &name );

@@ -147,18 +147,7 @@ void BrowserMainWindow::slotDelete()
     QInfinity::TcpConnection *tcpConnection;
 
     foreach( index, selected )
-    {
-        stdItem = fileModel->itemFromIndex( index );
-        if( stdItem->type() == QInfinity::BrowserItemFactory::ConnectionItem )
-        {
-            qDebug() << "Removing connection.";
-            connectionItem = dynamic_cast<QInfinity::ConnectionItem*>(stdItem);
-            tcpConnection = connectionItem->connection().tcpConnection();
-            delete &connectionItem->connection();
-            delete tcpConnection;
-            fileModel->removeRow( index.row(), QModelIndex() );
-        }
-    }
+        fileModel->removeRow( index.row(), QModelIndex() );
 }
 
 
