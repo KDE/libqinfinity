@@ -130,11 +130,10 @@ void BrowserMainWindow::slotCreateFolder()
         qDebug() << "Cant create folder without parent.";
         return;
     }
-    QInfinity::NodeItem *parentItem = nodeItemFromIndex( indexes[0] );
     CreateItemDialog *dialog = new CreateItemDialog( "Create folder named: ",
         this );
     dialog->exec();
-    
+    fileModel->createDirectory( indexes[0], dialog->itemName() );
     delete dialog;
 }
 
