@@ -69,11 +69,13 @@ class BrowserModel
          * @brief Create a new BrowserModel
          */
         BrowserModel( QObject *parent = 0 );
+
         /**
          * @brief Create BrowserModel with specified BrowserItemFactory
          */
         BrowserModel( BrowserItemFactory *itemFactory,
             QObject *parent = 0 );
+
         /**
          * @brief Destroy the BrowserModel
          */
@@ -86,21 +88,29 @@ class BrowserModel
          * factory will be reparented.
          */
         void setItemFactory( BrowserItemFactory *factory );
+
         /**
          * @brief Get factory used by this model.
          */
         BrowserItemFactory &itemFactory() const;
+
         /**
          * @brief Add connection with name for model to represent.
          * @return ConnectionItem representing connection.
+         *
+         * The model does not take ownership of the connection.  The
+         * connection still must be free'd.
          */
         ConnectionItem *addConnection( XmlConnection &connection,
             const QString &name );
+
         bool hasChildren( const QModelIndex &parent = QModelIndex() ) const;
+
         /**
          * @brief Add a plugin to connections in this model.
          */
         void addPlugin( NotePlugin &plugin );
+
         /**
          * @brief Get added plugins.
          */

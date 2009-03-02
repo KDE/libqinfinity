@@ -33,6 +33,7 @@ class XmlConnection
         XmlConnection( InfXmlConnection *infXmlConnection,
             QObject *parent = 0,
             bool own_gobject = true );
+        ~XmlConnection();
         TcpConnection *tcpConnection();
 
         void close();

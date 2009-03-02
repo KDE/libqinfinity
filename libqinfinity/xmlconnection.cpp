@@ -28,6 +28,12 @@ XmlConnection::XmlConnection( InfXmlConnection *infXmlConnection,
     registerSignals();
 }
 
+XmlConnection::~XmlConnection()
+{
+    if( status() == Open )
+        close();
+}
+
 TcpConnection *XmlConnection::tcpConnection()
 {
     InfTcpConnection *infTcpConnection;

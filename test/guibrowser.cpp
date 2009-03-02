@@ -138,6 +138,30 @@ void BrowserMainWindow::slotCreateFolder()
     delete dialog;
 }
 
+void BrowserMainWindow::slotDelete()
+{
+    QModelIndexList selected = selectedIndexes();
+    QModelIndex index;
+    QStandardItem *stdItem;
+    QInfinity::ConnectionItem *connectionItem;
+    QInfinity::TcpConnection *tcpConnection;
+
+    foreach( index, selected )
+    {
+        stdItem = fileModel->itemFromIndex( index );
+        if( stdItem->type() == QInfinity::BrowserItemFactory::ConnectionItem )
+        {
+            qDebug() << "Removing connection.";
+            connectionItem = dynamic_cast<QInfinity::ConnectionItem*>(stdItem);
+            tcpConnection = connectionItem->connection().tcpConnection();
+            delete &connectionItem->connection();
+            delete tcpConnection;
+            fileModel->removeRow( index.row(), QModelIndex() );
+        }
+    }
+}
+
+
 void BrowserMainWindow::contextMenuEvent( QContextMenuEvent *event )
 {
     if( !event )
@@ -179,6 +203,8 @@ void BrowserMainWindow::setupActions()
         this, SLOT(slotNewConnection()) );
     connect( newFolderAction, SIGNAL(triggered(bool)),
         this, SLOT(slotCreateFolder()) );
+    connect( deleteAction, SIGNAL(triggered(bool)),
+        this, SLOT(slotDelete()) );
 
     QMenu *fileMenu = new QMenu( tr("&File"), this );
     fileMenu->addAction( newConnectionAction );
@@ -225,7 +251,8 @@ bool BrowserMainWindow::canCreateNote( const QItemSelection &selected )
 
 bool BrowserMainWindow::canDeleteItem( const QItemSelection &selected )
 {
-    return false;
+    QList<QModelIndex> indexes = selected.indexes();
+    return indexes.size() > 0;
 }
 
 QModelIndexList BrowserMainWindow::selectedIndexes() const

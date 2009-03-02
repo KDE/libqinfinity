@@ -234,6 +234,9 @@ NodeItem *BrowserModel::indexToNodeItem( const QModelIndex &parent ) const
         return 0;
 }
 
+/*
+ * Creates a browser and adds all plugins to it.
+ */
 Browser *BrowserModel::createBrowser( CommunicationManager &commMgr,
     XmlConnection &connection )
 {

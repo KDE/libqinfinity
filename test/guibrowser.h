@@ -71,6 +71,7 @@ class BrowserMainWindow
             const QItemSelection &deselected );
         void slotQuit();
         void slotCreateFolder();
+        void slotDelete();
 
     protected:
         void contextMenuEvent( QContextMenuEvent *event );
