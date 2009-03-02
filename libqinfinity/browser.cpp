@@ -2,6 +2,7 @@
 #include "xmlconnection.h"
 #include "qtio.h"
 #include "communicationmanager.h"
+#include "wrapperstore.h"
 
 #include <libinfinity/client/infc-browser.h>
 #include <libinfinity/client/infc-explore-request.h>
@@ -11,6 +12,16 @@
 
 namespace QInfinity
 {
+
+Browser *Browser::create( InfcBrowser *infBrowser,
+    QObject *parent,
+    bool own_gobject )
+{
+    WrapperStore *store = WrapperStore::instance();
+    Browser *browser = dynamic_cast<Browser*>(store->findWrapper(
+        G_OBJECT(infBrowser) ));
+    return browser;
+}
 
 Browser::Browser( CommunicationManager &comm_manager,
     XmlConnection &connection,

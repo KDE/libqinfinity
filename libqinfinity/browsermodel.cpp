@@ -149,6 +149,33 @@ const QList<NotePlugin*> BrowserModel::plugins() const
     return m_plugins;
 }
 
+bool BrowserModel::createDirectory( const QModelIndex &parent,
+    const QString &name )
+{
+    QStandardItem *stdItem = itemFromIndex( parent );
+    NodeItem *parentItem;
+    Browser *browser;
+
+    if( stdItem->type() != BrowserItemFactory::NodeItem )
+    {
+        qDebug() << "Cannot create folder with parent not of type NodeItem";
+        return false;
+    }
+    parentItem = dynamic_cast<NodeItem*>(stdItem);
+    if( !parentItem->isDirectory() )
+    {
+        qDebug() << "Cannot create folder with parent not a directory.";
+        return false;
+    }
+    browser = parentItem->iter().browser();
+    if( !browser )
+    {
+        qDebug() << "Could not find parent items' browser.";
+        return false;
+    }
+    browser->addSubdirectory( parentItem->iter(), name.toAscii() );
+}
+
 void BrowserModel::itemActivated( const QModelIndex &parent )
 {
     if( !parent.isValid() )

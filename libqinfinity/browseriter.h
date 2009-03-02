@@ -41,6 +41,7 @@ class BrowserIter
         bool isExplored();
         const char *name();
         const char *path();
+        Browser *browser() const;
         InfcBrowser *infBrowser() const;
         const InfcBrowserIter *infBrowserIter() const;
         InfcBrowserIter *infBrowserIter();

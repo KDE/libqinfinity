@@ -34,6 +34,10 @@ class Browser
     Q_OBJECT
 
     public:
+        static Browser *create( InfcBrowser *infBrowser,
+            QObject *parent = 0,
+            bool own_gobject = false );
+
         Browser( CommunicationManager &comm_manager,
             XmlConnection &connection,
             QObject *parent = 0 );

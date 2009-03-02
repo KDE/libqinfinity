@@ -110,6 +110,11 @@ const char *BrowserIter::path()
         return infc_browser_iter_get_path( m_infBrowser, &m_infBrowserIter );
 }
 
+Browser *BrowserIter::browser() const
+{
+    return Browser::create( infBrowser() );
+}
+
 InfcBrowser *BrowserIter::infBrowser() const
 {
     if( m_infBrowser )
