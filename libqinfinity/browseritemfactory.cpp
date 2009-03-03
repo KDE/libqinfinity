@@ -26,6 +26,7 @@ NodeItem::NodeItem( const BrowserIter &iter,
     : QStandardItem()
     , m_iter( iter )
 {
+    setIcon( icon );
     setText( m_iter.name() );
 }
 
