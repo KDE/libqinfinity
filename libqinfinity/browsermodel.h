@@ -98,9 +98,9 @@ class BrowserModel
          * @brief Add connection with name for model to represent.
          * @return ConnectionItem representing connection.
          *
-         * The model will take ownership of the XmlConnection and its
-         * underlying TcpConnection. removing the row from the model
-         * will cause the deletion of both objects.
+         * The connection will be reparented to the BrowserModel.
+         * You can remove the connection by removing the appropriate
+         * row from the model.
          */
         ConnectionItem *addConnection( XmlConnection &connection,
             const QString &name );

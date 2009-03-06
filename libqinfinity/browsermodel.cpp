@@ -97,6 +97,7 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
     ConnectionItem *connItem;
     NodeItem *nodeItem;
 
+    connection.setParent( this );
     browser = createBrowser( comm_mgr, connection );
     index = new ConnectionIndex( connection, *browser );
 
