@@ -176,6 +176,17 @@ bool BrowserModel::createDirectory( const QModelIndex &parent,
     browser->addSubdirectory( parentItem->iter(), name.toAscii() );
 }
 
+bool BrowserModel::createNote( const QModelIndex &parent,
+    NotePlugin &plugin,
+    const QString &name )
+{
+    QStandardItem *stdParent = itemFromIndex( parent );
+    NodeItem *parentItem;
+    Browser *browser;
+
+
+}
+
 void BrowserModel::itemActivated( const QModelIndex &parent )
 {
     if( !parent.isValid() )

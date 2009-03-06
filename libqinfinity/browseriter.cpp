@@ -98,13 +98,13 @@ bool BrowserIter::isExplored()
         return infc_browser_iter_get_explored( m_infBrowser, &m_infBrowserIter ) != 0;
 }
 
-const char *BrowserIter::name()
+QString BrowserIter::name()
 {
     if( m_infBrowser )
         return infc_browser_iter_get_name( m_infBrowser, &m_infBrowserIter );
 }
 
-const char *BrowserIter::path()
+QString BrowserIter::path()
 {
     if( m_infBrowser )
         return infc_browser_iter_get_path( m_infBrowser, &m_infBrowserIter );
@@ -131,6 +131,12 @@ InfcBrowserIter *BrowserIter::infBrowserIter()
 {
     if( m_infBrowser )
         return &m_infBrowserIter;
+}
+
+QString BrowserIter::noteType()
+{
+    if( m_infBrowser )
+        return infc_browser_iter_get_note_type( m_infBrowser, &m_infBrowserIter );
 }
 
 }

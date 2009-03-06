@@ -3,6 +3,8 @@
 
 #include <libinfinity/client/infc-browser.h>
 
+#include <QString>
+
 namespace QInfinity
 {
 
@@ -39,12 +41,13 @@ class BrowserIter
         bool isDirectory();
         InfcExploreRequest *explore();
         bool isExplored();
-        const char *name();
-        const char *path();
+        QString name();
+        QString path();
         Browser *browser() const;
         InfcBrowser *infBrowser() const;
         const InfcBrowserIter *infBrowserIter() const;
         InfcBrowserIter *infBrowserIter();
+        QString noteType();
 
     private:
         InfcBrowser *m_infBrowser;

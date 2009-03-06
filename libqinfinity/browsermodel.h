@@ -49,7 +49,7 @@ class ConnectionIndex
 };
 
 /**
- * @brief A model for connections and their file hierarchy
+ * @brief A model representing connections and their available files
  *
  * The BrowserModel provides a model containing connections
  * added with BrowserModel::addConnection.  Add the plugins
@@ -118,9 +118,16 @@ class BrowserModel
         const QList<NotePlugin*> plugins() const;
         
         /**
-         * @brief Create a subdirectory of parent with name.
+         * @brief Create a directory on the server.
          */
         bool createDirectory( const QModelIndex &parent,
+            const QString &name );
+
+        /**
+         * @brief Create a note of type plugin on the server.
+         */
+        bool createNote( const QModelIndex &parent,
+            NotePlugin &plugin,
             const QString &name );
 
     public Q_SLOTS:
