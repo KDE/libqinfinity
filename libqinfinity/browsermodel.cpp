@@ -138,6 +138,7 @@ bool BrowserModel::hasChildren( const QModelIndex &parent ) const
 
 void BrowserModel::addPlugin( NotePlugin &plugin )
 {
+    plugin.setParent( this );
     QList<ConnectionIndex*> connIndexes;
     ConnectionIndex *index;
     foreach( index, connIndexes )
@@ -152,16 +153,15 @@ const QList<NotePlugin*> BrowserModel::plugins() const
 bool BrowserModel::createDirectory( const QModelIndex &parent,
     const QString &name )
 {
-    QStandardItem *stdItem = itemFromIndex( parent );
     NodeItem *parentItem;
     Browser *browser;
 
-    if( stdItem->type() != BrowserItemFactory::NodeItem )
+    parentItem = indexToNodeItem( parent );
+    if( !parentItem )
     {
-        qDebug() << "Cannot create folder with parent not of type NodeItem";
+        qDebug() << "Parent not a node item.";
         return false;
     }
-    parentItem = dynamic_cast<NodeItem*>(stdItem);
     if( !parentItem->isDirectory() )
     {
         qDebug() << "Cannot create folder with parent not a directory.";
@@ -180,11 +180,27 @@ bool BrowserModel::createNote( const QModelIndex &parent,
     NotePlugin &plugin,
     const QString &name )
 {
-    QStandardItem *stdParent = itemFromIndex( parent );
     NodeItem *parentItem;
     Browser *browser;
 
-
+    parentItem = indexToNodeItem( parent );
+    if( !parentItem )
+    {
+        qDebug() << "Parent not a node item.";
+        return false;
+    }
+    if( !parentItem->isDirectory() )
+    {
+        qDebug() << "Cannot create note unless parent is a directory.";
+        return false;
+    }
+    browser = parentItem->iter().browser();
+    if( !browser )
+    {
+        qDebug() << "Could not find parent items' browser.";
+        return false;
+    }
+    browser->addNote( parentItem->iter(), name.toAscii(), plugin, false );
 }
 
 void BrowserModel::itemActivated( const QModelIndex &parent )

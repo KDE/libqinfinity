@@ -109,6 +109,8 @@ class BrowserModel
 
         /**
          * @brief Add a plugin to connections in this model.
+         *
+         * The plugin will be reparented.
          */
         void addPlugin( NotePlugin &plugin );
 

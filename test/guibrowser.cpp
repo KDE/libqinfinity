@@ -42,7 +42,9 @@ void NewConnectionDialog::slotCancelClicked( bool checked )
 BrowserMainWindow::BrowserMainWindow( QWidget *parent )
     : QMainWindow( parent )
     , fileModel( new QInfinity::BrowserModel( this ) )
+    , plugin( new QInfinity::DefaultTextPlugin( this ) )
 {
+    fileModel->addPlugin( *plugin );
     setupActions();
     setupUi();
 }
@@ -110,7 +112,7 @@ void BrowserMainWindow::slotConnectionError( Connection *conn,
 void BrowserMainWindow::slotSelectionChanged( const QItemSelection &selected,
     const QItemSelection &deselected )
 {
-    Q_UNUSED(deselected)
+    Q_UNUSED(deselected);
     newConnectionAction->setEnabled( canCreateConnection( selected ) );
     newFolderAction->setEnabled( canCreateFolder( selected ) );
     newNoteAction->setEnabled( canCreateNote( selected ) );
@@ -135,6 +137,20 @@ void BrowserMainWindow::slotCreateFolder()
     dialog->exec();
     fileModel->createDirectory( indexes[0], dialog->itemName() );
     delete dialog;
+}
+
+void BrowserMainWindow::slotCreateNote()
+{
+    QModelIndexList indexes = selectedIndexes();
+    if( indexes.size() != 1 )
+    {
+        qDebug() << "Can only create notes with one parent.";
+        return;
+    }
+    CreateItemDialog *dialog = new CreateItemDialog( "Create note named: ",
+        this );
+    dialog->exec();
+    fileModel->createNote( indexes[0], *plugin, dialog->itemName() );
 }
 
 void BrowserMainWindow::slotDelete()
@@ -234,7 +250,7 @@ bool BrowserMainWindow::canCreateFolder( const QItemSelection &selected )
 
 bool BrowserMainWindow::canCreateNote( const QItemSelection &selected )
 {
-    return false;
+    return canCreateFolder( selected );
 }
 
 bool BrowserMainWindow::canDeleteItem( const QItemSelection &selected )

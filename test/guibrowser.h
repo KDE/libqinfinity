@@ -8,6 +8,7 @@
 #include "xmppconnection.h"
 #include "browsermodel.h"
 #include "browseritemfactory.h"
+#include "defaulttextplugin.h"
 
 #include "connection.h"
 
@@ -33,7 +34,7 @@ class Ui_newConnectionWidget;
 class NewConnectionDialog
     : public QDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     public:
         NewConnectionDialog( QWidget *parent = 0 );
@@ -53,7 +54,7 @@ class NewConnectionDialog
 class BrowserMainWindow
     : public QMainWindow
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     public:
         BrowserMainWindow( QWidget *parent = 0 );
@@ -69,13 +70,16 @@ class BrowserMainWindow
         void slotConnectionError( Connection *conn, QString message );
         void slotSelectionChanged( const QItemSelection &selected,
             const QItemSelection &deselected );
+
+        // Action slots
         void slotQuit();
         void slotCreateFolder();
+        void slotCreateNote();
         void slotDelete();
 
     protected:
         void contextMenuEvent( QContextMenuEvent *event );
-    
+
     private:
         void setupUi();
         void setupActions();
@@ -94,9 +98,9 @@ class BrowserMainWindow
         QAction *deleteAction;
         QTreeView *treeView;
         QInfinity::BrowserModel *fileModel;
+        QInfinity::DefaultTextPlugin *plugin;
         QLabel *statusLabel;
-        
+
 };
 
 #endif
-
