@@ -58,6 +58,9 @@ BrowserModel::BrowserModel( QObject *parent )
 {
     connect( this, SIGNAL(rowsAboutToBeRemoved(const QModelIndex&, int, int)),
         this, SLOT(slotRowsAboutRemoved(const QModelIndex&, int, int)) );
+    QStringList headerlabels;
+    headerlabels.append( tr("Name") );
+    setHorizontalHeaderLabels( headerlabels );
 }
 
 BrowserModel::BrowserModel( BrowserItemFactory *itemFactory,
