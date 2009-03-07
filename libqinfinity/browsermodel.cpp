@@ -283,15 +283,21 @@ NodeItem *BrowserModel::itemFromBrowserIter( const BrowserIter &iter,
     return index->itemFromIter( iter );
 }
 
-NodeItem *BrowserModel::indexToNodeItem( const QModelIndex &parent ) const
+NodeItem *BrowserModel::indexToNodeItem( const QModelIndex &item ) const
 {
-    if( !parent.isValid() )
+    if( !item.isValid() )
+    {
+        qDebug() << "Root item is not a node.";
         return 0;
-    QStandardItem *stdItem = static_cast<QStandardItem*>(parent.internalPointer());
+    }
+    QStandardItem *stdItem = itemFromIndex( item );
     if( stdItem->type() == BrowserItemFactory::NodeItem )
         return dynamic_cast<NodeItem*>(stdItem);
     else
+    {
+        qDebug() << "Cannot convert to NodeItem non NodeItem type.";
         return 0;
+    }
 }
 
 /*

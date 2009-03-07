@@ -151,6 +151,7 @@ void BrowserMainWindow::slotCreateNote()
         this );
     dialog->exec();
     fileModel->createNote( indexes[0], *plugin, dialog->itemName() );
+    delete dialog;
 }
 
 void BrowserMainWindow::slotDelete()
@@ -207,6 +208,8 @@ void BrowserMainWindow::setupActions()
         this, SLOT(slotNewConnection()) );
     connect( newFolderAction, SIGNAL(triggered(bool)),
         this, SLOT(slotCreateFolder()) );
+    connect( newNoteAction, SIGNAL(triggered(bool)),
+        this, SLOT(slotCreateNote()) );
     connect( deleteAction, SIGNAL(triggered(bool)),
         this, SLOT(slotDelete()) );
 

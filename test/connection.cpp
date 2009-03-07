@@ -15,10 +15,6 @@ Connection::Connection( const QString &hostname,
 
 Connection::~Connection()
 {
-    //if( m_xmppConnection )
-    //    delete m_xmppConnection;
-    //if(  tcpConnection )
-    //    delete tcpConnection;
 }
 
 void Connection::open()
