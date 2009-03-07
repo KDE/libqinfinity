@@ -44,6 +44,7 @@ BrowserMainWindow::BrowserMainWindow( QWidget *parent )
     , fileModel( new QInfinity::BrowserModel( this ) )
     , plugin( new QInfinity::DefaultTextPlugin( this ) )
 {
+    qDebug() << "Plugin is type " << plugin->infPlugin()->note_type;
     fileModel->addPlugin( *plugin );
     setupActions();
     setupUi();

@@ -8,6 +8,8 @@
 #include <libinfinity/client/infc-explore-request.h>
 #include <libinfinity/client/infc-node-request.h>
 
+#include <QDebug>
+
 #include "browser.moc"
 
 namespace QInfinity

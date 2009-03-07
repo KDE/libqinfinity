@@ -55,7 +55,7 @@ class NotePlugin
             InfXmlConnection *sync_connection,
             void *user_data );
 
-        QString m_name;
+        char *m_name;
         InfcNotePlugin m_infPlugin;
 
 };

@@ -4,20 +4,25 @@
 #include "xmlconnection.h"
 #include "session.h"
 
+#include <QChar>
+#include <QDebug>
+
 namespace QInfinity
 {
 
 NotePlugin::NotePlugin( QString name, QObject *parent )
     : QObject( parent )
-    , m_name( name )
 {
-    m_infPlugin.note_type = m_name.toAscii();
+    m_name = new char(name.size()+1);
+    strcpy(m_name, name.toAscii());
+    m_infPlugin.note_type = m_name;
     m_infPlugin.session_new = NotePlugin::create_session_cb;
     m_infPlugin.user_data = this;
 }
 
 NotePlugin::~NotePlugin()
 {
+    delete m_name;
 }
 
 InfSession *NotePlugin::create_session_cb( InfIo *io,

@@ -96,11 +96,15 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
     ConnectionIndex *index;
     ConnectionItem *connItem;
     NodeItem *nodeItem;
+    NotePlugin* plugin;
 
     connection.setParent( this );
-    browser = createBrowser( comm_mgr, connection );
-    index = new ConnectionIndex( connection, *browser );
 
+    // Create and initialive a new browser
+    browser = createBrowser( comm_mgr, connection );
+    foreach( plugin, plugins() )
+        browser->addPlugin( *plugin );
+    index = new ConnectionIndex( connection, *browser );
     browserToConnectionMap[browser] = index;
     connect( browser, SIGNAL(nodeAdded( const BrowserIter&)),
         this, SLOT(slotNodeAdded( const BrowserIter&)) );
@@ -140,10 +144,10 @@ bool BrowserModel::hasChildren( const QModelIndex &parent ) const
 void BrowserModel::addPlugin( NotePlugin &plugin )
 {
     plugin.setParent( this );
-    QList<ConnectionIndex*> connIndexes;
     ConnectionIndex *index;
-    foreach( index, connIndexes )
+    foreach( index, browserToConnectionMap.values() )
         index->browser().addPlugin( plugin );
+    m_plugins.append( &plugin );
 }
 
 const QList<NotePlugin*> BrowserModel::plugins() const
