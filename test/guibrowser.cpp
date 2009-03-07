@@ -159,12 +159,9 @@ void BrowserMainWindow::slotDelete()
 {
     QModelIndexList selected = selectedIndexes();
     QModelIndex index;
-    QStandardItem *stdItem;
-    QInfinity::ConnectionItem *connectionItem;
-    QInfinity::TcpConnection *tcpConnection;
 
     foreach( index, selected )
-        fileModel->removeRow( index.row(), QModelIndex() );
+        fileModel->removeRow( index.row(), index.parent() );
 }
 
 
