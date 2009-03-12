@@ -36,6 +36,11 @@ Session::Type TextSession::type() const
     return Text;
 }
 
+Buffer *TextSession::buffer() const
+{
+    return TextBuffer::create( INF_TEXT_BUFFER( inf_session_get_buffer( INF_SESSION(gobject()) ) ) );
+}
+
 TextSession::TextSession( InfTextSession *infSession,
     QObject *parent )
     : Session( INF_SESSION(infSession), parent )

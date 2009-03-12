@@ -1,4 +1,5 @@
 #include "session.h"
+#include "buffer.h"
 #include "wrapperstore.h"
 
 #include "session.moc"
@@ -64,6 +65,11 @@ Session::Status Session::status() const
 Session::Type Session::type() const
 {
     return BaseSession;
+}
+
+Buffer *Session::buffer() const
+{
+    return Buffer::create( inf_session_get_buffer( INF_SESSION(gobject()) ) );
 }
 
 void Session::setupSignals()

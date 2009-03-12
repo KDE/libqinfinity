@@ -13,6 +13,8 @@ class Buffer
 {
 
     public:
+        static Buffer *create( InfBuffer *buffer );
+
         Buffer( InfBuffer *buffer,
             QObject *parent = 0 );
 

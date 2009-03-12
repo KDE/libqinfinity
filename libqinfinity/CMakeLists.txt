@@ -28,6 +28,7 @@ set(QInfinity_SRCS
 	browsermodel.cpp
 	browseritemfactory.cpp
 	buffer.cpp
+	textchunk.cpp
 	textbuffer.cpp
 	textdefaultbuffer.cpp
 	noteplugin.cpp
@@ -54,6 +55,7 @@ set(QInfinity_HDRS
 	browsermodel.h
 	browseritemfactory.h
 	buffer.h
+	textchunk.h
 	textbuffer.h
 	textdefaultbuffer.h
 	noteplugin.h

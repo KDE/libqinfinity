@@ -27,6 +27,7 @@ class TextSession
             XmlConnection &connection );
 
         Session::Type type() const;
+        Buffer *buffer() const;
 
     protected:
         TextSession( InfTextSession *infSession,

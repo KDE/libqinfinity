@@ -31,6 +31,14 @@ class SessionProxy
         InfcUserRequest *joinUser( const GParameter *params,
             unsigned int n_params,
             GError **error );
+
+        /**
+         * @brief Get the session for this proxy.
+         *
+         * If your session is not of the type you expected,
+         * you probably need to be using a NotePlugin.  See
+         * the NotePlugin documentation for more information.
+         */
         Session *session() const;
 
 };
