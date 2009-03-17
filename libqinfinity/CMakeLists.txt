@@ -20,6 +20,7 @@ set(QInfinity_SRCS
 	xmppconnection.cpp
 	communicationmanager.cpp
 	communicationjoinedgroup.cpp
+	request.cpp
 	browser.cpp
 	browseriter.cpp
 	sessionproxy.cpp
@@ -47,6 +48,7 @@ set(QInfinity_HDRS
 	xmppconnection.h
 	communicationmanager.h
 	communicationjoinedgroup.h
+	request.h
 	browser.h
 	browseriter.h
 	sessionproxy.h

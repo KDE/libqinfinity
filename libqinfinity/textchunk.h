@@ -15,6 +15,7 @@ class TextChunk
 {
 
     public:
+        TextChunk( InfTextChunk *chunk );
         TextChunk( const QString &encoding );
         TextChunk( const TextChunk &other );
         ~TextChunk();
@@ -22,6 +23,10 @@ class TextChunk
         void insertText( unsigned int offset,
             const QString &text,
             unsigned int author );
+        void insertChunk( unsigned int offset,
+            const TextChunk &chunk );
+        void erase( unsigned int begin,
+            unsigned int end );
         InfTextChunk *infChunk() const;
 
     private:
