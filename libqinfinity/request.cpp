@@ -9,6 +9,7 @@ Request::Request( InfcRequest *infRequest,
     QObject *parent )
     : QGObject( G_OBJECT( infRequest ), parent )
 {
+    setupSignals();
 }
 
 void Request::setupSignals()

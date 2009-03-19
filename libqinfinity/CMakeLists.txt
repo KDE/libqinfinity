@@ -21,6 +21,7 @@ set(QInfinity_SRCS
 	communicationmanager.cpp
 	communicationjoinedgroup.cpp
 	request.cpp
+	explorerequest.cpp
 	browser.cpp
 	browseriter.cpp
 	sessionproxy.cpp
@@ -49,6 +50,7 @@ set(QInfinity_HDRS
 	communicationmanager.h
 	communicationjoinedgroup.h
 	request.h
+	explorerequest.h
 	browser.h
 	browseriter.h
 	sessionproxy.h
