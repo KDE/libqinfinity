@@ -7,12 +7,13 @@ namespace QInfinity
 {
 
 QPointer<TcpConnection> TcpConnection::wrap( InfTcpConnection *infTcpConnection,
-    QObject *parent )
+    QObject *parent,
+    bool own_gobject )
 {
-    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infTcpConnection) );
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infTcpConnection), own_gobject );
     if( wrapptr)
         return dynamic_cast<TcpConnection*>(wrapptr);
-    TcpConnection *connection = new TcpConnection( infTcpConnection, parent );
+    TcpConnection *connection = new TcpConnection( infTcpConnection, parent, own_gobject );
     WrapperStore::insertWrapper( G_OBJECT(infTcpConnection), connection );
     return connection;
 }
@@ -81,8 +82,9 @@ TcpConnection::Status TcpConnection::status() const
 }
 
 TcpConnection::TcpConnection( InfTcpConnection *infTcpConnection,
-    QObject *parent )
-    : QGObject( G_OBJECT(infTcpConnection), parent )
+    QObject *parent,
+    bool own_gobject )
+    : QGObject( G_OBJECT(infTcpConnection), parent, own_gobject )
 {
 }
 

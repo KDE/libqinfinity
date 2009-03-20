@@ -4,15 +4,15 @@
 namespace QInfinity
 {
 
-CommunicationJoinedGroup *CommunicationJoinedGroup::create( InfCommunicationJoinedGroup *infGroup,
-    QObject *parent,
-    bool own_gobject )
+QPointer<CommunicationJoinedGroup> CommunicationJoinedGroup::wrap( InfCommunicationJoinedGroup *infObject,
+    QObject *parent )
 {
-    WrapperStore *store = WrapperStore::instance();
-    CommunicationJoinedGroup *grp = dynamic_cast<CommunicationJoinedGroup*>(store->findWrapper( G_OBJECT(infGroup) ));
-    if( !grp )
-        grp = new CommunicationJoinedGroup( infGroup, parent, own_gobject );
-    return grp;
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObject) );
+    if( wrapptr)
+        return dynamic_cast<CommunicationJoinedGroup*>(wrapptr);
+    CommunicationJoinedGroup *wrapper = new CommunicationJoinedGroup( infObject, parent );
+    WrapperStore::insertWrapper( G_OBJECT(infObject), wrapper );
+    return wrapper;
 }
 
 CommunicationJoinedGroup::CommunicationJoinedGroup( InfCommunicationJoinedGroup *infGroup,

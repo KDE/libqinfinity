@@ -112,7 +112,7 @@ QString BrowserIter::path()
 
 Browser *BrowserIter::browser() const
 {
-    return Browser::create( infBrowser() );
+    return Browser::wrap( infBrowser() );
 }
 
 InfcBrowser *BrowserIter::infBrowser() const

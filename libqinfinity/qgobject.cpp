@@ -30,9 +30,14 @@ void QGObject::setGobject( GObject *obj,
     WrapperStore::insertWrapper( obj, this );
 }
 
+bool QGObject::isOwner()
+{
+    return m_own_gobj;
+}
+
 QGObject::QGObject( GObject *obj,
-    bool own_gobj,
-    QObject *parent )
+    QObject *parent,
+    bool own_gobj )
     : QObject( parent )
     , m_gobject( obj )
     , m_own_gobj( own_gobj )

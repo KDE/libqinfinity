@@ -33,13 +33,15 @@ class WrapperStore
         static void insertWrapper( GObject *object,
             QGObject *wrapper );
 
-        static QGObject *getWrapper( GObject *object );
+        static QGObject *getWrapper( GObject *object,
+            bool own_gobject = false );
 
         /**
          * @brief Finds wrapper for obj
          * @return Found wrapper object, or NULL if none fond.
          */
-        QGObject *findWrapper( GObject *obj );
+        QGObject *findWrapper( GObject *obj,
+            bool own_gobject = false );
 
         /**
          * @brief Store wrapper for gobject.
@@ -67,6 +69,7 @@ class WrapperStore
          * should only be one stored wrapper per gobject instance.
          */
         QHash<GObject*, QGObject*> gobjToWrapper;
+        QHash<GObject*, QGObject*> gobjToOwnerWrapper;
 
 };
 

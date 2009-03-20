@@ -15,14 +15,16 @@
 namespace QInfinity
 {
 
-Browser *Browser::create( InfcBrowser *infBrowser,
+QPointer<Browser> Browser::wrap( InfcBrowser *infObject,
     QObject *parent,
     bool own_gobject )
 {
-    WrapperStore *store = WrapperStore::instance();
-    Browser *browser = dynamic_cast<Browser*>(store->findWrapper(
-        G_OBJECT(infBrowser) ));
-    return browser;
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObject), own_gobject );
+    if( wrapptr)
+        return dynamic_cast<Browser*>(wrapptr);
+    Browser *wrapper = new Browser( infObject, parent, own_gobject );
+    WrapperStore::insertWrapper( G_OBJECT(infObject), wrapper );
+    return wrapper;
 }
 
 Browser::Browser( CommunicationManager &comm_manager,
@@ -58,6 +60,14 @@ InfcNodeRequest *Browser::addNote( BrowserIter parent,
         parent.infBrowserIter(), name,
         plugin.infPlugin(),
         initial_subscribe );
+}
+
+Browser::Browser( InfcBrowser *browser,
+    QObject *parent,
+    bool own_gobject )
+    : QGObject( G_OBJECT(browser), parent, own_gobject )
+{
+    setupSignals();
 }
 
 void Browser::setupSignals()

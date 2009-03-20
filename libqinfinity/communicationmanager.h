@@ -23,7 +23,8 @@ class CommunicationManager
          * @brief Create manager making use of object store.
          */
         static QPointer<CommunicationManager> wrap( InfCommunicationManager *infCommManager,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = false );
 
         CommunicationManager( QObject *parent = 0, bool own_gobject = true );
         CommunicationManager( const CommunicationManager &other );
@@ -37,7 +38,9 @@ class CommunicationManager
          * deleted when the CommunicationManager is deleted.  If you dont want
          * to store this CommunicationManager, you can set this to false.
          */
-        CommunicationManager( InfCommunicationManager *infCommManager, QObject *parent = 0 );
+        CommunicationManager( InfCommunicationManager *infCommManager,
+            QObject *parent = 0,
+            bool own_gobject = false );
 
 };
 

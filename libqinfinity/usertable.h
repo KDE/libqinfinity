@@ -5,6 +5,8 @@
 
 #include <libinfinity/common/inf-user-table.h>
 
+#include <QPointer>
+
 namespace QInfinity
 {
 
@@ -13,14 +15,16 @@ class UserTable
 {
 
     public:
-        static UserTable *create( InfUserTable *infUserTable,
-            QObject *parent = 0 );
+        static QPointer<UserTable> wrap( InfUserTable *infUserTable,
+            QObject *parent = 0,
+            bool own_gobject = false );
 
         UserTable( QObject *parent = 0 );
 
     protected:
         UserTable( InfUserTable *infUserTable,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = false );
 
 };
 

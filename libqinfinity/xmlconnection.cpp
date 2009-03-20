@@ -13,10 +13,10 @@ QPointer<XmlConnection> XmlConnection::wrap( InfXmlConnection *infXmlConnection,
     QObject *parent,
     bool own_gobject )
 {
-    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infXmlConnection) );
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infXmlConnection), own_gobject );
     if( wrapptr)
         return dynamic_cast<XmlConnection*>(wrapptr);
-    XmlConnection *connection = new XmlConnection( infXmlConnection, parent );
+    XmlConnection *connection = new XmlConnection( infXmlConnection, parent, own_gobject );
     WrapperStore::insertWrapper( G_OBJECT(infXmlConnection), connection );
     return connection;
 }
@@ -81,7 +81,7 @@ XmlConnection::Status XmlConnection::status() const
 XmlConnection::XmlConnection( InfXmlConnection *infXmlConnection,
     QObject *parent,
     bool own_gobject )
-    : QGObject( G_OBJECT(infXmlConnection), own_gobject, parent )
+    : QGObject( G_OBJECT(infXmlConnection), parent, own_gobject )
 {
     registerSignals();
 }

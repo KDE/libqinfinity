@@ -6,6 +6,8 @@
 #include "noteplugin.h"
 #include "browseriter.h"
 
+#include <QPointer>
+
 typedef struct _InfcBrowser InfcBrowser;
 typedef struct _InfcBrowserIter InfcBrowserIter;
 typedef struct _InfcExploreRequest InfcExploreRequest;
@@ -34,7 +36,7 @@ class Browser
     Q_OBJECT
 
     public:
-        static Browser *create( InfcBrowser *infBrowser,
+        static QPointer<Browser> wrap( InfcBrowser *infBrowser,
             QObject *parent = 0,
             bool own_gobject = false );
 
@@ -53,6 +55,10 @@ class Browser
             NotePlugin &plugin,
             bool initial_subscribe );
 
+    protected:
+        Browser( InfcBrowser *infBrowser,
+            QObject *parent = 0,
+            bool own_gobject = false );
     
     Q_SIGNALS:
         /**

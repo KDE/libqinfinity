@@ -21,16 +21,26 @@ void WrapperStore::insertWrapper( GObject *object,
     store->storeWrapper( object, wrapper );
 }
 
-QGObject *WrapperStore::getWrapper( GObject *object )
+QGObject *WrapperStore::getWrapper( GObject *object,
+    bool own_gobject )
 {
     WrapperStore *store = WrapperStore::instance();
-    return store->findWrapper( object );
+    return store->findWrapper( object, own_gobject );
 }
 
-QGObject *WrapperStore::findWrapper( GObject *obj )
+QGObject *WrapperStore::findWrapper( GObject *obj,
+    bool own_gobject )
 {
-    if( gobjToWrapper.contains( obj ) )
-        return gobjToWrapper[obj];
+    if( own_gobject )
+    {
+        if( gobjToOwnerWrapper.contains( obj ) )
+            return gobjToOwnerWrapper[obj];
+    }
+    else
+    {
+        if( gobjToWrapper.contains( obj ) )
+            return gobjToWrapper[obj];
+    }
     return 0;
 }
 
@@ -38,13 +48,18 @@ void WrapperStore::storeWrapper( GObject *obj,
     QGObject *wrapper )
 {
     QGObject *old_wrapper;
-    if( gobjToWrapper.contains( obj ) )
+    QHash<GObject*, QGObject*> *table;
+    if( wrapper->isOwner() )
+        table = &gobjToOwnerWrapper;
+    else
+        table = &gobjToWrapper;
+    if( table->contains( obj ) )
     {
-        old_wrapper = gobjToWrapper[obj];
+        old_wrapper = (*table)[obj];
         removeWrapper( old_wrapper );
         delete old_wrapper;
     }
-    gobjToWrapper[obj] = wrapper;
+    (*table)[obj] = wrapper;
     connect( wrapper, SIGNAL(destroyed( QObject* )),
         this, SLOT(slotWrapperDeleted( QObject* )) );
 }
@@ -64,6 +79,8 @@ void WrapperStore::slotWrapperDeleted( QObject *wrapper )
 
 void WrapperStore::removeWrapper( QGObject *wrapper )
 {
+    if( wrapper->isOwner() )
+        gobjToOwnerWrapper.remove( wrapper->gobject() );
     gobjToWrapper.remove( wrapper->gobject() );
 }
 

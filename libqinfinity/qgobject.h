@@ -22,11 +22,12 @@ class QGObject
         GObject *gobject() const;
         void setGobject( GObject *obj,
             bool own_gobj = true );
+        bool isOwner();
 
     protected:
         QGObject( GObject *obj,
-            bool own_gobj = true,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobj = true );
 
     private:
         GObject *m_gobject;

@@ -27,7 +27,8 @@ class TcpConnection
         };
 
         static QPointer<TcpConnection> wrap( InfTcpConnection *infTcpConnection,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = false );
 
         TcpConnection( const IpAddress &ipAddress,
             unsigned int port,
@@ -44,7 +45,8 @@ class TcpConnection
 
     protected:
         TcpConnection( InfTcpConnection *infTcpConnection,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = false );
     
     private:
         void setupSignals();
