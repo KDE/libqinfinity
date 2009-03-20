@@ -5,14 +5,16 @@
 namespace QInfinity
 {
 
-TextBuffer *TextBuffer::create( InfTextBuffer *infBuffer,
-    QObject *parent )
+QPointer<TextBuffer> TextBuffer::wrap( InfTextBuffer *infObject,
+    QObject *parent,
+    bool own_gobject )
 {
-    WrapperStore *store = WrapperStore::instance();
-    TextBuffer *buffer = dynamic_cast<TextBuffer*>(store->findWrapper( G_OBJECT(infBuffer) ));
-    if( !buffer )
-        buffer = new TextBuffer( infBuffer, parent );
-    return buffer;
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObject), own_gobject );
+    if( wrapptr)
+        return dynamic_cast<TextBuffer*>(wrapptr);
+    TextBuffer *wrapper = new TextBuffer( infObject, parent, own_gobject );
+    WrapperStore::insertWrapper( G_OBJECT(infObject), wrapper );
+    return wrapper;
 }
 
 QString TextBuffer::encoding()
@@ -33,8 +35,9 @@ TextChunk *TextBuffer::slice( unsigned int pos,
 }
 
 TextBuffer::TextBuffer( InfTextBuffer *infBuffer,
-    QObject *parent )
-    : Buffer( INF_BUFFER(infBuffer), parent )
+    QObject *parent,
+    bool own_gobject )
+    : Buffer( INF_BUFFER(infBuffer), parent, own_gobject )
 {
 }
 

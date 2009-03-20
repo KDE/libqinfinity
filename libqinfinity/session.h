@@ -41,10 +41,8 @@ class Session
 
         static Status infStatusToCpp( InfSessionStatus );
         static QPointer<Session> wrap( InfSession *session,
-            QObject *parent = 0 );
-
-        Session( InfSession *infSession,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = false );
 
         CommunicationManager *communicationManager() const;
         void close();
@@ -57,6 +55,11 @@ class Session
         void synchronizationBegin();
         void synchronizationComplete();
         void synchronizationFailed( GError *error );
+
+    protected:
+        Session( InfSession *infSession,
+            QObject *parent = 0,
+            bool own_gobject = false );
 
     private:
         void setupSignals();

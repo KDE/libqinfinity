@@ -10,12 +10,10 @@ QPointer<CommunicationManager> CommunicationManager::wrap( InfCommunicationManag
     QObject *parent,
     bool own_gobject )
 {
-    if( own_gobject )
-        return new CommunicationManager( infCommManager, parent, true );
-    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infCommManager) );
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infCommManager), own_gobject );
     if( wrapptr)
         return dynamic_cast<CommunicationManager*>(wrapptr);
-    CommunicationManager *mgr = new CommunicationManager( infCommManager, parent );
+    CommunicationManager *mgr = new CommunicationManager( infCommManager, parent, own_gobject );
     WrapperStore::insertWrapper( G_OBJECT(infCommManager), mgr );
     return mgr;
 }

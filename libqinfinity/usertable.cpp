@@ -8,12 +8,10 @@ QPointer<UserTable> UserTable::wrap( InfUserTable *infObject,
     QObject *parent,
     bool own_gobject )
 {
-    if( own_gobject )
-        return new UserTable( infObject, parent, true );
-    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObject) );
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObject), own_gobject );
     if( wrapptr)
         return dynamic_cast<UserTable*>(wrapptr);
-    UserTable *wrapper = new UserTable( infObject, parent, false );
+    UserTable *wrapper = new UserTable( infObject, parent, own_gobject );
     WrapperStore::insertWrapper( G_OBJECT(infObject), wrapper );
     return wrapper;
 }

@@ -16,11 +16,13 @@ class Buffer
 
     public:
         static QPointer<Buffer> wrap( InfBuffer *buffer,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = false );
 
     protected:
         Buffer( InfBuffer *buffer,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = false );
 
 };
 

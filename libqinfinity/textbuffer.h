@@ -5,6 +5,8 @@
 
 #include <libinftext/inf-text-buffer.h>
 
+#include <QPointer>
+
 namespace QInfinity
 {
 
@@ -15,8 +17,9 @@ class TextBuffer
 {
 
     public:
-        static TextBuffer *create( InfTextBuffer *infBuffer,
-            QObject *parent = 0 );
+        static QPointer<TextBuffer> wrap( InfTextBuffer *infBuffer,
+            QObject *parent = 0,
+            bool own_gobject = false );
         
         QString encoding();
         unsigned int length();
@@ -34,7 +37,8 @@ class TextBuffer
 
     protected:
         TextBuffer( InfTextBuffer *infBuffer,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = false );
 
 };
 

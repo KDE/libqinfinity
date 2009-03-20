@@ -16,7 +16,8 @@ class CommunicationJoinedGroup
 
     public:
         static QPointer<CommunicationJoinedGroup> wrap( InfCommunicationJoinedGroup *infGroup,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobject = false );
 
     protected:
         CommunicationJoinedGroup( InfCommunicationJoinedGroup *infGroup,

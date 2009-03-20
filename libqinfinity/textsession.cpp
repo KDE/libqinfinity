@@ -8,15 +8,17 @@
 
 namespace QInfinity
 {
-
-TextSession *TextSession::create( InfTextSession *infSession,
-    QObject *parent )
+ 
+QPointer<TextSession> TextSession::wrap( InfTextSession *infObject,
+    QObject *parent,
+    bool own_gobject )
 {
-    WrapperStore *store = WrapperStore::instance();
-    TextSession *session = dynamic_cast<TextSession*>(store->findWrapper( G_OBJECT(infSession) ));
-    if( !session )
-        session = new TextSession( infSession, parent );
-    return session;
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObject), own_gobject );
+    if( wrapptr)
+        return dynamic_cast<TextSession*>(wrapptr);
+    TextSession *wrapper = new TextSession( infObject, parent, own_gobject );
+    WrapperStore::insertWrapper( G_OBJECT(infObject), wrapper );
+    return wrapper;
 }
 
 TextSession::TextSession( CommunicationManager &commMgr,
@@ -38,12 +40,13 @@ Session::Type TextSession::type() const
 
 Buffer *TextSession::buffer() const
 {
-    return TextBuffer::create( INF_TEXT_BUFFER( inf_session_get_buffer( INF_SESSION(gobject()) ) ) );
+    return TextBuffer::wrap( INF_TEXT_BUFFER( inf_session_get_buffer( INF_SESSION(gobject()) ) ) );
 }
 
 TextSession::TextSession( InfTextSession *infSession,
-    QObject *parent )
-    : Session( INF_SESSION(infSession), parent )
+    QObject *parent,
+    bool own_gobject )
+    : Session( INF_SESSION(infSession), parent, own_gobject )
 {
 }
 

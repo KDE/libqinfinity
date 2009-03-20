@@ -8,12 +8,13 @@ namespace QInfinity
 {
 
 QPointer<Session> Session::wrap( InfSession *infObj,
-    QObject *parent )
+    QObject *parent,
+    bool own_gobject )
 {
-    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObj) );
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObj), own_gobject );
     if( wrapptr)
         return dynamic_cast<Session*>(wrapptr);
-    Session *wrapper = new Session( infObj, parent );
+    Session *wrapper = new Session( infObj, parent, own_gobject );
     WrapperStore::insertWrapper( G_OBJECT(infObj), wrapper );
     return wrapper;
 }
@@ -35,13 +36,6 @@ Session::Status Session::infStatusToCpp( InfSessionStatus infStatus )
     }
 
     return status;
-}
-
-Session::Session( InfSession *infSession,
-    QObject *parent )
-    : QGObject( G_OBJECT(infSession), false, parent )
-{
-    setupSignals();
 }
 
 CommunicationManager *Session::communicationManager() const
@@ -71,6 +65,14 @@ Session::Type Session::type() const
 Buffer *Session::buffer() const
 {
     return Buffer::wrap( inf_session_get_buffer( INF_SESSION(gobject()) ) );
+}
+
+Session::Session( InfSession *infSession,
+    QObject *parent,
+    bool own_gobject )
+    : QGObject( G_OBJECT(infSession), parent, own_gobject )
+{
+    setupSignals();
 }
 
 void Session::setupSignals()

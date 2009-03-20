@@ -5,6 +5,8 @@
 
 #include <libinftext/inf-text-session.h>
 
+#include <QPointer>
+
 namespace QInfinity
 {
 
@@ -18,8 +20,9 @@ class TextSession
 {
 
     public:
-        static TextSession *create( InfTextSession *infSession,
-            QObject *parent = 0 );
+        static QPointer<TextSession> wrap( InfTextSession *infSession,
+            QObject *parent = 0,
+            bool own_gobj = false );
     
         TextSession( CommunicationManager &commMgr,
             TextBuffer &textBuffer,
@@ -31,7 +34,8 @@ class TextSession
 
     protected:
         TextSession( InfTextSession *infSession,
-            QObject *parent = 0 );
+            QObject *parent = 0,
+            bool own_gobj = false );
 
 };
 
