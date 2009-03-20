@@ -74,8 +74,68 @@ UserTable::UserTable( InfUserTable *infUserTable,
     setupSignals();
 }
 
+void UserTable::addLocalUserCb( InfUserTable *infUserTable,
+    InfUser *infUser,
+    void *user_data )
+{
+    UserTable *table = static_cast<UserTable*>(user_data);
+    table->emitLocalUserAdded( User::wrap( infUser, table ) );
+}
+
+void UserTable::removeLocalUserCb( InfUserTable *infUserTable,
+    InfUser *infUser,
+    void *user_data )
+{
+    UserTable *table = static_cast<UserTable*>(user_data);
+    table->emitLocalUserRemoved( User::wrap( infUser, table ) );
+}
+
+void UserTable::addUserCb( InfUserTable *infUserTable,
+    InfUser *infUser,
+    void *user_data )
+{
+    UserTable *table = static_cast<UserTable*>(user_data);
+    table->emitUserAdded( User::wrap( infUser, table ) );
+}
+
+void UserTable::removeUserCb( InfUserTable *infUserTable,
+    InfUser *infUser,
+    void *user_data )
+{
+    UserTable *table = static_cast<UserTable*>(user_data);
+    table->emitUserRemoved( User::wrap( infUser, table ) );
+}
+
+void UserTable::emitLocalUserAdded( User *user )
+{
+    emit( localUserAdded( user ) );
+}
+
+void UserTable::emitLocalUserRemoved( User *user )
+{
+    emit( localUserRemoved( user ) );
+}
+
+void UserTable::emitUserAdded( User *user )
+{
+    emit( userAdded( user ) );
+}
+
+void UserTable::emitUserRemoved( User *user )
+{
+    emit( userRemoved( user ) );
+}
+
 void UserTable::setupSignals()
 {
+    g_signal_connect( gobject(), "add-local-user",
+        G_CALLBACK(UserTable::addLocalUserCb), this );
+    g_signal_connect( gobject(), "remove-local-user",
+        G_CALLBACK(UserTable::removeLocalUserCb), this );
+    g_signal_connect( gobject(), "add-user",
+        G_CALLBACK(UserTable::addUserCb), this );
+    g_signal_connect( gobject(), "remove-user",
+        G_CALLBACK(UserTable::removeUserCb), this );
 }
 
 }

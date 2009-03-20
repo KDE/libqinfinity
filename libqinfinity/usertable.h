@@ -40,6 +40,24 @@ class UserTable
             bool own_gobject = false );
     
     private:
+        static void addLocalUserCb( InfUserTable *infUserTable,
+            InfUser *infUser,
+            void *user_data );
+        static void removeLocalUserCb( InfUserTable *infUserTable,
+            InfUser *infUser,
+            void *user_data );
+        static void addUserCb( InfUserTable *infUserTable,
+            InfUser *infUser,
+            void *user_data );
+        static void removeUserCb( InfUserTable *infUserTable,
+            InfUser *infUser,
+            void *user_data );
+
+        void emitLocalUserAdded( User *user );
+        void emitLocalUserRemoved( User *user );
+        void emitUserAdded( User *user );
+        void emitUserRemoved( User *user );
+
         void setupSignals();
 
 };
