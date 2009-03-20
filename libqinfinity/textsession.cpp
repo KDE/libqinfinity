@@ -6,8 +6,6 @@
 #include "communicationjoinedgroup.h"
 #include "xmlconnection.h"
 
-#include <libinfinity/client/infc-session-proxy.h>
-
 #include <glib-object.h>
 
 namespace QInfinity
@@ -59,14 +57,15 @@ InfcUserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
     g_value_set_uint( &params[3].value, caretPosition );
     g_value_set_enum( &params[4].value, User::convertStatus( userStatus ) );
 
-    InfcUserRequest *req = infc_session_proxy_join_user( INFC_SESSION_PROXY(proxy->gobject()),
-        params, 5, 0 );
+    InfcUserRequest *req = proxy->joinUser( params, 5, 0 );
 
     g_value_unset(&params[0].value);
     g_value_unset(&params[1].value);
     g_value_unset(&params[2].value);
     g_value_unset(&params[3].value);
     g_value_unset(&params[4].value);
+
+    return req;
 }
 
 TextSession::TextSession( CommunicationManager &commMgr,
