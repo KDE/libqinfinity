@@ -110,7 +110,7 @@ QString BrowserIter::path()
         return infc_browser_iter_get_path( m_infBrowser, &m_infBrowserIter );
 }
 
-Browser *BrowserIter::browser() const
+QPointer<Browser> BrowserIter::browser() const
 {
     return Browser::wrap( infBrowser() );
 }

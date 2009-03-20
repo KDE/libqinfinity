@@ -36,7 +36,7 @@ class XmlConnection
         bool own_gobject = false );
 
         ~XmlConnection();
-        TcpConnection *tcpConnection();
+        QPointer<TcpConnection> tcpConnection();
 
         void close();
         Status status() const;

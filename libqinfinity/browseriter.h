@@ -4,6 +4,7 @@
 #include <libinfinity/client/infc-browser.h>
 
 #include <QString>
+#include <QPointer>
 
 namespace QInfinity
 {
@@ -43,7 +44,7 @@ class BrowserIter
         bool isExplored();
         QString name();
         QString path();
-        Browser *browser() const;
+        QPointer<Browser> browser() const;
         InfcBrowser *infBrowser() const;
         const InfcBrowserIter *infBrowserIter() const;
         InfcBrowserIter *infBrowserIter();

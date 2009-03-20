@@ -5,6 +5,8 @@
 
 #include <libinfinity/common/inf-user.h>
 
+#include <QPointer>
+
 namespace QInfinity
 {
 
@@ -20,8 +22,9 @@ class User
             Unavailable
         };
 
-        static User *create( InfUser *infUser,
-            QObject *parent = 0 );
+        static QPointer<User> wrap( InfUser *infUser,
+            QObject *parent = 0,
+            bool own_gobject = false );
 
         unsigned int id();
         QString name();
@@ -32,7 +35,8 @@ class User
         static InfUserStatus convertStatus( Status status );
 
         User( InfUser *infUser,
-           QObject *parent = 0 );
+           QObject *parent = 0,
+           bool own_gobject = false );
 
 };
 

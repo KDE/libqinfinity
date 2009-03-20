@@ -4,14 +4,16 @@
 namespace QInfinity
 {
 
-User *User::create( InfUser *infUser,
-    QObject *parent )
+QPointer<User> User::wrap( InfUser *infObject,
+    QObject *parent,
+    bool own_gobject )
 {
-    WrapperStore *store = WrapperStore::instance();
-    User *user = dynamic_cast<User*>(store->findWrapper( G_OBJECT(infUser) ));
-    if( !user )
-        user = new User( infUser, parent );
-    return user;
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObject), own_gobject );
+    if( wrapptr)
+        return dynamic_cast<User*>(wrapptr);
+    User *wrapper = new User( infObject, parent, own_gobject );
+    WrapperStore::insertWrapper( G_OBJECT(infObject), wrapper );
+    return wrapper;
 }
 
 unsigned int User::id()
@@ -64,8 +66,9 @@ InfUserStatus User::convertStatus( Status status )
 }
 
 User::User( InfUser *infUser,
-    QObject *parent )
-    : QGObject( G_OBJECT(infUser) )
+    QObject *parent,
+    bool own_gobject )
+    : QGObject( G_OBJECT(infUser), parent, own_gobject )
 {
 }
 

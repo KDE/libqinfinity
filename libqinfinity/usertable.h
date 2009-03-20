@@ -2,10 +2,12 @@
 #define QINFINITY_USER_TABLE_H
 
 #include "qgobject.h"
+#include "user.h"
 
 #include <libinfinity/common/inf-user-table.h>
 
 #include <QPointer>
+#include <QList>
 
 namespace QInfinity
 {
@@ -13,6 +15,7 @@ namespace QInfinity
 class UserTable
     : public QGObject
 {
+    Q_OBJECT;
 
     public:
         static QPointer<UserTable> wrap( InfUserTable *infUserTable,
@@ -20,11 +23,24 @@ class UserTable
             bool own_gobject = false );
 
         UserTable( QObject *parent = 0 );
+        QPointer<User> lookupUser( unsigned int id );
+        QPointer<User> lookupUser( const QString &name );
+        QList<QPointer<User> > localUsers();
+        QList<QPointer<User> > users();
+
+    Q_SIGNALS:
+        void localUserAdded( User *user );
+        void localUserRemoved( User *user );
+        void userAdded( User *user );
+        void userRemoved( User *user );
 
     protected:
         UserTable( InfUserTable *infUserTable,
             QObject *parent = 0,
             bool own_gobject = false );
+    
+    private:
+        void setupSignals();
 
 };
 

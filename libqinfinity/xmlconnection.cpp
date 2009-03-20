@@ -27,7 +27,7 @@ XmlConnection::~XmlConnection()
         close();
 }
 
-TcpConnection *XmlConnection::tcpConnection()
+QPointer<TcpConnection> XmlConnection::tcpConnection()
 {
     InfTcpConnection *infTcpConnection;
 
@@ -35,7 +35,7 @@ TcpConnection *XmlConnection::tcpConnection()
         "tcp-connection", &infTcpConnection,
         NULL );
 
-    return dynamic_cast<TcpConnection*>(WrapperStore::instance()->findWrapper( G_OBJECT(infTcpConnection) ));
+    return TcpConnection::wrap( infTcpConnection );
 }
 
 void XmlConnection::close()
