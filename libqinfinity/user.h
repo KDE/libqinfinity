@@ -25,14 +25,14 @@ class User
         static QPointer<User> wrap( InfUser *infUser,
             QObject *parent = 0,
             bool own_gobject = false );
+        static Status convertStatus( InfUserStatus status );
+        static InfUserStatus convertStatus( Status status );
 
         unsigned int id();
         QString name();
         Status status();
 
     protected:
-        static Status convertStatus( InfUserStatus status );
-        static InfUserStatus convertStatus( Status status );
 
         User( InfUser *infUser,
            QObject *parent = 0,

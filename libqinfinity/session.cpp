@@ -62,7 +62,7 @@ Session::Type Session::type() const
     return BaseSession;
 }
 
-Buffer *Session::buffer() const
+QPointer<Buffer> Session::buffer() const
 {
     return Buffer::wrap( inf_session_get_buffer( INF_SESSION(gobject()) ) );
 }

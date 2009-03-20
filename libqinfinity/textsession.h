@@ -2,7 +2,10 @@
 #define QINFINITY_TEXT_SESSION_H
 
 #include "session.h"
+#include "sessionproxy.h"
+#include "user.h"
 
+#include <libinfinity/client/infc-user-request.h>
 #include <libinftext/inf-text-session.h>
 
 #include <QPointer>
@@ -23,6 +26,15 @@ class TextSession
         static QPointer<TextSession> wrap( InfTextSession *infSession,
             QObject *parent = 0,
             bool own_gobj = false );
+
+        /**
+         * @brief Convenience method for joining a session.
+         */
+        static InfcUserRequest *joinUser( QPointer<SessionProxy> proxy,
+            const QString &name,
+            double hue,
+            unsigned int caretPosition = 0,
+            User::Status userStatus = User::Active );
     
         TextSession( CommunicationManager &commMgr,
             TextBuffer &textBuffer,
@@ -30,7 +42,7 @@ class TextSession
             XmlConnection &connection );
 
         Session::Type type() const;
-        Buffer *buffer() const;
+        QPointer<Buffer> buffer() const;
 
     protected:
         TextSession( InfTextSession *infSession,

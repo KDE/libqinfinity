@@ -48,7 +48,7 @@ class Session
         void close();
         Status status() const;
         virtual Type type() const;
-        virtual Buffer *buffer() const;
+        virtual QPointer<Buffer> buffer() const;
 
     Q_SIGNALS:
         void closing();
