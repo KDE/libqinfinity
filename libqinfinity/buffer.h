@@ -5,6 +5,8 @@
 
 #include <libinfinity/common/inf-buffer.h>
 
+#include <QPointer>
+
 namespace QInfinity
 {
 
@@ -13,8 +15,10 @@ class Buffer
 {
 
     public:
-        static Buffer *create( InfBuffer *buffer );
+        static QPointer<Buffer> wrap( InfBuffer *buffer,
+            QObject *parent = 0 );
 
+    protected:
         Buffer( InfBuffer *buffer,
             QObject *parent = 0 );
 

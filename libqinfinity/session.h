@@ -7,6 +7,7 @@
 #include <libinfinity/common/inf-session.h>
 
 #include <QObject>
+#include <QPointer>
 
 typedef struct _InfSession InfSession;
 
@@ -39,7 +40,7 @@ class Session
         };
 
         static Status infStatusToCpp( InfSessionStatus );
-        static Session *create( InfSession *session,
+        static QPointer<Session> wrap( InfSession *session,
             QObject *parent = 0 );
 
         Session( InfSession *infSession,

@@ -13,7 +13,7 @@ namespace QInfinity
 NotePlugin::NotePlugin( QString name, QObject *parent )
     : QObject( parent )
 {
-    m_name = new char(name.size()+1);
+    m_name = new char[name.size()+1];
     strcpy(m_name, name.toAscii());
     m_infPlugin.note_type = m_name;
     m_infPlugin.session_new = NotePlugin::create_session_cb;
@@ -32,9 +32,9 @@ InfSession *NotePlugin::create_session_cb( InfIo *io,
     void *user_data )
 {
     NotePlugin *plugin = static_cast<NotePlugin*>(user_data);
-    CommunicationManager *commMgr = CommunicationManager::create( comm_mgr );
+    CommunicationManager *commMgr = CommunicationManager::wrap( comm_mgr );
     CommunicationJoinedGroup *joinedGroup = CommunicationJoinedGroup::create( sync_group );
-    XmlConnection *connection = XmlConnection::create( sync_connection );
+    XmlConnection *connection = XmlConnection::wrap( sync_connection );
     Session *session =  plugin->createSession( commMgr, joinedGroup, connection );
     return INF_SESSION(session->gobject());
 }

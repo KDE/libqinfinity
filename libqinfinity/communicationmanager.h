@@ -4,6 +4,7 @@
 #include "qgobject.h"
 
 #include <QObject>
+#include <QPointer>
 
 typedef struct _InfCommunicationManager InfCommunicationManager;
 
@@ -18,15 +19,15 @@ class CommunicationManager
 {
 
     public:
-        static CommunicationManager *create( QObject *parent = 0 );
         /**
          * @brief Create manager making use of object store.
          */
-        static CommunicationManager *create( InfCommunicationManager *inf_mgr,
-            QObject *parent = 0,
-            bool own_gobject = true );
+        static QPointer<CommunicationManager> wrap( InfCommunicationManager *infCommManager,
+            QObject *parent = 0 );
 
         CommunicationManager( QObject *parent = 0, bool own_gobject = true );
+        CommunicationManager( const CommunicationManager &other );
+
     protected:
         /**
          * @brief Create a new Communication Manager.
@@ -37,7 +38,6 @@ class CommunicationManager
          * to store this CommunicationManager, you can set this to false.
          */
         CommunicationManager( InfCommunicationManager *infCommManager, QObject *parent = 0 );
-        CommunicationManager( const CommunicationManager &other );
 
 };
 

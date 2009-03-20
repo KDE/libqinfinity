@@ -17,14 +17,16 @@ class QGObject
 
     public:
         QGObject( QObject *parent = 0 );
-        QGObject( GObject *obj,
-            bool own_gobj = true,
-            QObject *parent = 0 );
         ~QGObject();
 
         GObject *gobject() const;
         void setGobject( GObject *obj,
             bool own_gobj = true );
+
+    protected:
+        QGObject( GObject *obj,
+            bool own_gobj = true,
+            QObject *parent = 0 );
 
     private:
         GObject *m_gobject;

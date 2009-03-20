@@ -6,11 +6,13 @@
 #include "qgobject.h"
 
 #include <QObject>
+#include <QPointer>
 
 namespace QInfinity
 {
 
 class TcpConnection;
+
 
 class XmlConnection
     : public QGObject
@@ -26,18 +28,23 @@ class XmlConnection
             Opening
         };
 
-        static XmlConnection *create( InfXmlConnection *infConnection,
-            QObject *parent = 0,
-            bool own_gobject = false );
+    /**
+     * @brief Returns wrapper XmlConnection 
+     */
+    static QPointer<XmlConnection> wrap( InfXmlConnection *infConnection,
+        QObject *parent = 0,
+        bool own_gobject = false );
 
-        XmlConnection( InfXmlConnection *infXmlConnection,
-            QObject *parent = 0,
-            bool own_gobject = true );
         ~XmlConnection();
         TcpConnection *tcpConnection();
 
         void close();
         Status status() const;
+
+    protected:
+        XmlConnection( InfXmlConnection *infXmlConnection,
+            QObject *parent = 0,
+            bool own_gobject = true );
 
     Q_SIGNALS:
         void statusChanged();

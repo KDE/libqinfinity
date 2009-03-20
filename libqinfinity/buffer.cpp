@@ -4,12 +4,14 @@
 namespace QInfinity
 {
 
-Buffer *Buffer::create( InfBuffer *infBuffer )
+QPointer<Buffer> Buffer::wrap( InfBuffer *infBuffer,
+    QObject *parent )
 {
-    WrapperStore *store = WrapperStore::instance();
-    Buffer *buffer = dynamic_cast<Buffer*>(store->findWrapper( G_OBJECT(infBuffer) ));
-    if( !buffer )
-        return new Buffer( infBuffer );
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infBuffer) );
+    if( wrapptr)
+        return dynamic_cast<Buffer*>(wrapptr);
+    Buffer *buffer = new Buffer( infBuffer, parent );
+    WrapperStore::insertWrapper( G_OBJECT(infBuffer), buffer );
     return buffer;
 }
 

@@ -11,17 +11,6 @@ QGObject::QGObject( QObject *parent )
 {
 }
 
-QGObject::QGObject( GObject *obj,
-    bool own_gobj,
-    QObject *parent )
-    : QObject( parent )
-    , m_gobject( obj )
-    , m_own_gobj( own_gobj )
-{
-    WrapperStore *store = WrapperStore::instance();
-    store->storeWrapper( obj, this, true );
-}
-
 QGObject::~QGObject()
 {
     if( m_own_gobj && m_gobject )
@@ -38,8 +27,17 @@ void QGObject::setGobject( GObject *obj,
 {
     m_gobject = obj;
     m_own_gobj = own_gobj;
-    WrapperStore *store = WrapperStore::instance();
-    store->storeWrapper( obj, this, true );
+    WrapperStore::insertWrapper( obj, this );
+}
+
+QGObject::QGObject( GObject *obj,
+    bool own_gobj,
+    QObject *parent )
+    : QObject( parent )
+    , m_gobject( obj )
+    , m_own_gobj( own_gobj )
+{
+    WrapperStore::insertWrapper( obj, this );
 }
 
 }

@@ -9,23 +9,16 @@
 namespace QInfinity
 {
 
-XmlConnection *XmlConnection::create( InfXmlConnection *infXmlConnection,
+QPointer<XmlConnection> XmlConnection::wrap( InfXmlConnection *infXmlConnection,
     QObject *parent,
     bool own_gobject )
 {
-    WrapperStore *store = WrapperStore::instance();
-    XmlConnection *connection = dynamic_cast<XmlConnection*>(store->findWrapper( G_OBJECT(infXmlConnection) ));
-    if( !connection )
-        connection = new XmlConnection( infXmlConnection, parent );
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infXmlConnection) );
+    if( wrapptr)
+        return dynamic_cast<XmlConnection*>(wrapptr);
+    XmlConnection *connection = new XmlConnection( infXmlConnection, parent );
+    WrapperStore::insertWrapper( G_OBJECT(infXmlConnection), connection );
     return connection;
-}
-
-XmlConnection::XmlConnection( InfXmlConnection *infXmlConnection,
-    QObject *parent,
-    bool own_gobject )
-    : QGObject( G_OBJECT(infXmlConnection), own_gobject, parent )
-{
-    registerSignals();
 }
 
 XmlConnection::~XmlConnection()
@@ -83,6 +76,14 @@ XmlConnection::Status XmlConnection::status() const
     }
 
     return status;
+}
+
+XmlConnection::XmlConnection( InfXmlConnection *infXmlConnection,
+    QObject *parent,
+    bool own_gobject )
+    : QGObject( G_OBJECT(infXmlConnection), own_gobject, parent )
+{
+    registerSignals();
 }
 
 void XmlConnection::registerSignals()

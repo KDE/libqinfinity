@@ -6,14 +6,14 @@
 namespace QInfinity
 {
 
-CommunicationManager *CommunicationManager::create( InfCommunicationManager *inf_mgr,
-    QObject *parent,
-    bool own_gobject )
+QPointer<CommunicationManager> CommunicationManager::wrap( InfCommunicationManager *infCommManager,
+    QObject *parent )
 {
-    WrapperStore *store = WrapperStore::instance();
-    CommunicationManager *mgr = dynamic_cast<CommunicationManager*>(store->findWrapper( G_OBJECT(inf_mgr) ));
-    if( !mgr )
-        mgr = new CommunicationManager( inf_mgr, parent );
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infCommManager) );
+    if( wrapptr)
+        return dynamic_cast<CommunicationManager*>(wrapptr);
+    CommunicationManager *mgr = new CommunicationManager( infCommManager, parent );
+    WrapperStore::insertWrapper( G_OBJECT(infCommManager), mgr );
     return mgr;
 }
 

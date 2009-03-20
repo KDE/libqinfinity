@@ -1,9 +1,21 @@
 #include "tcpconnection.h"
+#include "wrapperstore.h"
 
 #include "tcpconnection.moc"
 
 namespace QInfinity
 {
+
+QPointer<TcpConnection> TcpConnection::wrap( InfTcpConnection *infTcpConnection,
+    QObject *parent )
+{
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infTcpConnection) );
+    if( wrapptr)
+        return dynamic_cast<TcpConnection*>(wrapptr);
+    TcpConnection *connection = new TcpConnection( infTcpConnection, parent );
+    WrapperStore::insertWrapper( G_OBJECT(infTcpConnection), connection );
+    return connection;
+}
 
 TcpConnection::TcpConnection( const IpAddress &address,
     unsigned int port,
@@ -66,6 +78,12 @@ TcpConnection::Status TcpConnection::status() const
     }
 
     return status;
+}
+
+TcpConnection::TcpConnection( InfTcpConnection *infTcpConnection,
+    QObject *parent )
+    : QGObject( G_OBJECT(infTcpConnection), parent )
+{
 }
 
 void TcpConnection::setupSignals()

@@ -8,6 +8,7 @@
 #include "ipaddress.h"
 
 #include <QObject>
+#include <QPointer>
 
 namespace QInfinity
 {
@@ -25,6 +26,9 @@ class TcpConnection
             Closed
         };
 
+        static QPointer<TcpConnection> wrap( InfTcpConnection *infTcpConnection,
+            QObject *parent = 0 );
+
         TcpConnection( const IpAddress &ipAddress,
             unsigned int port,
             QObject *parent = 0,
@@ -37,6 +41,10 @@ class TcpConnection
     
     Q_SIGNALS:
         void statusChanged();
+
+    protected:
+        TcpConnection( InfTcpConnection *infTcpConnection,
+            QObject *parent = 0 );
     
     private:
         void setupSignals();
