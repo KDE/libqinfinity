@@ -14,11 +14,10 @@ WrapperStore *WrapperStore::instance()
     return &store;
 }
 
-void WrapperStore::insertWrapper( GObject *object,
-    QGObject *wrapper )
+void WrapperStore::insertWrapper( QGObject *wrapper )
 {
     WrapperStore *store = WrapperStore::instance();
-    store->storeWrapper( object, wrapper );
+    store->storeWrapper( wrapper );
 }
 
 QGObject *WrapperStore::getWrapper( GObject *object,
@@ -44,9 +43,9 @@ QGObject *WrapperStore::findWrapper( GObject *obj,
     return 0;
 }
 
-void WrapperStore::storeWrapper( GObject *obj,
-    QGObject *wrapper )
+void WrapperStore::storeWrapper( QGObject *wrapper )
 {
+    GObject *obj = wrapper->gobject();
     QGObject *old_wrapper;
     QHash<GObject*, QGObject*> *table;
     if( wrapper->isOwner() )

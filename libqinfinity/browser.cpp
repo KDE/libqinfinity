@@ -23,7 +23,6 @@ QPointer<Browser> Browser::wrap( InfcBrowser *infObject,
     if( wrapptr)
         return dynamic_cast<Browser*>(wrapptr);
     Browser *wrapper = new Browser( infObject, parent, own_gobject );
-    WrapperStore::insertWrapper( G_OBJECT(infObject), wrapper );
     return wrapper;
 }
 

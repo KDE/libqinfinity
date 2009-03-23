@@ -12,7 +12,6 @@ QPointer<User> User::wrap( InfUser *infObject,
     if( wrapptr)
         return dynamic_cast<User*>(wrapptr);
     User *wrapper = new User( infObject, parent, own_gobject );
-    WrapperStore::insertWrapper( G_OBJECT(infObject), wrapper );
     return wrapper;
 }
 

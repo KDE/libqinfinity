@@ -12,7 +12,6 @@ QPointer<Buffer> Buffer::wrap( InfBuffer *infBuffer,
     if( wrapptr)
         return dynamic_cast<Buffer*>(wrapptr);
     Buffer *buffer = new Buffer( infBuffer, parent, own_gobject );
-    WrapperStore::insertWrapper( G_OBJECT(infBuffer), buffer );
     return buffer;
 }
 

@@ -15,7 +15,6 @@ QPointer<Session> Session::wrap( InfSession *infObj,
     if( wrapptr)
         return dynamic_cast<Session*>(wrapptr);
     Session *wrapper = new Session( infObj, parent, own_gobject );
-    WrapperStore::insertWrapper( G_OBJECT(infObj), wrapper );
     return wrapper;
 }
 

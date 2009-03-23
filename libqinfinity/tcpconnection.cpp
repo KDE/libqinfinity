@@ -14,7 +14,6 @@ QPointer<TcpConnection> TcpConnection::wrap( InfTcpConnection *infTcpConnection,
     if( wrapptr)
         return dynamic_cast<TcpConnection*>(wrapptr);
     TcpConnection *connection = new TcpConnection( infTcpConnection, parent, own_gobject );
-    WrapperStore::insertWrapper( G_OBJECT(infTcpConnection), connection );
     return connection;
 }
 

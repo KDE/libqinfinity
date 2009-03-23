@@ -32,9 +32,9 @@ InfSession *NotePlugin::create_session_cb( InfIo *io,
     void *user_data )
 {
     NotePlugin *plugin = static_cast<NotePlugin*>(user_data);
-    CommunicationManager *commMgr = CommunicationManager::wrap( comm_mgr );
-    CommunicationJoinedGroup *joinedGroup = CommunicationJoinedGroup::wrap( sync_group );
-    XmlConnection *connection = XmlConnection::wrap( sync_connection );
+    CommunicationManager *commMgr = CommunicationManager::wrap( comm_mgr, plugin );
+    CommunicationJoinedGroup *joinedGroup = CommunicationJoinedGroup::wrap( sync_group, plugin );
+    XmlConnection *connection = XmlConnection::wrap( sync_connection, plugin );
     Session *session =  plugin->createSession( commMgr, joinedGroup, connection );
     return INF_SESSION(session->gobject());
 }

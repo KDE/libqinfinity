@@ -17,12 +17,12 @@ class CommunicationJoinedGroup
     public:
         static QPointer<CommunicationJoinedGroup> wrap( InfCommunicationJoinedGroup *infGroup,
             QObject *parent = 0,
-            bool own_gobject = false );
+            bool own_gobject = true );
 
     protected:
         CommunicationJoinedGroup( InfCommunicationJoinedGroup *infGroup,
             QObject *parent = 0,
-            bool own_gobject = false );
+            bool own_gobject = true );
 
 };
 

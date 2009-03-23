@@ -14,7 +14,6 @@ QPointer<CommunicationManager> CommunicationManager::wrap( InfCommunicationManag
     if( wrapptr)
         return dynamic_cast<CommunicationManager*>(wrapptr);
     CommunicationManager *mgr = new CommunicationManager( infCommManager, parent, own_gobject );
-    WrapperStore::insertWrapper( G_OBJECT(infCommManager), mgr );
     return mgr;
 }
 

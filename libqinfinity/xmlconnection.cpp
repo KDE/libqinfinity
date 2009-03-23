@@ -17,7 +17,6 @@ QPointer<XmlConnection> XmlConnection::wrap( InfXmlConnection *infXmlConnection,
     if( wrapptr)
         return dynamic_cast<XmlConnection*>(wrapptr);
     XmlConnection *connection = new XmlConnection( infXmlConnection, parent, own_gobject );
-    WrapperStore::insertWrapper( G_OBJECT(infXmlConnection), connection );
     return connection;
 }
 

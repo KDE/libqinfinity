@@ -25,7 +25,7 @@ class TextSession
     public:
         static QPointer<TextSession> wrap( InfTextSession *infSession,
             QObject *parent = 0,
-            bool own_gobj = false );
+            bool own_gobj = true );
 
         /**
          * @brief Convenience method for joining a session.
@@ -47,7 +47,7 @@ class TextSession
     protected:
         TextSession( InfTextSession *infSession,
             QObject *parent = 0,
-            bool own_gobj = false );
+            bool own_gobj = true );
 
 };
 

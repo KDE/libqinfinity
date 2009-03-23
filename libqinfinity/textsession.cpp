@@ -19,7 +19,6 @@ QPointer<TextSession> TextSession::wrap( InfTextSession *infObject,
     if( wrapptr)
         return dynamic_cast<TextSession*>(wrapptr);
     TextSession *wrapper = new TextSession( infObject, parent, own_gobject );
-    WrapperStore::insertWrapper( G_OBJECT(infObject), wrapper );
     return wrapper;
 }
 

@@ -30,8 +30,7 @@ class WrapperStore
          */
         static WrapperStore *instance();
 
-        static void insertWrapper( GObject *object,
-            QGObject *wrapper );
+        static void insertWrapper( QGObject *wrapper );
 
         static QGObject *getWrapper( GObject *object,
             bool own_gobject = false );
@@ -51,8 +50,7 @@ class WrapperStore
          * check for an existing wrapper with findWrapper before
          * calling this.
          */
-        void storeWrapper( GObject *obj,
-            QGObject *wrapper );
+        void storeWrapper( QGObject *wrapper );
 
     protected:
         WrapperStore();

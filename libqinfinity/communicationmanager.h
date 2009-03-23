@@ -24,7 +24,7 @@ class CommunicationManager
          */
         static QPointer<CommunicationManager> wrap( InfCommunicationManager *infCommManager,
             QObject *parent = 0,
-            bool own_gobject = false );
+            bool own_gobject = true );
 
         CommunicationManager( QObject *parent = 0, bool own_gobject = true );
         CommunicationManager( const CommunicationManager &other );
@@ -40,7 +40,7 @@ class CommunicationManager
          */
         CommunicationManager( InfCommunicationManager *infCommManager,
             QObject *parent = 0,
-            bool own_gobject = false );
+            bool own_gobject = true );
 
 };
 

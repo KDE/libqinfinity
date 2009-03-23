@@ -27,7 +27,7 @@ void QGObject::setGobject( GObject *obj,
 {
     m_gobject = obj;
     m_own_gobj = own_gobj;
-    WrapperStore::insertWrapper( obj, this );
+    WrapperStore::insertWrapper( this );
 }
 
 bool QGObject::isOwner()
@@ -42,7 +42,7 @@ QGObject::QGObject( GObject *obj,
     , m_gobject( obj )
     , m_own_gobj( own_gobj )
 {
-    WrapperStore::insertWrapper( obj, this );
+    WrapperStore::insertWrapper( this );
 }
 
 }

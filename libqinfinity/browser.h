@@ -38,7 +38,7 @@ class Browser
     public:
         static QPointer<Browser> wrap( InfcBrowser *infBrowser,
             QObject *parent = 0,
-            bool own_gobject = false );
+            bool own_gobject = true );
 
         Browser( CommunicationManager &comm_manager,
             XmlConnection &connection,
@@ -59,7 +59,7 @@ class Browser
     protected:
         Browser( InfcBrowser *infBrowser,
             QObject *parent = 0,
-            bool own_gobject = false );
+            bool own_gobject = true );
     
     Q_SIGNALS:
         /**

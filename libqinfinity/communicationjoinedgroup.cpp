@@ -12,14 +12,13 @@ QPointer<CommunicationJoinedGroup> CommunicationJoinedGroup::wrap( InfCommunicat
     if( wrapptr)
         return dynamic_cast<CommunicationJoinedGroup*>(wrapptr);
     CommunicationJoinedGroup *wrapper = new CommunicationJoinedGroup( infObject, parent, own_gobject );
-    WrapperStore::insertWrapper( G_OBJECT(infObject), wrapper );
     return wrapper;
 }
 
 CommunicationJoinedGroup::CommunicationJoinedGroup( InfCommunicationJoinedGroup *infGroup,
     QObject *parent,
     bool own_gobject )
-    : QGObject( G_OBJECT(infGroup), parent )
+    : QGObject( G_OBJECT(infGroup), parent, own_gobject )
 {
 }
 
