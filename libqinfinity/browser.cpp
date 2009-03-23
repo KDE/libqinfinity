@@ -62,6 +62,12 @@ InfcNodeRequest *Browser::addNote( BrowserIter parent,
         initial_subscribe );
 }
 
+InfcNodeRequest *Browser::subscribeSession( BrowserIter node )
+{
+    return infc_browser_iter_subscribe_session( INFC_BROWSER(this->gobject()),
+        node.infBrowserIter() );
+}
+
 Browser::Browser( InfcBrowser *browser,
     QObject *parent,
     bool own_gobject )

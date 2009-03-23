@@ -74,11 +74,14 @@ WrapperStore::~WrapperStore()
 
 void WrapperStore::slotWrapperDeleted( QObject *wrapper )
 {
-    removeWrapper( dynamic_cast<QGObject*>(wrapper) );
+    if( wrapper )
+        removeWrapper( dynamic_cast<QGObject*>(wrapper) );
 }
 
 void WrapperStore::removeWrapper( QGObject *wrapper )
 {
+    if( !wrapper )
+        return;
     if( wrapper->isOwner() )
         gobjToOwnerWrapper.remove( wrapper->gobject() );
     gobjToWrapper.remove( wrapper->gobject() );

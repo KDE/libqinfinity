@@ -54,6 +54,7 @@ class Browser
             const char *name,
             NotePlugin &plugin,
             bool initial_subscribe );
+        InfcNodeRequest *subscribeSession( BrowserIter node );
 
     protected:
         Browser( InfcBrowser *infBrowser,
