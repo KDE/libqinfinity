@@ -81,7 +81,7 @@ class Browser
         void beginSubscribe( const BrowserIter &iter,
             InfcNodeRequest *request );
         void subscribeSession( const BrowserIter &iter,
-            SessionProxy proxy );
+            QPointer<SessionProxy> proxy );
         void nodeAdded( const BrowserIter &iter );
         void nodeRemoved( const BrowserIter &iter );
 

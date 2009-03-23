@@ -1,4 +1,5 @@
 #include "guibrowser.h"
+#include "browser.h"
 #include "createitemdialog.h"
 
 #include <QMessageBox>
@@ -118,6 +119,7 @@ void BrowserMainWindow::slotSelectionChanged( const QItemSelection &selected,
     newFolderAction->setEnabled( canCreateFolder( selected ) );
     newNoteAction->setEnabled( canCreateNote( selected ) );
     deleteAction->setEnabled( canDeleteItem( selected ) );
+    openAction->setEnabled( canOpenItem( selected ) );
 }
 
 void BrowserMainWindow::slotQuit()
@@ -164,6 +166,24 @@ void BrowserMainWindow::slotDelete()
         fileModel->removeRow( index.row(), index.parent() );
 }
 
+void BrowserMainWindow::slotOpen()
+{
+    QModelIndexList selected = selectedIndexes();
+    QModelIndex index;
+    QStandardItem *stdItem;
+    QInfinity::NodeItem *nodeItem;
+
+    foreach( index, selected )
+    {
+        stdItem = fileModel->itemFromIndex( index );
+        if( stdItem->type() == QInfinity::BrowserItemFactory::NodeItem )
+        {
+            nodeItem = dynamic_cast<QInfinity::NodeItem*>(stdItem);
+            QInfinity::BrowserIter itr = nodeItem->iter();
+            itr.browser()->subscribeSession( itr );
+        }
+    }
+}
 
 void BrowserMainWindow::contextMenuEvent( QContextMenuEvent *event )
 {
@@ -199,6 +219,8 @@ void BrowserMainWindow::setupActions()
     newNoteAction->setEnabled( false );
     deleteAction = new QAction( tr("Delete"), this );
     deleteAction->setEnabled( false );
+    openAction = new QAction( tr("Open"), this );
+    openAction->setEnabled( false );
 
     connect( quitAction, SIGNAL(triggered(bool)),
         this, SLOT(slotQuit()) );
@@ -210,6 +232,8 @@ void BrowserMainWindow::setupActions()
         this, SLOT(slotCreateNote()) );
     connect( deleteAction, SIGNAL(triggered(bool)),
         this, SLOT(slotDelete()) );
+    connect( openAction, SIGNAL(triggered(bool)),
+        this, SLOT(slotOpen()) );
 
     QMenu *fileMenu = new QMenu( tr("&File"), this );
     fileMenu->addAction( newConnectionAction );
@@ -228,7 +252,7 @@ void BrowserMainWindow::showContextMenu( const QPoint &globalPos )
         contextMenu->addAction( newFolderAction );
         contextMenu->addAction( newNoteAction );
         contextMenu->addAction( deleteAction );
-
+        contextMenu->addAction( openAction );
     }
     contextMenu->popup( globalPos );
 }
@@ -255,6 +279,12 @@ bool BrowserMainWindow::canCreateNote( const QItemSelection &selected )
 }
 
 bool BrowserMainWindow::canDeleteItem( const QItemSelection &selected )
+{
+    QList<QModelIndex> indexes = selected.indexes();
+    return indexes.size() > 0;
+}
+
+bool BrowserMainWindow::canOpenItem( const QItemSelection &selected )
 {
     QList<QModelIndex> indexes = selected.indexes();
     return indexes.size() > 0;

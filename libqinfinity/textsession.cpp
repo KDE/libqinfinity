@@ -8,6 +8,8 @@
 
 #include <glib-object.h>
 
+#include <QDebug>
+
 namespace QInfinity
 {
  
@@ -77,6 +79,7 @@ TextSession::TextSession( CommunicationManager &commMgr,
             INF_COMMUNICATION_GROUP(commGroup.gobject()),
             INF_XML_CONNECTION(connection.gobject()) )) )
 {
+    qDebug() << "New session.";
 }
 
 Session::Type TextSession::type() const

@@ -31,6 +31,7 @@ InfSession *NotePlugin::create_session_cb( InfIo *io,
     InfXmlConnection *sync_connection,
     void *user_data )
 {
+    qDebug() << "Create session.";
     NotePlugin *plugin = static_cast<NotePlugin*>(user_data);
     CommunicationManager *commMgr = CommunicationManager::wrap( comm_mgr, plugin );
     CommunicationJoinedGroup *joinedGroup = CommunicationJoinedGroup::wrap( sync_group, plugin );

@@ -115,7 +115,7 @@ void Browser::signalSubscribeSession( InfcBrowserIter *infIter,
 {
     BrowserIter iter( infIter, INFC_BROWSER(this->gobject()) );
     emit(subscribeSession( iter,
-        SessionProxy( infProxy, this ) ));
+        SessionProxy::wrap( infProxy, this ) ));
 }
 
 void Browser::signalNodeAdded( InfcBrowserIter *infIter )

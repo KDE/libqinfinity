@@ -76,6 +76,7 @@ class BrowserMainWindow
         void slotCreateFolder();
         void slotCreateNote();
         void slotDelete();
+        void slotOpen();
 
     protected:
         void contextMenuEvent( QContextMenuEvent *event );
@@ -88,6 +89,7 @@ class BrowserMainWindow
         bool canCreateFolder( const QItemSelection &selected );
         bool canCreateNote( const QItemSelection &selected );
         bool canDeleteItem( const QItemSelection &selected );
+        bool canOpenItem( const QItemSelection &selected );
         QModelIndexList selectedIndexes() const;
         QInfinity::NodeItem *nodeItemFromIndex( const QModelIndex &index ) const;
 
@@ -96,6 +98,7 @@ class BrowserMainWindow
         QAction *newFolderAction;
         QAction *newNoteAction;
         QAction *deleteAction;
+        QAction *openAction;
         QTreeView *treeView;
         QInfinity::BrowserModel *fileModel;
         QInfinity::DefaultTextPlugin *plugin;

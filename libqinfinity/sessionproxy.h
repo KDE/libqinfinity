@@ -4,8 +4,9 @@
 #include "qgobject.h"
 
 #include <QObject>
+#include <QPointer>
 
-typedef struct _InfcSessionProxy InfSessionProxy;
+typedef struct _InfcSessionProxy InfcSessionProxy;
 typedef struct _InfSession InfSession;
 typedef struct _InfcUserRequest InfcUserRequest;
 typedef struct _GParameter GParameter;
@@ -23,10 +24,9 @@ class SessionProxy
 {
 
     public:
-        SessionProxy( InfSessionProxy *infProxy,
-            QObject *parent = 0 );
-        SessionProxy( const SessionProxy &other,
-            QObject *parent = 0 );
+        static QPointer<SessionProxy> wrap( InfcSessionProxy *infObject,
+            QObject *parent,
+            bool own_gobject = true );
 
         InfcUserRequest *joinUser( const GParameter *params,
             unsigned int n_params,
@@ -40,6 +40,11 @@ class SessionProxy
          * the NotePlugin documentation for more information.
          */
         Session *session() const;
+
+    protected:
+        SessionProxy( InfcSessionProxy *infProxy,
+            QObject *parent = 0,
+            bool own_gobject = true );
 
 };
 

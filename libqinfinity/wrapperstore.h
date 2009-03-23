@@ -33,14 +33,14 @@ class WrapperStore
         static void insertWrapper( QGObject *wrapper );
 
         static QGObject *getWrapper( GObject *object,
-            bool own_gobject = false );
+            bool own_gobject = true );
 
         /**
          * @brief Finds wrapper for obj
          * @return Found wrapper object, or NULL if none fond.
          */
         QGObject *findWrapper( GObject *obj,
-            bool own_gobject = false );
+            bool own_gobject = true );
 
         /**
          * @brief Store wrapper for gobject.

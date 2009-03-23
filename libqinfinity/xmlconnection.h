@@ -33,7 +33,7 @@ class XmlConnection
      */
     static QPointer<XmlConnection> wrap( InfXmlConnection *infConnection,
         QObject *parent = 0,
-        bool own_gobject = false );
+        bool own_gobject = true );
 
         ~XmlConnection();
         QPointer<TcpConnection> tcpConnection();
