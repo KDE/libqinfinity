@@ -24,6 +24,10 @@ XmlConnection::~XmlConnection()
 {
     if( status() == Open )
         close();
+    g_signal_handler_disconnect( gobject(),
+        error_handler );
+    g_signal_handler_disconnect( gobject(),
+        status_handler );
 }
 
 QPointer<TcpConnection> XmlConnection::tcpConnection()
@@ -87,8 +91,8 @@ XmlConnection::XmlConnection( InfXmlConnection *infXmlConnection,
 
 void XmlConnection::registerSignals()
 {
-    g_signal_connect(gobject(), "error", G_CALLBACK(XmlConnection::error_cb), this);
-    g_signal_connect(gobject(), "notify::status", G_CALLBACK(XmlConnection::status_changed_cb), this);
+    error_handler = g_signal_connect(gobject(), "error", G_CALLBACK(XmlConnection::error_cb), this);
+    status_handler = g_signal_connect(gobject(), "notify::status", G_CALLBACK(XmlConnection::status_changed_cb), this);
 }
 
 void XmlConnection::signalError( const GError *err )

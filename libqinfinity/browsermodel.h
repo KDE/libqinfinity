@@ -62,7 +62,7 @@ class ConnectionIndex
 class BrowserModel
     : public QStandardItemModel
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     public:
         /**
@@ -117,7 +117,12 @@ class BrowserModel
         /**
          * @brief Get added plugins.
          */
-        const QList<NotePlugin*> plugins() const;
+        QList<NotePlugin*> plugins() const;
+
+        /**
+         * @brief Get the current browsers
+         */
+        QList<Browser*> browsers() const;
         
         /**
          * @brief Create a directory on the server.
@@ -131,6 +136,9 @@ class BrowserModel
         bool createNote( const QModelIndex &parent,
             NotePlugin &plugin,
             const QString &name );
+
+    Q_SIGNALS:
+        void browserAdded( QInfinity::Browser &browser );
 
     public Q_SLOTS:
         /**
@@ -159,6 +167,7 @@ class BrowserModel
         QHash<Browser*, ConnectionIndex*> browserToConnectionMap;
         CommunicationManager comm_mgr;
         QList<NotePlugin*> m_plugins;
+        QList<Browser*> m_browsers;
 
 };
 

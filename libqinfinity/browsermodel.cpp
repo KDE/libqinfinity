@@ -153,9 +153,14 @@ void BrowserModel::addPlugin( NotePlugin &plugin )
     m_plugins.append( &plugin );
 }
 
-const QList<NotePlugin*> BrowserModel::plugins() const
+QList<NotePlugin*> BrowserModel::plugins() const
 {
     return m_plugins;
+}
+
+QList<Browser*> BrowserModel::browsers() const
+{
+    return m_browsers;
 }
 
 bool BrowserModel::createDirectory( const QModelIndex &parent,
@@ -320,6 +325,8 @@ Browser *BrowserModel::createBrowser( CommunicationManager &commMgr,
     {
         browser->addPlugin( **itr );
     }
+    m_browsers.append( browser );
+    emit( browserAdded( *browser ) );
     return browser;
 }
 

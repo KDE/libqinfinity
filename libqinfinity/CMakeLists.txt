@@ -23,6 +23,7 @@ set(QInfinity_SRCS
 	user.cpp
 	usertable.cpp
 	request.cpp
+	userrequest.cpp
 	explorerequest.cpp
 	browser.cpp
 	browseriter.cpp
@@ -54,6 +55,7 @@ set(QInfinity_HDRS
 	user.h
 	usertable.h
 	request.h
+	userrequest.h
 	explorerequest.h
 	browser.h
 	browseriter.h

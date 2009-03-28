@@ -82,7 +82,7 @@ void Session::setupSignals()
     g_signal_connect( G_OBJECT(gobject()),
         "synchronization-begin", G_CALLBACK(Session::synchronization_begin_cb),
         this );
-    g_signal_connect( G_OBJECT(gobject()),
+    g_signal_connect_after( G_OBJECT(gobject()),
         "synchronization-complete", G_CALLBACK(Session::synchronization_complete_cb),
         this );
     g_signal_connect( G_OBJECT(gobject()),

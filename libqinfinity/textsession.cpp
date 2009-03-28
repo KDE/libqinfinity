@@ -5,6 +5,7 @@
 #include "communicationmanager.h"
 #include "communicationjoinedgroup.h"
 #include "xmlconnection.h"
+#include "userrequest.h"
 
 #include <glib-object.h>
 
@@ -24,7 +25,7 @@ QPointer<TextSession> TextSession::wrap( InfTextSession *infObject,
     return wrapper;
 }
 
-InfcUserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
+UserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
     const QString &name,
     double hue,
     unsigned int caretPosition,
@@ -50,7 +51,7 @@ InfcUserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
     g_value_init( &params[4].value, INF_TYPE_USER_STATUS );
 
     g_value_set_static_string( &params[0].value, name.toAscii() );
-    g_value_set_double( &params[1].value, hue );
+    g_value_set_double( &params[1].value, 0 );
     g_value_take_boxed( &params[2].value, inf_adopted_state_vector_copy(
         inf_adopted_algorithm_get_current(
             inf_adopted_session_get_algorithm(
@@ -66,7 +67,7 @@ InfcUserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
     g_value_unset(&params[3].value);
     g_value_unset(&params[4].value);
 
-    return req;
+    return new UserRequest( req, proxy.data() );
 }
 
 TextSession::TextSession( CommunicationManager &commMgr,

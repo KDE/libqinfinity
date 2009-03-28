@@ -23,7 +23,7 @@ class Buffer;
 class Session
     : public QGObject
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     public:
         enum Status

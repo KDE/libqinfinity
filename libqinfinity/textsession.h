@@ -17,6 +17,7 @@ class CommunicationManager;
 class TextBuffer;
 class CommunicationJoinedGroup;
 class XmlConnection;
+class UserRequest;
 
 class TextSession
     : public Session
@@ -30,7 +31,7 @@ class TextSession
         /**
          * @brief Convenience method for joining a session.
          */
-        static InfcUserRequest *joinUser( QPointer<SessionProxy> proxy,
+        static UserRequest *joinUser( QPointer<SessionProxy> proxy,
             const QString &name,
             double hue,
             unsigned int caretPosition = 0,

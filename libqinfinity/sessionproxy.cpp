@@ -28,7 +28,7 @@ InfcUserRequest *SessionProxy::joinUser( const GParameter *params,
         error );
 }
 
-Session *SessionProxy::session() const
+QPointer<Session> SessionProxy::session() const
 {
     return Session::wrap( infc_session_proxy_get_session( INFC_SESSION_PROXY(gobject()) ) );
 }

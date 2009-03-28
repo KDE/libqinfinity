@@ -12,9 +12,15 @@ Request::Request( InfcRequest *infRequest,
     setupSignals();
 }
 
+Request::~Request()
+{
+    g_signal_handler_disconnect( gobject(),
+        failed_handler );
+}
+
 void Request::setupSignals()
 {
-    g_signal_connect( gobject(), "failed",
+    failed_handler = g_signal_connect( gobject(), "failed",
         G_CALLBACK(Request::signalFailed_cb), this );
 }
 

@@ -39,7 +39,7 @@ class SessionProxy
          * you probably need to be using a NotePlugin.  See
          * the NotePlugin documentation for more information.
          */
-        Session *session() const;
+        QPointer<Session> session() const;
 
     protected:
         SessionProxy( InfcSessionProxy *infProxy,

@@ -16,7 +16,7 @@ namespace QInfinity
 class TcpConnection
     : public QGObject
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     public:
         enum Status

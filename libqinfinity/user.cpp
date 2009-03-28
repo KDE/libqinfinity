@@ -41,7 +41,7 @@ User::Status User::convertStatus( InfUserStatus status )
         case INF_USER_INACTIVE:
             ret = Inactive;
             break;
-        case INF_USER_UNAVAILABLE:
+        default:
             ret = Unavailable;
     }
     return ret;

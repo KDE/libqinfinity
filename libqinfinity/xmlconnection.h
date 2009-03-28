@@ -17,7 +17,7 @@ class TcpConnection;
 class XmlConnection
     : public QGObject
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     public:
         enum Status
@@ -64,6 +64,8 @@ class XmlConnection
             void *user_data );
 
         bool connected_to_error;
+        unsigned long error_handler;
+        unsigned long status_handler;
 
 };
 

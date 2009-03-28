@@ -16,8 +16,10 @@ class Request
     Q_OBJECT;
 
     public:
+        // TODO: This should really use a wrap method
         Request( InfcRequest *infRequest,
             QObject *parent = 0 );
+        ~Request();
 
     Q_SIGNALS:
         void failed( GError *error );
@@ -29,6 +31,8 @@ class Request
         static void signalFailed_cb( InfcRequest *request,
             GError *error,
             void *user_data );
+
+        unsigned long failed_handler;
 
 };
 

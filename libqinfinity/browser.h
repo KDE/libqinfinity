@@ -80,8 +80,8 @@ class Browser
          */
         void beginSubscribe( const BrowserIter &iter,
             InfcNodeRequest *request );
-        void subscribeSession( const BrowserIter &iter,
-            QPointer<SessionProxy> proxy );
+        void subscribeSession( const QInfinity::BrowserIter &iter,
+            QPointer<QInfinity::SessionProxy> proxy );
         void nodeAdded( const BrowserIter &iter );
         void nodeRemoved( const BrowserIter &iter );
 
