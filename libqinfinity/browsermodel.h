@@ -40,6 +40,7 @@ class ConnectionIndex
         NodeItem *itemFromIter( const BrowserIter &iter ) const;
         void indexIter( const BrowserIter &iter,
             NodeItem &node );
+        void removeIter( const BrowserIter &iter );
     
     private:
         XmlConnection *m_xmlConnection;
@@ -137,6 +138,9 @@ class BrowserModel
             NotePlugin &plugin,
             const QString &name );
 
+        bool removeRows( int row, int count,
+            const QModelIndex &parent );
+
     Q_SIGNALS:
         void browserAdded( QInfinity::Browser &browser );
 
@@ -148,15 +152,16 @@ class BrowserModel
 
     private Q_SLOTS:
         void slotNodeAdded( const BrowserIter &itr );
-        void slotRowsAboutRemoved( const QModelIndex &parent,
-            int start,
-            int end );
+        void slotNodeRemoved( const BrowserIter &itr );
 
     private:
         void removeConnectionItem( ConnectionItem *item );
+        void deleteNodeItem( NodeItem *item );
         void indexIter( const BrowserIter &iter,
             Browser &browser,
             NodeItem &item );
+        void removeIterIndex( const BrowserIter &iter,
+            Browser &browser );
         NodeItem *itemFromBrowserIter( const BrowserIter &iter,
             Browser &browser );
         NodeItem *indexToNodeItem( const QModelIndex &index ) const;

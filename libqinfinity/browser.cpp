@@ -61,6 +61,12 @@ InfcNodeRequest *Browser::addNote( BrowserIter parent,
         initial_subscribe );
 }
 
+InfcNodeRequest *Browser::removeNode( BrowserIter node )
+{
+    return infc_browser_remove_node( INFC_BROWSER(this->gobject()),
+        node.infBrowserIter() );
+}
+
 InfcNodeRequest *Browser::subscribeSession( BrowserIter node )
 {
     return infc_browser_iter_subscribe_session( INFC_BROWSER(this->gobject()),
@@ -90,7 +96,7 @@ void Browser::setupSignals()
         "node-added", G_CALLBACK(Browser::node_added_cb),
         this );
     g_signal_connect( G_OBJECT(this->gobject()),
-        "node-removed", G_CALLBACK(Browser::node_added_cb),
+        "node-removed", G_CALLBACK(Browser::node_removed_cb),
         this );
 }
 

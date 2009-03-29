@@ -52,12 +52,15 @@ void ConnectionIndex::indexIter( const BrowserIter &iter,
     nodeIdToNodeItemMap[iter.infBrowserIter()->node_id] = &node;
 }
 
+void ConnectionIndex::removeIter( const BrowserIter &iter )
+{
+    nodeIdToNodeItemMap.remove(iter.infBrowserIter()->node_id);
+}
+
 BrowserModel::BrowserModel( QObject *parent )
     : QStandardItemModel( parent )
     , m_itemFactory( new BrowserItemFactory )
 {
-    connect( this, SIGNAL(rowsAboutToBeRemoved(const QModelIndex&, int, int)),
-        this, SLOT(slotRowsAboutRemoved(const QModelIndex&, int, int)) );
     QStringList headerlabels;
     headerlabels.append( tr("Name") );
     setHorizontalHeaderLabels( headerlabels );
@@ -111,6 +114,8 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
     browserToConnectionMap[browser] = index;
     connect( browser, SIGNAL(nodeAdded( const BrowserIter&)),
         this, SLOT(slotNodeAdded( const BrowserIter&)) );
+    connect( browser, SIGNAL(nodeRemoved( const BrowserIter& )),
+        this, SLOT(slotNodeRemoved( const BrowserIter& )) );
 
     connItem = m_itemFactory->createConnectionItem( connection,
         *browser,
@@ -216,6 +221,24 @@ bool BrowserModel::createNote( const QModelIndex &parent,
     browser->addNote( parentItem->iter(), name.toAscii(), plugin, false );
 }
 
+bool BrowserModel::removeRows( int row, int count,
+    const QModelIndex &parent )
+{
+    qDebug() << "Remove rows";
+    int i;
+    QStandardItem *item, *parentItem;;
+    parentItem = itemFromIndex( parent );
+    for( i = 0; i < count; i++ )
+    {
+        item = parentItem->child( row + i );
+        if( item->type() == BrowserItemFactory::ConnectionItem )
+            removeConnectionItem( dynamic_cast<ConnectionItem*>(item) );
+        else
+            deleteNodeItem( dynamic_cast<NodeItem*>(item) );
+    }
+    return true;
+}
+
 void BrowserModel::itemActivated( const QModelIndex &parent )
 {
     if( !parent.isValid() )
@@ -246,21 +269,20 @@ void BrowserModel::slotNodeAdded( const BrowserIter &itr )
     parentItem->insertRow( 0, item );
 }
 
-void BrowserModel::slotRowsAboutRemoved( const QModelIndex &parent,
-    int start,
-    int end )
+void BrowserModel::slotNodeRemoved( const BrowserIter &itr )
 {
-    QModelIndex ndx;
-    QStandardItem *item;
-    for( ; start <= end; start++ )
+    qDebug() << "Removing node";
+    NodeItem *nodeItem = itemFromBrowserIter( itr, *itr.browser() );
+    if( !nodeItem )
     {
-        ndx = index( start, 0, parent );
-        item = itemFromIndex( ndx );
-        if( item->type() == BrowserItemFactory::ConnectionItem )
-        {
-            removeConnectionItem( dynamic_cast<ConnectionItem*>(item) );
-        }
+        qDebug() << "Couldnt find item in model to remove! "
+            << " The browsing model may be inconsistent!";
+        return;
     }
+    beginRemoveRows( nodeItem->parent()->index(), nodeItem->row(), nodeItem->row() );
+    delete nodeItem;
+    endRemoveRows();
+    removeIterIndex( itr, *itr.browser() );
 }
 
 void BrowserModel::removeConnectionItem( ConnectionItem *item )
@@ -276,6 +298,12 @@ void BrowserModel::removeConnectionItem( ConnectionItem *item )
     delete index;
 }
 
+void BrowserModel::deleteNodeItem( NodeItem *item )
+{
+    QPointer<Browser> browser = item->iter().browser();
+    browser->removeNode( item->iter() );
+}
+
 void BrowserModel::indexIter( const BrowserIter &iter,
     Browser &browser,
     NodeItem &item )
@@ -284,6 +312,15 @@ void BrowserModel::indexIter( const BrowserIter &iter,
 
     index = browserToConnectionMap[&browser];
     index->indexIter( iter, item );
+}
+
+void BrowserModel::removeIterIndex( const BrowserIter &iter,
+    Browser &browser )
+{
+    ConnectionIndex *index;
+
+    index = browserToConnectionMap[&browser];
+    index->removeIter( iter );
 }
 
 NodeItem *BrowserModel::itemFromBrowserIter( const BrowserIter &iter,

@@ -33,7 +33,7 @@ class XmlConnection;
 class Browser
     : public QGObject
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     public:
         static QPointer<Browser> wrap( InfcBrowser *infBrowser,
@@ -54,6 +54,7 @@ class Browser
             const char *name,
             NotePlugin &plugin,
             bool initial_subscribe );
+        InfcNodeRequest *removeNode( BrowserIter node );
         InfcNodeRequest *subscribeSession( BrowserIter node );
 
     protected:
