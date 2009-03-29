@@ -16,7 +16,7 @@ Session *DefaultTextPlugin::createSession( CommunicationManager *commMgr,
     CommunicationJoinedGroup *syncGroup,
     XmlConnection *syncConnection )
 {
-    TextBuffer *buffer = new TextDefaultBuffer( "utf-8" );
+    TextBuffer *buffer = new TextDefaultBuffer( "UTF-8" );
     TextSession *textSession = new TextSession( *commMgr,
         *buffer,
         *syncGroup,

@@ -3,24 +3,47 @@
 namespace QInfinity
 {
 
-TextChunk::TextChunk( InfTextChunk *infChunk )
+TextChunk::TextChunk( InfTextChunk *infChunk,
+    bool own_chunk )
     : m_infChunk( infChunk )
+    , m_own_chunk( own_chunk )
 {
 }
 
 TextChunk::TextChunk( const QString &encoding )
     : m_infChunk( inf_text_chunk_new( encoding.toAscii() ) )
+    , m_own_chunk( true )
 {
 }
 
 TextChunk::TextChunk( const TextChunk &other )
 {
     m_infChunk = inf_text_chunk_copy( other.infChunk() );
+    m_own_chunk = true;
 }
 
 TextChunk::~TextChunk()
 {
-    inf_text_chunk_free( m_infChunk );
+    if( m_own_chunk )
+        inf_text_chunk_free( m_infChunk );
+}
+
+QString TextChunk::encoding() const
+{
+    return inf_text_chunk_get_encoding( infChunk() );
+}
+
+unsigned int TextChunk::length() const
+{
+    return inf_text_chunk_get_length( infChunk() );
+}
+
+QByteArray TextChunk::text() const
+{
+    void *data;
+    gsize size;
+    data = inf_text_chunk_get_text( infChunk(), &size );
+    return QByteArray( (const char*)data, size );
 }
 
 void TextChunk::insertText( unsigned int offset,

@@ -3,7 +3,10 @@
 
 #include <glib-object.h>
 
+#include <QTimer>
 #include <QDebug>
+
+#include "qtio.moc"
 
 namespace QInfinity
 {
@@ -50,6 +53,36 @@ static void qinf_qt_io_io_watch( InfIo *io,
         notify );
 }
 
+static void *qinf_qt_io_io_add_timeout( InfIo *io,
+    guint msecs,
+    InfIoTimeoutFunc func,
+    void *user_data,
+    GDestroyNotify notify )
+{
+    QInfQtIo *qtIo;
+
+    qtIo = QINF_QT_IO(io);
+    if( !qtIo->cpp_class )
+        return 0;
+
+    return qtIo->cpp_class->addTimeout( msecs,
+        func,
+        user_data,
+        notify );
+}
+
+static void qinf_qt_io_io_remove_timeout( InfIo *io,
+    void *timer )
+{
+    QInfQtIo *qtIo;
+
+    qtIo = QINF_QT_IO(io);
+    if( !qtIo->cpp_class )
+        return;
+
+    qtIo->cpp_class->removeTimeout( timer );
+}
+
 static void qinf_qt_io_finalize( GObject *object )
 {
     QInfQtIo *io;
@@ -92,6 +125,8 @@ static void qinf_qt_io_io_init( gpointer g_iface,
     iface = (InfIoIface*)g_iface;
 
     iface->watch = qinf_qt_io_io_watch;
+    iface->add_timeout = qinf_qt_io_io_add_timeout;
+    iface->remove_timeout = qinf_qt_io_io_remove_timeout;
 }
 
 GType qinf_qt_io_get_type()
@@ -192,6 +227,23 @@ void QtIo::watch( InfNativeSocket *socket,
     socketToWatchMap[*socket] = watch;
 }
 
+void *QtIo::addTimeout( unsigned int msecs,
+    InfIoTimeoutFunc func,
+    void *user_data,
+    GDestroyNotify notify )
+{
+    InfTimer *timer = new InfTimer( msecs, func,
+        user_data, notify, this );
+    timer->activate();
+    return timer;
+}
+
+void QtIo::removeTimeout( void *timer )
+{
+    InfTimer *t = static_cast<InfTimer*>(timer);
+    delete t;
+}
+
 GObject *QtIo::gobject() const
 {
     return (GObject*)m_gobject;
@@ -200,6 +252,37 @@ GObject *QtIo::gobject() const
 void QtIo::setOwner( bool own_gobject )
 {
     own_gobject = true;
+}
+
+InfTimer::InfTimer( unsigned int msecs,
+    InfIoTimeoutFunc func,
+    void *user_data,
+    GDestroyNotify notify,
+    QObject *parent )
+    : QTimer( parent )
+    , m_func( func )
+    , m_user_data( user_data )
+    , m_notify( notify )
+{
+    setInterval( msecs );
+    setSingleShot( true );
+}
+
+InfTimer::~InfTimer()
+{
+    m_notify( m_user_data );
+}
+
+void InfTimer::activate()
+{
+    connect( this, SIGNAL(timeout()),
+        this, SLOT(activated()) );
+    start();
+}
+
+void InfTimer::activated()
+{
+    m_func( m_user_data );
 }
 
 }

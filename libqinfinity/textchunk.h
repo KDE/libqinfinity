@@ -15,10 +15,15 @@ class TextChunk
 {
 
     public:
-        TextChunk( InfTextChunk *chunk );
+        TextChunk( InfTextChunk *chunk,
+            bool own_chunk = false );
         TextChunk( const QString &encoding );
         TextChunk( const TextChunk &other );
         ~TextChunk();
+
+        QString encoding() const;
+        unsigned int length() const;
+        QByteArray text() const;
 
         void insertText( unsigned int offset,
             const QString &text,
@@ -31,6 +36,7 @@ class TextChunk
 
     private:
         InfTextChunk *m_infChunk;
+        bool m_own_chunk;
 
 };
 

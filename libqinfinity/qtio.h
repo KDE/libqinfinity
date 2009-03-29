@@ -5,7 +5,8 @@
 
 #include <QObject>
 #include <QList>
-#include <QMap>
+#include <QHash>
+#include <QTimer>
 
 namespace QInfinity
 {
@@ -31,13 +32,43 @@ class QtIo
             InfIoFunc func,
             gpointer user_data,
             GDestroyNotify notify );
+        virtual void *addTimeout( unsigned int msecs,
+            InfIoTimeoutFunc func,
+            void *user_data,
+            GDestroyNotify notify );
+        virtual void removeTimeout( void *timer );
         GObject *gobject() const;
         void setOwner( bool own_gobject );
     
     private:
         QInfQtIo *m_gobject;
         bool own_gobject;
-        QMap<int, QtIoWatch*> socketToWatchMap;
+        QHash<int, QtIoWatch*> socketToWatchMap;
+
+};
+
+class InfTimer
+    :  public QTimer
+{
+    Q_OBJECT;
+
+    public:
+        InfTimer( unsigned int msecs,
+            InfIoTimeoutFunc func,
+            void *user_data,
+            GDestroyNotify notify,
+            QObject *parent = 0 );
+        ~InfTimer();
+
+        void activate();
+
+    private Q_SLOTS:
+        void activated();
+
+    private:
+        InfIoTimeoutFunc m_func;
+        void *m_user_data;
+        GDestroyNotify m_notify;
 
 };
 
