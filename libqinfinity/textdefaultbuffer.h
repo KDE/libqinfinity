@@ -13,7 +13,7 @@ class TextDefaultBuffer
 {
 
     public:
-        TextDefaultBuffer( QString encoding = "utf-8",
+        TextDefaultBuffer( QString encoding = "UTF-8",
             QObject *parent = 0 );
 
 };

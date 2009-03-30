@@ -279,9 +279,7 @@ void BrowserModel::slotNodeRemoved( const BrowserIter &itr )
             << " The browsing model may be inconsistent!";
         return;
     }
-    beginRemoveRows( nodeItem->parent()->index(), nodeItem->row(), nodeItem->row() );
-    delete nodeItem;
-    endRemoveRows();
+    QStandardItemModel::removeRows( nodeItem->row(), 1, nodeItem->parent()->index() );
     removeIterIndex( itr, *itr.browser() );
 }
 
