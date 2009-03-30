@@ -270,7 +270,8 @@ InfTimer::InfTimer( unsigned int msecs,
 
 InfTimer::~InfTimer()
 {
-    m_notify( m_user_data );
+    if( m_notify )
+        m_notify( m_user_data );
 }
 
 void InfTimer::activate()
