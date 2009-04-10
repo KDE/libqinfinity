@@ -50,9 +50,11 @@ void TextChunk::insertText( unsigned int offset,
     const QString &text,
     unsigned int author )
 {
+    QByteArray data;
+    data = text.toUtf8();
     inf_text_chunk_insert_text( m_infChunk,
-        offset, text.toAscii(),
-        text.size(), text.length(),
+        offset, text.toUtf8(),
+        data.size(), text.length(),
         author );
 }
 
