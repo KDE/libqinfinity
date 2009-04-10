@@ -38,13 +38,13 @@ class TextBuffer
             User *user );
         void eraseText( unsigned int pos,
             unsigned int len,
-            unsigned int user );
+            User *user );
 
     Q_SIGNALS:
-        void eraseText( unsigned int offset,
+        void textErased( unsigned int offset,
             unsigned int len,
             QPointer<QInfinity::User> user );
-        void insertText( unsigned int offset,
+        void textInserted( unsigned int offset,
             const QInfinity::TextChunk &text,
             QPointer<QInfinity::User> user );
 

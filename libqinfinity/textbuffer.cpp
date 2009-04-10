@@ -55,6 +55,14 @@ void TextBuffer::insertText( unsigned int pos,
         INF_USER(user->gobject()) );
 }
 
+void TextBuffer::eraseText( unsigned int pos,
+    unsigned int len,
+    User *user )
+{
+    inf_text_buffer_erase_text( INF_TEXT_BUFFER(gobject()),
+        pos, len, INF_USER(user->gobject()) );
+}
+
 void TextBuffer::insertChunk( unsigned int pos,
     const TextChunk &chunk,
     User *user )
@@ -101,14 +109,14 @@ void TextBuffer::emitEraseText( unsigned int offset,
     unsigned int len,
     InfUser *user )
 {
-    emit( eraseText( offset, len, User::wrap( user ) ) );
+    emit( textErased( offset, len, User::wrap( user ) ) );
 }
 
 void TextBuffer::emitInsertText( unsigned int offset,
     InfTextChunk *textChunk,
     InfUser *user )
 {
-    emit( insertText( offset, TextChunk( textChunk ), User::wrap( user ) ) );
+    emit( textInserted( offset, TextChunk( textChunk ), User::wrap( user ) ) );
 }
 
 }
