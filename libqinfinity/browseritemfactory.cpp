@@ -12,6 +12,7 @@ NodeItem::NodeItem( const BrowserIter &iter )
     , m_iter( iter )
 {
     setText( m_iter.name() );
+    setEditable( false );
 }
 
 NodeItem::NodeItem( const BrowserIter &iter,
@@ -19,6 +20,7 @@ NodeItem::NodeItem( const BrowserIter &iter,
     : QStandardItem( text )
     , m_iter( iter )
 {
+    setEditable( false );
 }
 
 NodeItem::NodeItem( const BrowserIter &iter,
@@ -28,6 +30,7 @@ NodeItem::NodeItem( const BrowserIter &iter,
 {
     setIcon( icon );
     setText( m_iter.name() );
+    setEditable( false );
 }
 
 NodeItem::NodeItem( const BrowserIter &iter,
@@ -36,6 +39,7 @@ NodeItem::NodeItem( const BrowserIter &iter,
     : QStandardItem( icon, text )
     , m_iter( iter )
 {
+    setEditable( false );
 }
 
 const BrowserIter &NodeItem::iter() const
@@ -66,6 +70,7 @@ ConnectionItem::ConnectionItem( XmlConnection &connection,
     , m_connection( &connection )
     , m_browser( &browser )
 {
+    setEditable( false );
 }
 
 ConnectionItem::ConnectionItem( XmlConnection &connection,
@@ -76,6 +81,7 @@ ConnectionItem::ConnectionItem( XmlConnection &connection,
     , m_connection( &connection )
     , m_browser( &browser )
 {
+    setEditable( false );
 }
 
 XmlConnection &ConnectionItem::connection() const
