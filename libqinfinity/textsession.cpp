@@ -35,6 +35,7 @@ UserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
         return 0;
 
     InfSession *session = INF_SESSION(proxy->session()->gobject());
+    QByteArray nameAscii = name.toAscii();
 
     GParameter params[5] = {
         { "name", { 0 } },
@@ -50,7 +51,7 @@ UserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
     g_value_init( &params[3].value, G_TYPE_UINT );
     g_value_init( &params[4].value, INF_TYPE_USER_STATUS );
 
-    g_value_set_static_string( &params[0].value, name.toAscii() );
+    g_value_set_static_string( &params[0].value, nameAscii.data() );
     g_value_set_double( &params[1].value, 0 );
     g_value_take_boxed( &params[2].value, inf_adopted_state_vector_copy(
         inf_adopted_algorithm_get_current(
