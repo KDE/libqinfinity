@@ -26,7 +26,8 @@ class TextChunk
         QByteArray text() const;
 
         void insertText( unsigned int offset,
-            const QString &text,
+            const QByteArray &data,
+            unsigned int length,
             unsigned int author );
         void insertChunk( unsigned int offset,
             const TextChunk &chunk );
