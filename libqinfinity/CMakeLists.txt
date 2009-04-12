@@ -35,6 +35,7 @@ set(QInfinity_SRCS
 	buffer.cpp
 	textchunk.cpp
 	textbuffer.cpp
+	abstracttextbuffer.cpp
 	textdefaultbuffer.cpp
 	noteplugin.cpp
 	defaulttextplugin.cpp)
@@ -67,6 +68,7 @@ set(QInfinity_HDRS
 	buffer.h
 	textchunk.h
 	textbuffer.h
+	abstracttextbuffer.h
 	textdefaultbuffer.h
 	noteplugin.h
 	defaulttextplugin.h)

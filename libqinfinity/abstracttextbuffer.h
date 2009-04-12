@@ -3,31 +3,6 @@
 
 #include "textbuffer.h"
 
-G_BEGIN_DECLS
-
-#define INF_TEXT_TYPE_ABSTRACT_BUFFER                 (inf_text_abstract_buffer_get_type())
-#define INF_TEXT_ABSTRACT_BUFFER(obj)                 (G_TYPE_CHECK_INSTANCE_CAST((obj), INF_TEXT_TYPE_ABSTRACT_BUFFER, InfTextAbstractBuffer))
-#define INF_TEXT_ABSTRACT_BUFFER_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST((klass), INF_TEXT_TYPE_ABSTRACT_BUFFER, InfTextAbstractBufferClass))
-#define INF_TEXT_IS_ABSTRACT_BUFFER(obj)              (G_TYPE_CHECK_INSTANCE_TYPE((obj), INF_TEXT_TYPE_ABSTRACT_BUFFER))
-#define INF_TEXT_IS_ABSTRACT_BUFFER_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE((klass), INF_TEXT_TYPE_ABSTRACT_BUFFER))
-#define INF_TEXT_ABSTRACT_BUFFER_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS((obj), INF_TEXT_TYPE_ABSTRACT_BUFFER, InfTextAbstractBufferClass))
-
-typedef struct _QInfTextAbstractBufferClass QInfTextAbstrictBufferClass;
-typedef struct _QInfTextAbstractBuffer QInfTextAbstractBuffer;
-
-struct _QInfTextAbstractBufferClass
-{
-    GObjectClass *parent_class;
-};
-
-struct _QInfTextAbstractBuffer
-{
-    GObject *parent;
-    AbstractTextBuffer *wrapper;
-}
-
-G_END_DECLS
-
 class QString;
 
 namespace QInfinity
@@ -49,6 +24,7 @@ class AbstractTextBuffer
          */
         AbstractTextBuffer( const QString &encoding,
             QObject *parent = 0 );
+        virtual ~AbstractTextBuffer();
 
     protected:
         virtual void onInsertText( unsigned int offset,
@@ -71,5 +47,30 @@ class AbstractTextBuffer
 };
 
 }
+
+G_BEGIN_DECLS
+
+#define INF_TEXT_TYPE_ABSTRACT_BUFFER                 (inf_text_abstract_buffer_get_type())
+#define INF_TEXT_ABSTRACT_BUFFER(obj)                 (G_TYPE_CHECK_INSTANCE_CAST((obj), INF_TEXT_TYPE_ABSTRACT_BUFFER, InfTextAbstractBuffer))
+#define INF_TEXT_ABSTRACT_BUFFER_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST((klass), INF_TEXT_TYPE_ABSTRACT_BUFFER, InfTextAbstractBufferClass))
+#define INF_TEXT_IS_ABSTRACT_BUFFER(obj)              (G_TYPE_CHECK_INSTANCE_TYPE((obj), INF_TEXT_TYPE_ABSTRACT_BUFFER))
+#define INF_TEXT_IS_ABSTRACT_BUFFER_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE((klass), INF_TEXT_TYPE_ABSTRACT_BUFFER))
+#define INF_TEXT_ABSTRACT_BUFFER_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS((obj), INF_TEXT_TYPE_ABSTRACT_BUFFER, InfTextAbstractBufferClass))
+
+typedef struct _QInfTextAbstractBufferClass QInfTextAbstractBufferClass;
+typedef struct _QInfTextAbstractBuffer QInfTextAbstractBuffer;
+
+struct _QInfTextAbstractBufferClass
+{
+    GObjectClass *parent_class;
+};
+
+struct _QInfTextAbstractBuffer
+{
+    GObject *parent;
+    QInfinity::AbstractTextBuffer *wrapper;
+};
+
+G_END_DECLS
 
 #endif
