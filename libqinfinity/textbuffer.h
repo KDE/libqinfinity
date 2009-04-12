@@ -31,7 +31,8 @@ class TextBuffer
         TextChunk *slice( unsigned int pos,
             unsigned int len );
         void insertText( unsigned int pos,
-            const QString &text,
+            const QByteArray &data,
+            unsigned int len,
             User *user );
         void insertChunk( unsigned int pos,
             const TextChunk &chunk,
@@ -54,21 +55,21 @@ class TextBuffer
             bool own_gobject = false );
 
     private:
-        static void erase_text_cb( InfTextBuffer *infTextBuffer,
+        static void text_erased_cb( InfTextBuffer *infTextBuffer,
             unsigned int offset,
             unsigned int len,
             InfUser *user,
             void *user_data );
-        static void insert_text_cb( InfTextBuffer *infTextBuffer,
+        static void text_inserted_cb( InfTextBuffer *infTextBuffer,
             unsigned int offset,
             InfTextChunk *textChunk,
             InfUser *user,
             void *user_data );
 
-        void emitEraseText( unsigned int offset,
+        void emitTextErased( unsigned int offset,
             unsigned int len,
             InfUser *user );
-        void emitInsertText( unsigned int offset,
+        void emitTextInserted( unsigned int offset,
             InfTextChunk *textChunk,
             InfUser *user );
 

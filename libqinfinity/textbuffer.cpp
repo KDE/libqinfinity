@@ -45,13 +45,12 @@ TextChunk *TextBuffer::slice( unsigned int pos,
 }
 
 void TextBuffer::insertText( unsigned int pos,
-    const QString &text,
+    const QByteArray &data,
+    unsigned int length,
     User *user )
 {
-    QByteArray data = text.toUtf8();
-    qDebug() << "Inserting " << text << " of len " << text.length() << " size " << data.length();
     inf_text_buffer_insert_text( INF_TEXT_BUFFER(gobject()),
-        pos, data.data(), data.length(), text.length(),
+        pos, data.data(), data.length(), length,
         INF_USER(user->gobject()) );
 }
 
@@ -78,41 +77,41 @@ TextBuffer::TextBuffer( InfTextBuffer *infBuffer,
     : Buffer( INF_BUFFER(infBuffer), parent, own_gobject )
 {
     erase_text_handler = g_signal_connect_after( gobject(),
-        "erase-text", G_CALLBACK(TextBuffer::erase_text_cb),
+        "erase-text", G_CALLBACK(TextBuffer::text_erased_cb),
         this );
     insert_text_handler = g_signal_connect_after( gobject(),
-        "insert-text", G_CALLBACK(TextBuffer::insert_text_cb),
+        "insert-text", G_CALLBACK(TextBuffer::text_inserted_cb),
         this );
 }
 
-void TextBuffer::erase_text_cb( InfTextBuffer *infTextBuffer,
+void TextBuffer::text_erased_cb( InfTextBuffer *infTextBuffer,
     unsigned int offset,
     unsigned int len,
     InfUser *user,
     void *user_data )
 {
     TextBuffer *textBuffer = static_cast<TextBuffer*>(user_data);
-    textBuffer->emitEraseText( offset, len, user );
+    textBuffer->emitTextErased( offset, len, user );
 }
 
-void TextBuffer::insert_text_cb( InfTextBuffer *infTextBuffer,
+void TextBuffer::text_inserted_cb( InfTextBuffer *infTextBuffer,
     unsigned int offset,
     InfTextChunk *textChunk,
     InfUser *user,
     void *user_data )
 {
     TextBuffer *textBuffer = static_cast<TextBuffer*>(user_data);
-    textBuffer->emitInsertText( offset, textChunk, user );
+    textBuffer->emitTextInserted( offset, textChunk, user );
 }
 
-void TextBuffer::emitEraseText( unsigned int offset,
+void TextBuffer::emitTextErased( unsigned int offset,
     unsigned int len,
     InfUser *user )
 {
     emit( textErased( offset, len, User::wrap( user ) ) );
 }
 
-void TextBuffer::emitInsertText( unsigned int offset,
+void TextBuffer::emitTextInserted( unsigned int offset,
     InfTextChunk *textChunk,
     InfUser *user )
 {
