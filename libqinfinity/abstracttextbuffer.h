@@ -50,12 +50,12 @@ class AbstractTextBuffer
 
 G_BEGIN_DECLS
 
-#define INF_TEXT_TYPE_ABSTRACT_BUFFER                 (inf_text_abstract_buffer_get_type())
-#define INF_TEXT_ABSTRACT_BUFFER(obj)                 (G_TYPE_CHECK_INSTANCE_CAST((obj), INF_TEXT_TYPE_ABSTRACT_BUFFER, InfTextAbstractBuffer))
-#define INF_TEXT_ABSTRACT_BUFFER_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST((klass), INF_TEXT_TYPE_ABSTRACT_BUFFER, InfTextAbstractBufferClass))
-#define INF_TEXT_IS_ABSTRACT_BUFFER(obj)              (G_TYPE_CHECK_INSTANCE_TYPE((obj), INF_TEXT_TYPE_ABSTRACT_BUFFER))
-#define INF_TEXT_IS_ABSTRACT_BUFFER_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE((klass), INF_TEXT_TYPE_ABSTRACT_BUFFER))
-#define INF_TEXT_ABSTRACT_BUFFER_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS((obj), INF_TEXT_TYPE_ABSTRACT_BUFFER, InfTextAbstractBufferClass))
+#define QINF_TEXT_TYPE_ABSTRACT_BUFFER                 (qinf_text_abstract_buffer_get_type())
+#define QINF_TEXT_ABSTRACT_BUFFER(obj)                 (G_TYPE_CHECK_INSTANCE_CAST((obj), QINF_TEXT_TYPE_ABSTRACT_BUFFER, QInfTextAbstractBuffer))
+#define QINF_TEXT_ABSTRACT_BUFFER_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST((klass), QINF_TEXT_TYPE_ABSTRACT_BUFFER, QInfTextAbstractBufferClass))
+#define QINF_TEXT_IS_ABSTRACT_BUFFER(obj)              (G_TYPE_CHECK_INSTANCE_TYPE((obj), QINF_TEXT_TYPE_ABSTRACT_BUFFER))
+#define QINF_TEXT_IS_ABSTRACT_BUFFER_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE((klass), QINF_TEXT_TYPE_ABSTRACT_BUFFER))
+#define QINF_TEXT_ABSTRACT_BUFFER_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS((obj), QINF_TEXT_TYPE_ABSTRACT_BUFFER, QInfTextAbstractBufferClass))
 
 typedef struct _QInfTextAbstractBufferClass QInfTextAbstractBufferClass;
 typedef struct _QInfTextAbstractBuffer QInfTextAbstractBuffer;

@@ -1,5 +1,6 @@
 #include "abstracttextbuffer.h"
 #include "textchunk.h"
+#include "user.h"
 
 #include <libinftext/inf-text-buffer.h>
 
@@ -14,6 +15,7 @@ static void qinf_text_abstract_buffer_init( GTypeInstance *instance,
 
 static void qinf_text_abstract_buffer_finalize( GObject *object )
 {
+    G_OBJECT_CLASS(parent_class)->finalize(object);
 }
 
 static void qinf_text_abstract_buffer_class_init( gpointer g_class,
@@ -84,15 +86,42 @@ GType qinf_text_abstract_buffer_get_type()
 QInfTextAbstractBuffer *qinf_text_abstract_buffer_new( const char *encoding,
     QInfinity::AbstractTextBuffer *wrapper )
 {
+    void *object;
+
+    object = g_object_new(
+        QINF_TEXT_TYPE_ABSTRACT_BUFFER,
+        0
+    );
+
+    return QINF_TEXT_ABSTRACT_BUFFER(object);
 }
 
 namespace QInfinity
 {
 
+void AbstractTextBuffer::bufferIfaceInit( gpointer g_iface,
+    gpointer iface_data )
+{
+}
+
+void AbstractTextBuffer::textBufferIfaceInit( gpointer g_iface,
+    gpointer iface_data )
+{
+    InfTextBufferIface *iface;
+    iface = (InfTextBufferIface*)g_iface;
+
+    iface->insert_text = AbstractTextBuffer::insert_text_cb;
+    iface->erase_text = AbstractTextBuffer::erase_text_cb;
+}
+
 AbstractTextBuffer::AbstractTextBuffer( const QString &encoding,
     QObject *parent )
     : TextBuffer( INF_TEXT_BUFFER(qinf_text_abstract_buffer_new( encoding.toAscii(), this )),
         parent )
+{
+}
+
+AbstractTextBuffer::~AbstractTextBuffer()
 {
 }
 
@@ -102,6 +131,10 @@ void AbstractTextBuffer::insert_text_cb( InfTextBuffer *buffer,
     InfTextChunk *chunk,
     InfUser *user )
 {
+    QInfTextAbstractBuffer *absBuffer = QINF_TEXT_ABSTRACT_BUFFER(buffer);
+    absBuffer->wrapper->onInsertText( offset,
+        TextChunk( chunk, false ),
+        User::wrap( user ) );
 }
 
 void AbstractTextBuffer::erase_text_cb( InfTextBuffer *buffer,
@@ -109,6 +142,10 @@ void AbstractTextBuffer::erase_text_cb( InfTextBuffer *buffer,
     unsigned int length,
     InfUser *user )
 {
+    QInfTextAbstractBuffer *absBuffer = QINF_TEXT_ABSTRACT_BUFFER(buffer);
+    absBuffer->wrapper->onEraseText( offset,
+        length,
+        User::wrap( user ) );
 }
 
 }
