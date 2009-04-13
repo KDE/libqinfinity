@@ -68,7 +68,6 @@ struct _QInfTextAbstractBufferClass
 struct _QInfTextAbstractBuffer
 {
     GObject *parent;
-    QInfinity::AbstractTextBuffer *wrapper;
 };
 
 G_END_DECLS
