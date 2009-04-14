@@ -3,8 +3,15 @@
 #include "user.h"
 
 #include <libinftext/inf-text-buffer.h>
+#include <libinftext/inf-text-chunk.h>
 
 #include <glib-object.h>
+
+typedef struct _InfTextBufferIter InfTextBufferIter;
+struct _InfTextBufferIter
+{
+    InfTextChunkIter chunk_iter;
+};
 
 typedef struct _QInfTextAbstractBufferPrivate QInfTextAbstractBufferPrivate;
 struct _QInfTextAbstractBufferPrivate
@@ -12,6 +19,7 @@ struct _QInfTextAbstractBufferPrivate
     QInfinity::AbstractTextBuffer *wrapper;
     gchar *encoding;
     gboolean modified;
+    InfTextChunk *chunk;
 };
 
 enum {
@@ -39,6 +47,7 @@ static void qinf_text_abstract_buffer_init( GTypeInstance *instance,
     
     priv->encoding = 0;
     priv->modified = FALSE;
+    priv->chunk = 0;
 }
 
 static void qinf_text_abstract_buffer_finalize( GObject *object )
@@ -50,6 +59,7 @@ static void qinf_text_abstract_buffer_finalize( GObject *object )
     priv = QINF_TEXT_ABSTRACT_BUFFER_PRIVATE(abs_buffer);
 
     g_free(priv->encoding);
+    inf_text_chunk_free(priv->chunk);
 
     G_OBJECT_CLASS(parent_class)->finalize(object);
 }
@@ -120,6 +130,86 @@ static gboolean qinf_text_abstract_buffer_get_modified( InfBuffer *buffer )
 static const gchar *qinf_text_abstract_buffer_get_encoding( InfTextBuffer *buffer )
 {
     return QINF_TEXT_ABSTRACT_BUFFER_PRIVATE(buffer)->encoding;
+}
+
+static unsigned int qinf_text_abstract_buffer_get_length( InfTextBuffer *buffer )
+{
+    QInfTextAbstractBufferPrivate* priv;
+    priv = QINF_TEXT_ABSTRACT_BUFFER_PRIVATE(buffer);
+    return inf_text_chunk_get_length(priv->chunk);
+}
+
+static InfTextChunk* qinf_text_abstract_buffer_get_slice(InfTextBuffer* buffer,
+    guint pos,
+    guint len)
+{
+    QInfTextAbstractBufferPrivate* priv;
+    priv = QINF_TEXT_ABSTRACT_BUFFER_PRIVATE(buffer);
+    return inf_text_chunk_substring(priv->chunk, pos, len);
+}
+
+static InfTextBufferIter* qinf_text_abstract_buffer_create_iter(InfTextBuffer* buffer)
+{
+    QInfTextAbstractBufferPrivate* priv;
+    InfTextChunkIter chunk_iter;
+    InfTextBufferIter* iter;
+
+    priv = QINF_TEXT_ABSTRACT_BUFFER_PRIVATE(buffer);
+    if(inf_text_chunk_iter_init(priv->chunk, &chunk_iter) == TRUE)
+    {
+        iter = g_slice_new(InfTextBufferIter);
+        iter->chunk_iter = chunk_iter;
+        return iter;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+static void qinf_text_abstract_buffer_destroy_iter(InfTextBuffer* buffer,
+    InfTextBufferIter* iter)
+{
+    g_slice_free(InfTextBufferIter, iter);
+}
+
+static gboolean qinf_text_abstract_buffer_iter_next(InfTextBuffer* buffer,
+    InfTextBufferIter* iter)
+{
+    return inf_text_chunk_iter_next(&iter->chunk_iter);
+}
+
+static gboolean qinf_text_abstract_buffer_iter_prev(InfTextBuffer* buffer,
+    InfTextBufferIter* iter)
+{
+    return inf_text_chunk_iter_prev(&iter->chunk_iter);
+}
+
+static gpointer qinf_text_abstract_buffer_iter_get_text(InfTextBuffer* buffer,
+    InfTextBufferIter* iter)
+{
+    return g_memdup(
+        inf_text_chunk_iter_get_text(&iter->chunk_iter),
+        inf_text_chunk_iter_get_bytes(&iter->chunk_iter)
+    );
+}
+
+static guint qinf_text_abstract_buffer_iter_get_length(InfTextBuffer* buffer,
+    InfTextBufferIter* iter)
+{
+    return inf_text_chunk_iter_get_length(&iter->chunk_iter);
+}
+
+static gsize qinf_text_abstract_buffer_iter_get_bytes(InfTextBuffer* buffer,
+    InfTextBufferIter* iter)
+{
+    return inf_text_chunk_iter_get_bytes(&iter->chunk_iter);
+}
+
+static guint qinf_text_abstract_buffer_iter_get_author(InfTextBuffer* buffer,
+                                               InfTextBufferIter* iter)
+{
+    return inf_text_chunk_iter_get_author(&iter->chunk_iter);
 }
 
 static void qinf_text_abstract_buffer_class_init( gpointer g_class,
@@ -238,6 +328,16 @@ void AbstractTextBuffer::textBufferIfaceInit( gpointer g_iface,
     iface = (InfTextBufferIface*)g_iface;
 
     iface->get_encoding = qinf_text_abstract_buffer_get_encoding;
+    iface->get_length = qinf_text_abstract_buffer_get_length;
+    iface->get_slice = qinf_text_abstract_buffer_get_slice;
+    iface->create_iter = qinf_text_abstract_buffer_create_iter;
+    iface->destroy_iter = qinf_text_abstract_buffer_destroy_iter;
+    iface->iter_next = qinf_text_abstract_buffer_iter_next;
+    iface->iter_prev = qinf_text_abstract_buffer_iter_prev;
+    iface->iter_get_text = qinf_text_abstract_buffer_iter_get_text;
+    iface->iter_get_length = qinf_text_abstract_buffer_iter_get_length;
+    iface->iter_get_bytes = qinf_text_abstract_buffer_iter_get_bytes;
+    iface->iter_get_author = qinf_text_abstract_buffer_iter_get_author;
     iface->insert_text = AbstractTextBuffer::insert_text_cb;
     iface->erase_text = AbstractTextBuffer::erase_text_cb;
 }
