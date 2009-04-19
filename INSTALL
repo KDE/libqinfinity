@@ -1,0 +1,5 @@
+To install libqinfinity, enter the source directory and run:
+cmake . -DCMAKE_INSTALL_PREFIX={prefix}
+make
+sudo make install
+
