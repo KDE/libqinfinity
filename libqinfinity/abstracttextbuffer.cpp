@@ -78,7 +78,11 @@ static void qinf_text_abstract_buffer_set_property( GObject *object,
     switch(prop_id)
     {
         case PROP_ENCODING:
+            g_assert(priv->encoding == NULL);
+            g_assert(priv->chunk == NULL);
+
             priv->encoding = g_value_dup_string(value);
+            priv->chunk = inf_text_chunk_new(priv->encoding);
             break;
         case PROP_MODIFIED:
             priv->modified = g_value_get_boolean(value);
@@ -242,18 +246,18 @@ static void qinf_text_abstract_buffer_class_init( gpointer g_class,
 
 GType qinf_text_abstract_buffer_get_type()
 {
-    static GType default_buffer_type = 0;
+    static GType abstract_buffer_type = 0;
 
-    if(!default_buffer_type)
+    if(!abstract_buffer_type)
     {
-        static const GTypeInfo default_buffer_type_info = {
-            sizeof(QInfTextAbstractBufferClass),  /* class_size */
+        static const GTypeInfo abstract_buffer_type_info = {
+            sizeof(struct _QInfTextAbstractBufferClass),  /* class_size */
             NULL,                               /* base_init */
             NULL,                               /* base_finalize */
             qinf_text_abstract_buffer_class_init, /* class_init */
             NULL,                               /* class_finalize */
             NULL,                               /* class_data */
-            sizeof(QInfTextAbstractBuffer),       /* instance_size */
+            sizeof(struct _QInfTextAbstractBuffer),       /* instance_size */
             0,                                  /* n_preallocs */
             qinf_text_abstract_buffer_init,       /* instance_init */
             NULL                                /* value_table */
@@ -271,27 +275,27 @@ GType qinf_text_abstract_buffer_get_type()
             NULL
         };
 
-        default_buffer_type = g_type_register_static(
+        abstract_buffer_type = g_type_register_static(
             G_TYPE_OBJECT,
             "QInfTextAbstractBuffer",
-            &default_buffer_type_info,
+            &abstract_buffer_type_info,
             (GTypeFlags)0
         );
 
         g_type_add_interface_static(
-            default_buffer_type,
+            abstract_buffer_type,
             INF_TYPE_BUFFER,
             &buffer_info
         );
 
         g_type_add_interface_static(
-            default_buffer_type,
+            abstract_buffer_type,
             INF_TEXT_TYPE_BUFFER,
             &text_buffer_info
         );
     }
 
-    return default_buffer_type;
+    return abstract_buffer_type;
 }
 
 QInfTextAbstractBuffer *qinf_text_abstract_buffer_new( const char *encoding,
@@ -347,6 +351,11 @@ AbstractTextBuffer::AbstractTextBuffer( const QString &encoding,
     : TextBuffer( INF_TEXT_BUFFER(qinf_text_abstract_buffer_new( encoding.toAscii(), this )),
         parent )
 {
+    QInfTextAbstractBuffer *absBuffer = QINF_TEXT_ABSTRACT_BUFFER(gobject());
+    QInfTextAbstractBufferPrivate *priv;
+
+    priv = QINF_TEXT_ABSTRACT_BUFFER_PRIVATE(absBuffer);
+    priv->wrapper = this;
 }
 
 AbstractTextBuffer::~AbstractTextBuffer()

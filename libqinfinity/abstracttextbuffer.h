@@ -3,6 +3,8 @@
 
 #include "textbuffer.h"
 
+#include <glib-object.h>
+
 class QString;
 
 namespace QInfinity
@@ -62,13 +64,19 @@ typedef struct _QInfTextAbstractBuffer QInfTextAbstractBuffer;
 
 struct _QInfTextAbstractBufferClass
 {
-    GObjectClass *parent_class;
+    GObjectClass parent_class;
 };
 
 struct _QInfTextAbstractBuffer
 {
-    GObject *parent;
+    GObject parent;
 };
+
+GType
+qinf_text_abstract_buffer_get_type(void) G_GNUC_CONST;
+
+QInfTextAbstractBuffer*
+qinf_text_abstract_buffer_new(const gchar* encoding);
 
 G_END_DECLS
 
