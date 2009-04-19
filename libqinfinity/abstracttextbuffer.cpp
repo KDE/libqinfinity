@@ -372,6 +372,9 @@ void AbstractTextBuffer::insert_text_cb( InfTextBuffer *buffer,
     QInfTextAbstractBufferPrivate *priv;
 
     priv = QINF_TEXT_ABSTRACT_BUFFER_PRIVATE(absBuffer);
+
+    inf_text_chunk_insert_chunk(priv->chunk, offset, chunk);
+
     priv->wrapper->onInsertText( offset,
         TextChunk( chunk, false ),
         User::wrap( user ) );
@@ -386,6 +389,9 @@ void AbstractTextBuffer::erase_text_cb( InfTextBuffer *buffer,
     QInfTextAbstractBufferPrivate *priv;
 
     priv = QINF_TEXT_ABSTRACT_BUFFER_PRIVATE(absBuffer);
+
+    inf_text_chunk_erase(priv->chunk, offset, length);
+
     priv->wrapper->onEraseText( offset,
         length,
         User::wrap( user ) );
