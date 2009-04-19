@@ -61,6 +61,15 @@ else( GLIB_LIBRARIES AND GLIB_INCLUDES )
 			/usr/lib
 			/usr/local/lib
 	)
+
+	find_library( GLIB_GOBJ_LIBRARY
+		NAMES
+			gobject-2.0
+		PATHS
+			${_GLIB_LIBRARY_DIR}
+			/usr/lib
+			/usr/local/lib
+	)
 	
 	set( GLIB_INCLUDES
 		${GLIB_INCLUDE_DIR}
@@ -69,6 +78,7 @@ else( GLIB_LIBRARIES AND GLIB_INCLUDES )
 	
 	set( GLIB_LIBRARIES
 		${GLIB_LIBRARY}
+		${GLIB_GOBJ_LIBRARY}
 	)
 	
 	set( GLIB_FOUND true )
