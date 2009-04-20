@@ -28,7 +28,9 @@ class XmlConnection;
  *
  * The Browser contains functionality related to navigating
  * and monitoring nodes on an infinote server.  To navigate
- * the nodes on a server, use  a BrowserIter.
+ * the nodes on a server, use a BrowserIter.
+ *
+ * The BrowserModel is also useful for remote server browsing.
  */
 class Browser
     : public QGObject
@@ -40,6 +42,9 @@ class Browser
             QObject *parent = 0,
             bool own_gobject = true );
 
+        /**
+         * @brief Create Browser for connection.
+         */
         Browser( CommunicationManager &comm_manager,
             XmlConnection &connection,
             QObject *parent = 0 );
@@ -48,13 +53,38 @@ class Browser
          * @brief Add plugin to browser session.
          */
         bool addPlugin( NotePlugin &plugin );
+
+        /**
+         * @brief Create a new subdirectiory.
+         * @param parent Parent of new directory.
+         * @param name Name of new directory.
+         * @return Request for monitoring node creation.
+         */
         InfcNodeRequest *addSubdirectory( BrowserIter parent,
             const char *name );
+
+        /**
+         * @brief Create a new note.
+         * @param parent Parent of new note.
+         * @param name Name of new note.
+         * @param plugin Plugin used for note.
+         * @param initial_subscribe Subscribe to note on creation.
+         */
         InfcNodeRequest *addNote( BrowserIter parent,
             const char *name,
             NotePlugin &plugin,
             bool initial_subscribe );
+
+        /**
+         * @brief Delete node.
+         * @param node Node to be deleted.
+         */
         InfcNodeRequest *removeNode( BrowserIter node );
+
+        /**
+         * @brief Subscribe to editing session.
+         * @param node Note to subscribe to.
+         */
         InfcNodeRequest *subscribeSession( BrowserIter node );
 
     protected:
@@ -71,6 +101,7 @@ class Browser
          */
         void beginExplore( const BrowserIter &iter,
             InfcExploreRequest *request );
+
         /**
          * @brief A subscription request has been made.
          * @param iter Iter pointing to nobe subscribed to.
@@ -81,9 +112,24 @@ class Browser
          */
         void beginSubscribe( const BrowserIter &iter,
             InfcNodeRequest *request );
+
+        /**
+         * @brief A subscription to a note has been made.
+         *
+         * This does not mean the session is running.  The
+         * session is likely still synchronizing.
+         */
         void subscribeSession( const QInfinity::BrowserIter &iter,
             QPointer<QInfinity::SessionProxy> proxy );
+
+        /**
+         * @brief A node has been created.
+         */
         void nodeAdded( const BrowserIter &iter );
+
+        /**
+         * @brief A node has been removed.
+         */
         void nodeRemoved( const BrowserIter &iter );
 
     private:
