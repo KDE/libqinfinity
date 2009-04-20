@@ -10,6 +10,12 @@
 namespace QInfinity
 {
 
+/**
+ * @brief A base buffer for collaborative editing.
+ *
+ * You probably want to look at a subclass of this,
+ * such as TextBuffer or AbstractTextBuffer.
+ */
 class Buffer
     : public QGObject
 {

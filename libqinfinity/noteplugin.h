@@ -17,11 +17,9 @@ class XmlConnection;
 /**
  * @brief Note plugin base class used to create sessions.
  *
- * The job of the NotePlugin is to create a InfSession derived
- * GObject, as well as a Session derived QGobject to wrap the
- * session.  This allows the wrapping session to be stored in
- * the WrapperStore so the SessionProxy representing the GObject
- * session can retrieve the appropriate wrapper.
+ * The note plugin is used to create the correct Session
+ * and Buffer subclasses for a note.  This is done by
+ * overriding the createSession method.
  */
 class NotePlugin
     : public QObject

@@ -6,6 +6,9 @@
 namespace QInfinity
 {
 
+/**
+ * @brief NotePlugin which uses a DefaultTextBuffer.
+ */
 class DefaultTextPlugin
     : public NotePlugin
 {
