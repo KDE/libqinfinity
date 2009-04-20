@@ -12,12 +12,32 @@ namespace QInfinity
 
 class TextChunk;
 
+/**
+ * @brief Base class for implementing a text buffer.
+ *
+ * The AbstractTextBuffer is used to implement a custom
+ * TextBuffer.  Most projects using the InfText or similar
+ * plugin will find this of use.  You can cause your
+ * custom implementation to be used by creating a subclass
+ * of NotePlugin which creates the proper subclass.
+ *
+ * Currently, the AbstractTextBuffer provides the same
+ * functionality as a DefaultTextBuffer only with calls to
+ * the wrapping virtual functions appended for insert and
+ * erase text.  In the future this will likely be changed.
+ */
 class AbstractTextBuffer
     : public TextBuffer
 {
     public:
+        /**
+         * @brief Used by wrapped GObject
+         */
         static void bufferIfaceInit( gpointer g_iface,
             gpointer iface_data );
+        /**
+         * @brief Used by wrapped GObject
+         */
         static void textBufferIfaceInit( gpointer g_iface,
             gpointer iface_data );
 
@@ -26,12 +46,25 @@ class AbstractTextBuffer
          */
         AbstractTextBuffer( const QString &encoding,
             QObject *parent = 0 );
+
         virtual ~AbstractTextBuffer();
 
     protected:
+        /**
+         * @brief Called to insert text into buffer.
+         *
+         * Your implementation must account for all of
+         * the text provided by this method, and only
+         * for that text.  Not doing so can lead to
+         * inconsistancies among users.
+         */
         virtual void onInsertText( unsigned int offset,
             const TextChunk &chunk,
             User *user ) = 0;
+
+        /**
+         * @brief Called to erase text from buffer.
+         */
         virtual void onEraseText( unsigned int offset,
             unsigned int length,
             User *user ) = 0;
