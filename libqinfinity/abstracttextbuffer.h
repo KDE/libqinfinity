@@ -3,8 +3,6 @@
 
 #include "textbuffer.h"
 
-#include <glib-object.h>
-
 class QString;
 
 namespace QInfinity

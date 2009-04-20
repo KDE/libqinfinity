@@ -3,9 +3,9 @@
 
 #include "qgobject.h"
 
-#include <libinfinity/common/inf-buffer.h>
-
 #include <QPointer>
+
+typedef struct _InfBuffer InfBuffer;
 
 namespace QInfinity
 {

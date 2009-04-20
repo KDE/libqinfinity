@@ -1,9 +1,12 @@
 #include "browser.h"
+#include "noteplugin.h"
+#include "sessionproxy.h"
 #include "xmlconnection.h"
 #include "qtio.h"
 #include "communicationmanager.h"
 #include "wrapperstore.h"
 
+#include <libinfinity/common/inf-buffer.h>
 #include <libinfinity/client/infc-browser.h>
 #include <libinfinity/client/infc-explore-request.h>
 #include <libinfinity/client/infc-node-request.h>

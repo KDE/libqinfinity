@@ -8,7 +8,6 @@
 #include <QStandardItemModel>
 #include <QHash>
 #include <QPointer>
-#include <QAbstractItemView>
 
 namespace QInfinity
 {
@@ -17,7 +16,6 @@ class ConnectionItem;
 class XmlConnection;
 class BrowserItemFactory;
 class NodeItem;
-class ConnectionItem;
 class Browser;
 class BrowserIter;
 class NotePlugin;

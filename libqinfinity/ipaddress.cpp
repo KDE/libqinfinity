@@ -1,5 +1,7 @@
 #include "ipaddress.h"
 
+#include <libinfinity/common/inf-ip-address.h>
+
 namespace QInfinity
 {
 

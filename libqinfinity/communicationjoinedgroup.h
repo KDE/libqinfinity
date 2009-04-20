@@ -3,9 +3,9 @@
 
 #include "qgobject.h"
 
-#include <libinfinity/communication/inf-communication-joined-group.h>
-
 #include <QPointer>
+
+typedef struct _InfCommunicationJoinedGroup InfCommunicationJoinedGroup;
 
 namespace QInfinity
 {

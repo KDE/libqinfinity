@@ -17,6 +17,9 @@ class QtIoWatch;
 typedef struct _QInfQtIoClass QInfQtIoClass;
 typedef struct _QInfQtIo QInfQtIo;
 
+/**
+ * @brief Event handler interface for libinfinity.
+ */
 class QtIo
     : public QObject
 {
@@ -47,6 +50,9 @@ class QtIo
 
 };
 
+/**
+ * @brief Timer for QtIo
+ */
 class InfTimer
     :  public QTimer
 {

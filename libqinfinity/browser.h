@@ -2,8 +2,6 @@
 #define QINFINITY_BROWSER_H
 
 #include "qgobject.h"
-#include "sessionproxy.h"
-#include "noteplugin.h"
 #include "browseriter.h"
 
 #include <QPointer>
@@ -22,6 +20,8 @@ namespace QInfinity
 class QtIo;
 class CommunicationManager;
 class XmlConnection;
+class NotePlugin;
+class SessionProxy;
 
 /**
  * @brief Browse an infinote server.

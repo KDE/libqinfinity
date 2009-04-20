@@ -1,10 +1,10 @@
 #ifndef QINFINITY_IPADDRESS_H
 #define QINFINITY_IPADDRESS_H
 
-#include <libinfinity/common/inf-ip-address.h>
-
 #include <QHostAddress>
 #include <QString>
+
+typedef struct _InfIpAddress InfIpAddress;
 
 namespace QInfinity
 {

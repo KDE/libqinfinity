@@ -1,6 +1,8 @@
 #include "communicationjoinedgroup.h"
 #include "wrapperstore.h"
 
+#include <libinfinity/communication/inf-communication-joined-group.h>
+
 namespace QInfinity
 {
 
