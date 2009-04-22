@@ -191,7 +191,7 @@ bool BrowserModel::createDirectory( const QModelIndex &parent,
         qDebug() << "Could not find parent items' browser.";
         return false;
     }
-    browser->addSubdirectory( parentItem->iter(), name.toAscii() );
+    return browser->addSubdirectory( parentItem->iter(), name.toAscii() );
 }
 
 bool BrowserModel::createNote( const QModelIndex &parent,
