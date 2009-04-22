@@ -47,6 +47,7 @@ else( GLIB_LIBRARIES AND GLIB_INCLUDES )
 			glibconfig.h
 		PATHS
 			${_GLIB_INCLUDE_DIR}
+			${_GLIB_LIBRARY_DIR}
 			/usr/lib
 			/usr/local/lib
 		PATH_SUFFIXES

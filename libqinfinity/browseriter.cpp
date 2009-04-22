@@ -137,6 +137,7 @@ QString BrowserIter::noteType()
 {
     if( m_infBrowser )
         return infc_browser_iter_get_note_type( m_infBrowser, &m_infBrowserIter );
+    return "";
 }
 
 }

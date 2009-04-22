@@ -219,6 +219,7 @@ bool BrowserModel::createNote( const QModelIndex &parent,
         return false;
     }
     browser->addNote( parentItem->iter(), name.toAscii(), plugin, false );
+    return true;
 }
 
 bool BrowserModel::removeRows( int row, int count,
