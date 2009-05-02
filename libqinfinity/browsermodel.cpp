@@ -21,6 +21,7 @@ ConnectionIndex::ConnectionIndex( XmlConnection &connection,
 
 ConnectionIndex::~ConnectionIndex()
 {
+    qDebug() << "deleting connection";
     QInfinity::TcpConnection *tcpConn;
     delete m_browser;
     tcpConn = m_xmlConnection->tcpConnection();
@@ -227,15 +228,27 @@ bool BrowserModel::removeRows( int row, int count,
 {
     qDebug() << "Remove rows";
     int i;
-    QStandardItem *item, *parentItem;;
-    parentItem = itemFromIndex( parent );
+    QStandardItem *item, *parentItem;
+    QModelIndex curIndex;
     for( i = 0; i < count; i++ )
     {
-        item = parentItem->child( row + i );
-        if( item->type() == BrowserItemFactory::ConnectionItem )
-            removeConnectionItem( dynamic_cast<ConnectionItem*>(item) );
+        curIndex = index( row + i, 0, parent );
+        item = itemFromIndex( curIndex );
+        if( item )
+        {
+            if( item->type() == BrowserItemFactory::ConnectionItem )
+            {
+                beginRemoveRows( parent, item->row(), item->row() );
+                removeConnectionItem( dynamic_cast<ConnectionItem*>(item) );
+                endRemoveRows();
+            }
+            else
+                deleteNodeItem( dynamic_cast<NodeItem*>(item) );
+        }
         else
-            deleteNodeItem( dynamic_cast<NodeItem*>(item) );
+        {
+            qDebug() << "Could not locate item to remove.";
+        }
     }
     return true;
 }
