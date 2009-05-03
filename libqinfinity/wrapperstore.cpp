@@ -75,6 +75,7 @@ void WrapperStore::slotWrapperDeleted( QObject *wrapper )
 {
     if( wrapper )
     {
+        // We cant dynamic_cast because the object has been deleted
         removeWrapper( (QGObject*)wrapper );
     }
 }
