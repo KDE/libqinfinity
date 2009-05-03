@@ -75,7 +75,7 @@ set(QInfinity_HDRS
 
 QT4_AUTOMOC(${QInfinity_SRCS})
 
-include_directories(${LIBINFINITY_INCLUDES} ${LIBINFTEXT_INCLUDES})
+include_directories(${LIBINFINITY_INCLUDES} ${LIBINFTEXT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 
 ADD_LIBRARY(qinfinity SHARED ${QInfinity_SRCS})
 

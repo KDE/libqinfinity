@@ -4,7 +4,7 @@ find_package(Libinfinity REQUIRED)
 set(QT_USE_QTNETWORK true)
 INCLUDE(${QT_USE_FILE})
 
-include_directories(${LIBINFINITY_INCLUDES} ${CMAKE_SOURCE_DIR}/libqinfinity)
+include_directories(${LIBINFINITY_INCLUDES} ${CMAKE_SOURCE_DIR}/libqinfinity ${CMAKE_CURRENT_BINARY_DIR})
 
 QT4_AUTOMOC(guibrowser.cpp
 	connection.cpp
