@@ -24,6 +24,8 @@
 
 #include <libinftext/inf-text-chunk.h>
 
+#include <QTextCodec>
+#include <QTextEncoder>
 #include <QDebug>
 
 namespace QInfinity
@@ -47,6 +49,16 @@ TextBuffer::~TextBuffer()
 QString TextBuffer::encoding()
 {
     return inf_text_buffer_get_encoding( INF_TEXT_BUFFER(gobject()) );
+}
+
+QTextCodec *TextBuffer::codec() const
+{
+    return m_codec;
+}
+
+QTextEncoder *TextBuffer::encoder() const
+{
+    return m_encoder;
 }
 
 unsigned int TextBuffer::length()
@@ -92,7 +104,12 @@ TextBuffer::TextBuffer( InfTextBuffer *infBuffer,
     QObject *parent,
     bool own_gobject )
     : Buffer( INF_BUFFER(infBuffer), parent, own_gobject )
+    , m_codec( 0 )
+    , m_encoder( 0 )
 {
+    m_codec = QTextCodec::codecForName( encoding().toAscii() );
+    if( m_codec )
+        m_encoder = m_codec->makeEncoder();
     erase_text_handler = g_signal_connect_after( gobject(),
         "erase-text", G_CALLBACK(TextBuffer::text_erased_cb),
         this );

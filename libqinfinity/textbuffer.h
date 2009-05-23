@@ -25,6 +25,9 @@
 
 #include <QPointer>
 
+class QTextCodec;
+class QTextEncoder;
+
 namespace QInfinity
 {
 
@@ -44,6 +47,8 @@ class TextBuffer
         ~TextBuffer();
         
         QString encoding();
+        QTextCodec *codec() const;
+        QTextEncoder *encoder() const;
         unsigned int length();
         TextChunk *slice( unsigned int pos,
             unsigned int len );
@@ -92,6 +97,8 @@ class TextBuffer
 
         unsigned long erase_text_handler;
         unsigned long insert_text_handler;
+        QTextCodec *m_codec;
+        QTextEncoder *m_encoder;
 
 };
 
