@@ -32,7 +32,7 @@ class AdoptedSession
     protected:
         AdoptedSession( InfAdoptedSession *infSession,
             QObject *parent = 0,
-            bool own_gobj = true );
+            bool own_gobj = false );
 
 };
 
