@@ -29,6 +29,7 @@ set(QInfinity_SRCS
 	browseriter.cpp
 	sessionproxy.cpp
 	session.cpp
+	adoptedsession.cpp
 	textsession.cpp
 	browsermodel.cpp
 	browseritemfactory.cpp
@@ -62,6 +63,7 @@ set(QInfinity_HDRS
 	browseriter.h
 	sessionproxy.h
 	session.h
+	adoptedsession.h
 	textsession.h
 	browsermodel.h
 	browseritemfactory.h

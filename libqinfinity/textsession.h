@@ -18,7 +18,7 @@
 #ifndef QINFINITY_TEXT_SESSION_H
 #define QINFINITY_TEXT_SESSION_H
 
-#include "session.h"
+#include "adoptedsession.h"
 #include "sessionproxy.h"
 #include "user.h"
 
@@ -37,7 +37,7 @@ class XmlConnection;
 class UserRequest;
 
 class TextSession
-    : public Session
+    : public AdoptedSession
 {
 
     public:

@@ -92,13 +92,12 @@ TextSession::TextSession( CommunicationManager &commMgr,
     TextBuffer &textBuffer,
     CommunicationJoinedGroup &commGroup,
     XmlConnection &connection )
-    : Session( INF_SESSION(inf_text_session_new( INF_COMMUNICATION_MANAGER(commMgr.gobject()),
+    : AdoptedSession( INF_ADOPTED_SESSION(inf_text_session_new( INF_COMMUNICATION_MANAGER(commMgr.gobject()),
             INF_TEXT_BUFFER(textBuffer.gobject()),
             INF_IO(QtIo::instance()->gobject()),
             INF_COMMUNICATION_GROUP(commGroup.gobject()),
             INF_XML_CONNECTION(connection.gobject()) )) )
 {
-    qDebug() << "New session.";
 }
 
 Session::Type TextSession::type() const
@@ -117,7 +116,7 @@ QPointer<Buffer> TextSession::buffer() const
 TextSession::TextSession( InfTextSession *infSession,
     QObject *parent,
     bool own_gobject )
-    : Session( INF_SESSION(infSession), parent, own_gobject )
+    : AdoptedSession( INF_ADOPTED_SESSION(infSession), parent, own_gobject )
 {
 }
 

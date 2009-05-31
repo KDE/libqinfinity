@@ -26,8 +26,6 @@
 #include <QObject>
 #include <QPointer>
 
-typedef struct _InfSession InfSession;
-
 namespace QInfinity
 {
 
