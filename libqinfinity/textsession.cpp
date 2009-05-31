@@ -24,6 +24,8 @@
 #include "xmlconnection.h"
 #include "userrequest.h"
 
+#include <libinfinity/adopted/inf-adopted-session.h>
+
 #include <glib-object.h>
 
 #include <QDebug>

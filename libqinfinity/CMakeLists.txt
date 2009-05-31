@@ -21,6 +21,7 @@ set(QInfinity_SRCS
 	communicationmanager.cpp
 	communicationjoinedgroup.cpp
 	user.cpp
+	adopteduser.cpp
 	usertable.cpp
 	request.cpp
 	userrequest.cpp
@@ -55,6 +56,7 @@ set(QInfinity_HDRS
 	communicationmanager.h
 	communicationjoinedgroup.h
 	user.h
+	adopteduser.h
 	usertable.h
 	request.h
 	userrequest.h

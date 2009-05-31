@@ -15,49 +15,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QINFINITY_USER_H
-#define QINFINITY_USER_H
+#ifndef QINFINITY_ADOPTED_USER_H
+#define QINFINITY_ADOPTED_USER_H
 
-#include "qgobject.h"
+#include "user.h"
 
-#include <libinfinity/common/inf-user.h>
-
-#include <QPointer>
+typedef struct _InfAdoptedUser InfAdoptedUser;
 
 namespace QInfinity
 {
 
-class User
-    : public QGObject
+class AdoptedUser
+    : public User
 {
     Q_OBJECT
 
     public:
-        enum Status
-        {
-            Active,
-            Inactive,
-            Unavailable
-        };
-
-        static QPointer<User> wrap( InfUser *infUser,
+        static QPointer<AdoptedUser> wrap( InfAdoptedUser *infUser,
             QObject *parent = 0,
             bool own_gobject = false );
-        static Status convertStatus( InfUserStatus status );
-        static InfUserStatus convertStatus( Status status );
-
-        unsigned int id();
-        QString name();
-        Status status();
 
     protected:
-        User( InfUser *infUser,
-           QObject *parent = 0,
-           bool own_gobject = false );
+        AdoptedUser( InfAdoptedUser *infUser,
+            QObject *parent = 0,
+            bool own_gobject = false );
 
 };
 
 }
 
 #endif
-

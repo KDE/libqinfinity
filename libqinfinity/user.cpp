@@ -17,6 +17,13 @@
 
 #include "user.h"
 #include "wrapperstore.h"
+#include "adopteduser.h"
+
+#include <libinfinity/adopted/inf-adopted-user.h>
+
+#include <QDebug>
+
+#include "user.moc"
 
 namespace QInfinity
 {
@@ -28,7 +35,16 @@ QPointer<User> User::wrap( InfUser *infObject,
     QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObject), own_gobject );
     if( wrapptr)
         return dynamic_cast<User*>(wrapptr);
-    User *wrapper = new User( infObject, parent, own_gobject );
+    // Make sure we instantiate the most specific user type
+    User *wrapper;
+    if( INF_ADOPTED_IS_USER(infObject) )
+    {
+        wrapper = AdoptedUser::wrap( INF_ADOPTED_USER(infObject), parent, own_gobject );
+    }
+    else
+    {
+        wrapper = new User( infObject, parent, own_gobject );
+    }
     return wrapper;
 }
 
