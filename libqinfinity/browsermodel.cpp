@@ -29,6 +29,33 @@
 namespace QInfinity
 {
 
+/**
+ * @brief Manages data tied to a connection
+ *
+ * This class will take ownership of its browser.
+ */
+class ConnectionIndex
+{
+
+    public:
+        ConnectionIndex( XmlConnection &connection,
+            Browser &browser );
+        ~ConnectionIndex();
+
+        XmlConnection &connection() const;
+        Browser &browser() const;
+        NodeItem *itemFromIter( const BrowserIter &iter ) const;
+        void indexIter( const BrowserIter &iter,
+            NodeItem &node );
+        void removeIter( const BrowserIter &iter );
+    
+    private:
+        XmlConnection *m_xmlConnection;
+        Browser *m_browser;
+        QHash<unsigned int, NodeItem*> nodeIdToNodeItemMap;
+
+};
+
 ConnectionIndex::ConnectionIndex( XmlConnection &connection,
     Browser &browser )
     : m_xmlConnection( &connection )
