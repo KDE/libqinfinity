@@ -25,9 +25,15 @@ typedef struct _InfAdoptedSession InfAdoptedSession;
 namespace QInfinity
 {
 
+class AdoptedUser;
+
 class AdoptedSession
     : public Session
 {
+
+    public:
+        void undo( AdoptedUser &user );
+        void redo( AdoptedUser &user );
 
     protected:
         AdoptedSession( InfAdoptedSession *infSession,

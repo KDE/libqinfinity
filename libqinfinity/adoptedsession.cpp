@@ -16,11 +16,24 @@
  */
 
 #include "adoptedsession.h"
+#include "adopteduser.h"
 
 #include <libinfinity/adopted/inf-adopted-session.h>
 
 namespace QInfinity
 {
+
+void AdoptedSession::undo( AdoptedUser &user )
+{
+    inf_adopted_session_undo( INF_ADOPTED_SESSION(gobject()),
+        INF_ADOPTED_USER(user.gobject()) );
+}
+
+void AdoptedSession::redo( AdoptedUser &user )
+{
+    inf_adopted_session_redo( INF_ADOPTED_SESSION(gobject()),
+        INF_ADOPTED_USER(user.gobject()) );
+}
 
 AdoptedSession::AdoptedSession( InfAdoptedSession *infSession,
     QObject *parent,
