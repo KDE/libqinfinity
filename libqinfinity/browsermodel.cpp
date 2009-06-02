@@ -171,6 +171,7 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
     nodeItem = m_itemFactory->createRootNodeItem( rootNode );
     indexIter( rootNode, *browser, *nodeItem );
     connItem->setChild( 0, nodeItem );
+    emit( connectionAdded( connection ) );
     return connItem;
 }
 
@@ -351,6 +352,7 @@ void BrowserModel::removeConnectionItem( ConnectionItem *item )
     ConnectionIndex *index;
     index = browserToConnectionMap[&item->browser()];
     browserToConnectionMap.remove(&item->browser());
+    emit( connectionRemoved( item->connection() ) );
     delete index;
 }
 

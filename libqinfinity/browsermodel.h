@@ -132,6 +132,8 @@ class BrowserModel
 
     Q_SIGNALS:
         void browserAdded( QInfinity::Browser &browser );
+        void connectionAdded( QInfinity::XmlConnection &connection );
+        void connectionRemoved( QInfinity::XmlConnection &connection );
 
     public Q_SLOTS:
         /**
