@@ -39,6 +39,7 @@ class CommunicationManager;
 class XmlConnection;
 class NotePlugin;
 class SessionProxy;
+class Session;
 
 /**
  * @brief Browse an infinote server.
@@ -82,7 +83,7 @@ class Browser
 
         /**
          * @brief Create a new note.
-         * @param parent Parent of new note.
+         * @param parent Parent node of new note.
          * @param name Name of new note.
          * @param plugin Plugin used for note.
          * @param initial_subscribe Subscribe to note on creation.
@@ -90,6 +91,19 @@ class Browser
         InfcNodeRequest *addNote( BrowserIter parent,
             const char *name,
             NotePlugin &plugin,
+            bool initial_subscribe );
+
+        /**
+         * @brief Create a new note with specified content.
+         * @param parent Parent node of new note.
+         * @param name Name of new note.
+         * @param plugin Plugin used for note.
+         * @param initial_subscribe Subscribe to note on creation.
+         */
+        InfcNodeRequest *addNoteWithContent( BrowserIter parent,
+            const char *name,
+            NotePlugin &plugin,
+            Session &session,
             bool initial_subscribe );
 
         /**

@@ -18,6 +18,7 @@
 #include "browser.h"
 #include "noteplugin.h"
 #include "sessionproxy.h"
+#include "session.h"
 #include "xmlconnection.h"
 #include "qtio.h"
 #include "communicationmanager.h"
@@ -79,6 +80,18 @@ InfcNodeRequest *Browser::addNote( BrowserIter parent,
         parent.infBrowserIter(), name,
         plugin.infPlugin(),
         initial_subscribe );
+}
+
+InfcNodeRequest *Browser::addNoteWithContent( BrowserIter parent,
+    const char *name,
+    NotePlugin &plugin,
+    Session &session,
+    bool initial_subscribe )
+{
+    return infc_browser_add_note_with_content(INFC_BROWSER(this->gobject()),
+        parent.infBrowserIter(), name,
+        plugin.infPlugin(), INF_SESSION(session.gobject()),
+        initial_subscribe);
 }
 
 InfcNodeRequest *Browser::removeNode( BrowserIter node )
