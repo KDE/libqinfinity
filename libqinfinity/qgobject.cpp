@@ -16,6 +16,7 @@
  */
 
 #include "qgobject.h"
+#include "qgobject_p.h"
 #include "wrapperstore.h"
 
 namespace QInfinity
@@ -23,42 +24,45 @@ namespace QInfinity
 
 QGObject::QGObject( QObject *parent )
     : QObject( parent )
-    , m_gobject( 0 )
-    , m_own_gobj( 0 )
+    , d( new QGObjectPrivate )
 {
+    d->gobject = 0;
+    d->own_gobj = 0;
 }
 
 QGObject::~QGObject()
 {
-    if( m_own_gobj && m_gobject )
-        g_object_unref( m_gobject );
+    if( d->own_gobj && d->gobject )
+        g_object_unref( d->gobject );
+    delete d;
 }
 
 GObject *QGObject::gobject() const
 {
-    return m_gobject;
+    return d->gobject;
 }
 
 void QGObject::setGobject( GObject *obj,
     bool own_gobj )
 {
-    m_gobject = obj;
-    m_own_gobj = own_gobj;
+    d->gobject = obj;
+    d->own_gobj = own_gobj;
     WrapperStore::insertWrapper( this );
 }
 
 bool QGObject::isOwner()
 {
-    return m_own_gobj;
+    return d->own_gobj;
 }
 
 QGObject::QGObject( GObject *obj,
     QObject *parent,
     bool own_gobj )
     : QObject( parent )
-    , m_gobject( obj )
-    , m_own_gobj( own_gobj )
+    , d( new QGObjectPrivate )
 {
+    d->gobject = obj;
+    d->own_gobj = own_gobj;
     WrapperStore::insertWrapper( this );
 }
 

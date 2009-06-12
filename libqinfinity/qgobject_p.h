@@ -15,45 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QINFINITY_QGOBJECT_H
-#define QINFINITY_QGOBJECT_H
-
-#include <glib-object.h>
-
-#include <QObject>
+#ifndef QINFINITY_QGOBJECT_P_H
+#define QINFINITY_QGOBJECT_P_H
 
 namespace QInfinity
 {
 
-class QGObjectPrivate;
-
-/**
- * @brief Base class for classes wrapping a gobject
- */
-class QGObject
-    : public QObject
+class QGObjectPrivate
 {
-
     public:
-        QGObject( QObject *parent = 0 );
-        ~QGObject();
-
-        GObject *gobject() const;
-        void setGobject( GObject *obj,
-            bool own_gobj = true );
-        bool isOwner();
-
-    protected:
-        QGObject( GObject *obj,
-            QObject *parent = 0,
-            bool own_gobj = true );
-
-    private:
-        QGObjectPrivate *d;
-
+        GObject *gobject;
+        bool own_gobj;
 };
 
 }
 
 #endif
-
