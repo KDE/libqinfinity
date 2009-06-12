@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QINFINITY_FILE_MODEL_H
-#define QINFINITY_FILE_MODEL_H
+#ifndef QINFINITY_BROWSER_MODEL_H
+#define QINFINITY_BROWSER_MODEL_H
 
 #include "communicationmanager.h"
 
@@ -37,6 +37,8 @@ class Browser;
 class BrowserIter;
 class NotePlugin;
 class ConnectionIndex;
+
+class BrowserModelPrivate;
 
 /**
  * @brief A model representing connections and their available files
@@ -159,11 +161,7 @@ class BrowserModel
         Browser *createBrowser( CommunicationManager &commMgr,
             XmlConnection &connection );
 
-        BrowserItemFactory *m_itemFactory;
-        QHash<Browser*, ConnectionIndex*> browserToConnectionMap;
-        CommunicationManager comm_mgr;
-        QList<NotePlugin*> m_plugins;
-        QList<Browser*> m_browsers;
+        BrowserModelPrivate *d;
 
 };
 
