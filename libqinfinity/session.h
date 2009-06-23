@@ -31,6 +31,7 @@ namespace QInfinity
 
 class CommunicationManager;
 class Buffer;
+class UserTable;
 
 /**
  * @brief Represents an editing session.
@@ -64,6 +65,7 @@ class Session
         Status status() const;
         virtual Type type() const;
         virtual QPointer<Buffer> buffer() const;
+        QPointer<UserTable> userTable() const;
 
     Q_SIGNALS:
         void closing();

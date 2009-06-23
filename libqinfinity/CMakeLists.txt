@@ -34,6 +34,7 @@ set(QInfinity_SRCS
 	textsession.cpp
 	browsermodel.cpp
 	browseritemfactory.cpp
+	usersmodel.cpp
 	buffer.cpp
 	textchunk.cpp
 	textbuffer.cpp
@@ -69,6 +70,7 @@ set(QInfinity_HDRS
 	textsession.h
 	browsermodel.h
 	browseritemfactory.h
+	usersmodel.h
 	buffer.h
 	textchunk.h
 	textbuffer.h

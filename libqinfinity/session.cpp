@@ -17,6 +17,7 @@
 
 #include "session.h"
 #include "buffer.h"
+#include "usertable.h"
 #include "wrapperstore.h"
 
 #include "session.moc"
@@ -81,6 +82,11 @@ Session::Type Session::type() const
 QPointer<Buffer> Session::buffer() const
 {
     return Buffer::wrap( inf_session_get_buffer( INF_SESSION(gobject()) ) );
+}
+
+QPointer<UserTable> Session::userTable() const
+{
+    return UserTable::wrap( inf_session_get_user_table( INF_SESSION(gobject()) ) );
 }
 
 Session::Session( InfSession *infSession,
