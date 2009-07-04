@@ -20,12 +20,15 @@
 
 #include <QStandardItemModel>
 #include <QStandardItem>
+#include <QHash>
 
 namespace QInfinity
 {
 
+class Session;
 class User;
 class UserItemData;
+class UsersModelData;
 
 class UserItem
     : public QStandardItem
@@ -44,6 +47,7 @@ class UserItemFactory
 
     public:
         UserItemFactory();
+        virtual ~UserItemFactory() { }
 
         virtual UserItem *createUserItem( QInfinity::User &user );
 
@@ -52,9 +56,13 @@ class UserItemFactory
 class UsersModel
     : public QStandardItemModel
 {
+    Q_OBJECT
 
     public:
-        UsersModel( QObject *parent = 0 );
+        /**
+         * @brief Create model of users in session.
+         */
+        UsersModel( Session &session, QObject *parent = 0 );
 
         /**
          * @brief Set factory to create user items.
@@ -64,8 +72,12 @@ class UsersModel
          */
         void setFactory( UserItemFactory *factory );
     
+    private Q_SLOTS:
+        void insertUser( User *user );
+        void removeUser( User *user );
+
     private:
-        UserItemFactory *m_factory;
+        UsersModelData *d;
 
 };
 

@@ -20,6 +20,7 @@
 
 #include "qgobject.h"
 #include "communicationmanager.h"
+#include "user.h"
 
 #include <libinfinity/common/inf-session.h>
 
@@ -60,9 +61,12 @@ class Session
             QObject *parent = 0,
             bool own_gobject = false );
 
+        ~Session();
+
         CommunicationManager *communicationManager() const;
         void close();
         Status status() const;
+        void setUserStatus( User &user, User::Status status );
         virtual Type type() const;
         virtual QPointer<Buffer> buffer() const;
         QPointer<UserTable> userTable() const;
@@ -99,6 +103,7 @@ class Session
             GError *error,
             void *user_data );
         
+        gulong closing_id;
 };
 
 }

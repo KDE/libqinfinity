@@ -55,6 +55,11 @@ Session::Status Session::infStatusToCpp( InfSessionStatus infStatus )
     return status;
 }
 
+Session::~Session()
+{
+    g_signal_handler_disconnect(gobject(), closing_id);
+}
+
 CommunicationManager *Session::communicationManager() const
 {
     InfCommunicationManager *commMgr;
@@ -72,6 +77,12 @@ Session::Status Session::status() const
 {
     return Session::infStatusToCpp(
         inf_session_get_status( INF_SESSION(gobject()) ) );
+}
+
+void Session::setUserStatus( User &user, User::Status status )
+{
+    inf_session_set_user_status( INF_SESSION(gobject()),
+        INF_USER(user.gobject()), User::convertStatus( status ) );
 }
 
 Session::Type Session::type() const
@@ -99,7 +110,7 @@ Session::Session( InfSession *infSession,
 
 void Session::setupSignals()
 {
-    g_signal_connect( G_OBJECT(gobject()),
+    closing_id = g_signal_connect( G_OBJECT(gobject()),
         "close", G_CALLBACK(Session::close_cb),
         this );
     g_signal_connect( G_OBJECT(gobject()),

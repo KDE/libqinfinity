@@ -16,9 +16,12 @@
  */
 
 #include "usersmodel.h"
+#include "session.h"
 #include "user.h"
+#include "usertable.h"
 
 #include <QPointer>
+#include <QList>
 
 #include "usersmodel.moc"
 
@@ -33,7 +36,19 @@ class UserItemData
 
 };
 
+class UsersModelData
+{
+
+    public:
+        UserItemFactory *factory;
+        QPointer<UserTable> userTable;
+        QHash<User*, UserItem*> userToItem;
+
+};
+
 UserItem::UserItem( User &user )
+    : QStandardItem( user.name() )
+    , d( new UserItemData() )
 {
     d->user = &user;
 }
@@ -47,21 +62,56 @@ UserItem *UserItemFactory::createUserItem( QInfinity::User &user )
     return new UserItem( user );
 }
 
-UsersModel::UsersModel( QObject *parent )
+UsersModel::UsersModel( Session &session,
+    QObject *parent )
+    : d( new UsersModelData() )
 {
-    m_factory = new UserItemFactory();
+    d->factory = new UserItemFactory();
+    d->userTable = session.userTable();
+
+    QList< QPointer<User> > userList = d->userTable->users();
+    QPointer<User> user;
+    foreach( user, userList )
+    {
+        if( user )
+            insertUser( user );
+    }
+
+    connect( d->userTable.data(), SIGNAL(userAdded(User*)),
+        this, SLOT(insertUser(User*)) );
+    connect( d->userTable.data(), SIGNAL(userRemoved(User*)),
+        this, SLOT(removeUser(User*)) );
 }
 
 void UsersModel::setFactory( UserItemFactory *factory )
 {
-    if( factory != m_factory )
-        delete m_factory;
+    if( d->factory != factory )
+        delete d->factory;
+    
+
+    if( !factory )
+            d->factory = new UserItemFactory();
     else
+        d->factory = factory;
+}
+
+void UsersModel::insertUser( User *user )
+{
+    if( user )
     {
-        if( !factory )
-            m_factory = new UserItemFactory();
-        else
-            m_factory = factory;
+        UserItem *item = new UserItem( *user );
+        d->userToItem[user] = item;
+        appendRow( item );
+    }
+}
+
+void UsersModel::removeUser( User *user )
+{
+    if( user && d->userToItem.contains( user ) )
+    {
+        UserItem *item = d->userToItem[user];
+        d->userToItem.remove( user );
+        removeRow( item->row() );
     }
 }
 

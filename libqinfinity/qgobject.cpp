@@ -33,7 +33,8 @@ QGObject::QGObject( QObject *parent )
 QGObject::~QGObject()
 {
     if( d->own_gobj && d->gobject )
-        g_object_unref( d->gobject );
+        if( !G_IS_OBJECT(d->gobject) )
+            g_object_unref( d->gobject );
     delete d;
 }
 
