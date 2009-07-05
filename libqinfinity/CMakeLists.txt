@@ -11,6 +11,7 @@ set(LIBS ${LIBS} ${LIBINFINITY_LIBRARIES} ${LIBINFTEXT_LIBRARIES} ${QT_LIBRARIES
 set(QInfinity_SRCS
 	init.cpp
 	qgobject.cpp
+	qgsignal.cpp
 	wrapperstore.cpp
 	qtio.cpp
 	qtiowatch.cpp
@@ -46,6 +47,7 @@ set(QInfinity_SRCS
 set(QInfinity_HDRS
 	init.h
 	qgobject.h
+	qgsignal.h
 	wrapperstore.h
 	qtio.h
 	qtiowatch.h

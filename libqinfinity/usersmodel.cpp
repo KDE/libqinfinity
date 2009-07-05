@@ -67,7 +67,10 @@ UsersModel::UsersModel( Session &session,
     QObject *parent )
     : d( new UsersModelData() )
 {
-    setHeaderData( 0, Qt::Horizontal, tr("Name") );
+    QList<QString> headerLabels;
+    headerLabels << tr("Name");
+    setHorizontalHeaderLabels( headerLabels );
+
     if( factory )
         d->factory = factory;
     else

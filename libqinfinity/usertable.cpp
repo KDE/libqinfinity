@@ -17,6 +17,7 @@
 
 #include "usertable.h"
 #include "wrapperstore.h"
+#include "qgsignal.h"
 
 #include "usertable.moc"
 
@@ -144,14 +145,14 @@ void UserTable::emitUserRemoved( User *user )
 
 void UserTable::setupSignals()
 {
-    g_signal_connect( gobject(), "add-local-user",
-        G_CALLBACK(UserTable::addLocalUserCb), this );
-    g_signal_connect( gobject(), "remove-local-user",
-        G_CALLBACK(UserTable::removeLocalUserCb), this );
-    g_signal_connect( gobject(), "add-user",
-        G_CALLBACK(UserTable::addUserCb), this );
-    g_signal_connect( gobject(), "remove-user",
-        G_CALLBACK(UserTable::removeUserCb), this );
+    new QGSignal( this, "add-local-user",
+        G_CALLBACK(UserTable::addLocalUserCb), this, this );
+    new QGSignal( this, "remove-local-user",
+        G_CALLBACK(UserTable::removeLocalUserCb), this, this );
+    new QGSignal( this, "add-user",
+        G_CALLBACK(UserTable::addUserCb), this, this );
+    new QGSignal( this, "remove-user",
+        G_CALLBACK(UserTable::removeUserCb), this, this );
 }
 
 }
