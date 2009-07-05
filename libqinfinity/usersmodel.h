@@ -62,7 +62,7 @@ class UsersModel
         /**
          * @brief Create model of users in session.
          */
-        UsersModel( Session &session, QObject *parent = 0 );
+        UsersModel( Session &session, UserItemFactory *factory = 0, QObject *parent = 0 );
 
         /**
          * @brief Set factory to create user items.

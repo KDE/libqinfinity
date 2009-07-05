@@ -63,10 +63,15 @@ UserItem *UserItemFactory::createUserItem( QInfinity::User &user )
 }
 
 UsersModel::UsersModel( Session &session,
+    UserItemFactory *factory,
     QObject *parent )
     : d( new UsersModelData() )
 {
-    d->factory = new UserItemFactory();
+    setHeaderData( 0, Qt::Horizontal, tr("Name") );
+    if( factory )
+        d->factory = factory;
+    else
+        d->factory = new UserItemFactory();
     d->userTable = session.userTable();
 
     QList< QPointer<User> > userList = d->userTable->users();
@@ -99,7 +104,7 @@ void UsersModel::insertUser( User *user )
 {
     if( user )
     {
-        UserItem *item = new UserItem( *user );
+        UserItem *item = d->factory->createUserItem( *user );
         d->userToItem[user] = item;
         appendRow( item );
     }
