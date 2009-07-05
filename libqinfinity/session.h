@@ -76,6 +76,7 @@ class Session
         void synchronizationBegin();
         void synchronizationComplete();
         void synchronizationFailed( GError *error );
+        void statusChanged();
 
     protected:
         Session( InfSession *infSession,
@@ -89,6 +90,7 @@ class Session
         void signalSynchronizationBegin();
         void signalSynchronizationComplete();
         void signalSynchronizationFailed( GError* );
+        void signalStatusChanged();
         static void close_cb( InfSession *session,
             void *user_data );
         static void synchronization_begin_cb( InfSession *session,
@@ -102,8 +104,10 @@ class Session
             InfXmlConnection *connection,
             GError *error,
             void *user_data );
+        static void status_changed_cb( InfSession *session,
+            const char *property,
+            void *user_data );
         
-        gulong closing_id;
 };
 
 }

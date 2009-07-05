@@ -28,7 +28,7 @@ class QGSignalData
 
     public:
         QPointer<QGObject> qgobject;
-        guint handlerId;
+        gulong handlerId;
 
 };
 
@@ -46,7 +46,7 @@ QGSignal::QGSignal( QGObject *instance,
         d->handlerId = g_signal_connect( d->qgobject->gobject(),
             gsignal_name,
             callback,
-               data );
+            data );
     }
     else
     {

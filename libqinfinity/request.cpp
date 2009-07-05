@@ -16,6 +16,7 @@
  */
 
 #include "request.h"
+#include "qgsignal.h"
 
 #include "request.moc"
 
@@ -31,14 +32,12 @@ Request::Request( InfcRequest *infRequest,
 
 Request::~Request()
 {
-    g_signal_handler_disconnect( gobject(),
-        failed_handler );
 }
 
 void Request::setupSignals()
 {
-    failed_handler = g_signal_connect( gobject(), "failed",
-        G_CALLBACK(Request::signalFailed_cb), this );
+    new QGSignal( this, "failed",
+        G_CALLBACK(Request::signalFailed_cb), this, this );
 }
 
 void Request::signalFailed( GError *error )

@@ -49,8 +49,6 @@ class Request
             GError *error,
             void *user_data );
 
-        unsigned long failed_handler;
-
 };
 
 }

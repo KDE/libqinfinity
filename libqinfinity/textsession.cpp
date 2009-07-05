@@ -53,7 +53,12 @@ UserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
     if( !proxy )
         return 0;
 
-    InfSession *session = INF_SESSION(proxy->session()->gobject());
+    InfAdoptedSession *session = INF_ADOPTED_SESSION(proxy->session()->gobject());
+    if( !session )
+    {
+        qDebug() << "Session not an AdoptedSession.  Cannot join.";
+        return 0;
+    }
     QByteArray nameAscii = name.toAscii();
 
     GParameter params[5] = {
@@ -74,8 +79,7 @@ UserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
     g_value_set_double( &params[1].value, 0 );
     g_value_take_boxed( &params[2].value, inf_adopted_state_vector_copy(
         inf_adopted_algorithm_get_current(
-            inf_adopted_session_get_algorithm(
-                INF_ADOPTED_SESSION( session ) ) ) ) );
+            inf_adopted_session_get_algorithm( session ) ) ) );
     g_value_set_uint( &params[3].value, caretPosition );
     g_value_set_enum( &params[4].value, User::convertStatus( userStatus ) );
 
@@ -87,7 +91,7 @@ UserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
     g_value_unset(&params[3].value);
     g_value_unset(&params[4].value);
 
-    return new UserRequest( req, proxy.data() );
+    return new UserRequest( req, 0 );
 }
 
 TextSession::TextSession( CommunicationManager &commMgr,

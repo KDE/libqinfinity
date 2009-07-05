@@ -16,6 +16,7 @@
  */
 
 #include "userrequest.h"
+#include "qgsignal.h"
 
 #include "userrequest.moc"
 
@@ -26,10 +27,8 @@ UserRequest::UserRequest( InfcUserRequest *infRequest,
     QObject *parent )
     : Request( INFC_REQUEST( infRequest ), parent )
 {
-    finished_handler = g_signal_connect( gobject(),
-        "finished",
-        G_CALLBACK(UserRequest::finished_cb),
-        this );
+    new QGSignal( this, "finished",
+        G_CALLBACK(UserRequest::finished_cb), this, this );
 }
 
 void UserRequest::finished_cb( InfcUserRequest *infcUserRequest,

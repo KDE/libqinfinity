@@ -48,8 +48,6 @@ class UserRequest
 
         void emit_finished( QPointer<QInfinity::User> user );
 
-        unsigned long finished_handler;
-
 };
 
 }

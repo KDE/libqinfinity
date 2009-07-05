@@ -23,6 +23,7 @@
 #include "qtio.h"
 #include "communicationmanager.h"
 #include "wrapperstore.h"
+#include "qgsignal.h"
 
 #include <libinfinity/common/inf-buffer.h>
 #include <libinfinity/client/infc-browser.h>
@@ -116,21 +117,16 @@ Browser::Browser( InfcBrowser *browser,
 
 void Browser::setupSignals()
 {
-    g_signal_connect( G_OBJECT(this->gobject()),
-        "begin-explore", G_CALLBACK(Browser::begin_explore_cb),
-        this );
-    g_signal_connect( G_OBJECT(this->gobject()),
-        "begin-subscribe", G_CALLBACK(Browser::begin_subscribe_cb),
-        this );
-    g_signal_connect( G_OBJECT(this->gobject()),
-        "subscribe-session", G_CALLBACK(Browser::subscribe_session_cb),
-        this );
-    g_signal_connect( G_OBJECT(this->gobject()),
-        "node-added", G_CALLBACK(Browser::node_added_cb),
-        this );
-    g_signal_connect( G_OBJECT(this->gobject()),
-        "node-removed", G_CALLBACK(Browser::node_removed_cb),
-        this );
+    new QGSignal( this, "begin-explore",
+        G_CALLBACK(Browser::begin_explore_cb), this, this );
+    new QGSignal( this, "begin-subscribe", 
+        G_CALLBACK(Browser::begin_subscribe_cb), this, this );
+    new QGSignal( this, "subscribe-session",
+        G_CALLBACK(Browser::subscribe_session_cb), this, this );
+    new QGSignal( this, "node-added", 
+        G_CALLBACK(Browser::node_added_cb), this, this );
+    new QGSignal( this, "node-removed", 
+        G_CALLBACK(Browser::node_removed_cb), this, this );
 }
 
 // GObject signals

@@ -19,6 +19,9 @@
 #include "buffer.h"
 #include "usertable.h"
 #include "wrapperstore.h"
+#include "qgsignal.h"
+
+#include <QDebug>
 
 #include "session.moc"
 
@@ -57,7 +60,6 @@ Session::Status Session::infStatusToCpp( InfSessionStatus infStatus )
 
 Session::~Session()
 {
-    g_signal_handler_disconnect(gobject(), closing_id);
 }
 
 CommunicationManager *Session::communicationManager() const
@@ -110,18 +112,16 @@ Session::Session( InfSession *infSession,
 
 void Session::setupSignals()
 {
-    closing_id = g_signal_connect( G_OBJECT(gobject()),
-        "close", G_CALLBACK(Session::close_cb),
-        this );
-    g_signal_connect( G_OBJECT(gobject()),
-        "synchronization-begin", G_CALLBACK(Session::synchronization_begin_cb),
-        this );
-    g_signal_connect_after( G_OBJECT(gobject()),
-        "synchronization-complete", G_CALLBACK(Session::synchronization_complete_cb),
-        this );
-    g_signal_connect( G_OBJECT(gobject()),
-        "synchronization-failed", G_CALLBACK(Session::synchronization_failed_cb),
-        this );
+    new QGSignal( this, "close",
+        G_CALLBACK(Session::close_cb), this, this );
+    new QGSignal( this, "synchronization-begin",
+        G_CALLBACK(Session::synchronization_begin_cb), this, this );
+    new QGSignal( this, "synchronization-complete",
+        G_CALLBACK(Session::synchronization_complete_cb), this, this );
+    new QGSignal( this, "synchronization-failed",
+        G_CALLBACK(Session::synchronization_failed_cb), this, this );
+    new QGSignal( this, "notify::status",
+        G_CALLBACK(Session::status_changed_cb), this, this );
 }
 
 void Session::signalClosing()
@@ -131,17 +131,25 @@ void Session::signalClosing()
 
 void Session::signalSynchronizationBegin()
 {
+    qDebug() << "Begin";
     emit(synchronizationBegin());
 }
 
 void Session::signalSynchronizationComplete()
 {
+    qDebug() << "Complete";
     emit(synchronizationComplete());
 }
 
 void Session::signalSynchronizationFailed( GError *error )
 {
+    qDebug() << "Failed";
     emit(synchronizationFailed( error ));
+}
+
+void Session::signalStatusChanged()
+{
+    emit(statusChanged());
 }
 
 void Session::close_cb( InfSession *session,
@@ -171,6 +179,13 @@ void Session::synchronization_failed_cb( InfSession *session,
     void *user_data )
 {
     static_cast<Session*>(user_data)->signalSynchronizationFailed( error );
+}
+
+void Session::status_changed_cb( InfSession *session,
+    const char *property,
+    void *user_data )
+{
+    static_cast<Session*>(user_data)->signalStatusChanged();
 }
 
 }

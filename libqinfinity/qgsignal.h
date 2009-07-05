@@ -17,7 +17,7 @@
 
 #include <QObject>
 
-typedef void (*GCallback) (void);
+#include <glib-object.h>
 
 namespace QInfinity
 {
