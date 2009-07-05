@@ -91,7 +91,7 @@ UserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
     g_value_unset(&params[3].value);
     g_value_unset(&params[4].value);
 
-    return new UserRequest( req, 0 );
+    return new UserRequest( req, proxy );
 }
 
 TextSession::TextSession( CommunicationManager &commMgr,
