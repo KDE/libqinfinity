@@ -37,6 +37,8 @@ class UserItem
     public:
         UserItem( User &user );
 
+        User &user() const;
+
     private:
         UserItemData *d;
 

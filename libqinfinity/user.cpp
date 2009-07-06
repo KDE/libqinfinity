@@ -18,6 +18,7 @@
 #include "user.h"
 #include "wrapperstore.h"
 #include "adopteduser.h"
+#include "qgsignal.h"
 
 #include <libinfinity/adopted/inf-adopted-user.h>
 
@@ -102,6 +103,20 @@ User::User( InfUser *infUser,
     bool own_gobject )
     : QGObject( G_OBJECT(infUser), parent, own_gobject )
 {
+    new QGSignal( this, "notify::status",
+        G_CALLBACK(User::status_changed_cb), this, this );
+}
+
+void User::emitStatusChanged()
+{
+    emit(statusChanged());
+}
+
+void User::status_changed_cb( InfUser *instance,
+    const char *property,
+    void *user_data )
+{
+    static_cast<User*>(user_data)->emitStatusChanged();
 }
 
 }
