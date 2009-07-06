@@ -131,19 +131,16 @@ void Session::signalClosing()
 
 void Session::signalSynchronizationBegin()
 {
-    qDebug() << "Begin";
     emit(synchronizationBegin());
 }
 
 void Session::signalSynchronizationComplete()
 {
-    qDebug() << "Complete";
     emit(synchronizationComplete());
 }
 
 void Session::signalSynchronizationFailed( GError *error )
 {
-    qDebug() << "Failed";
     emit(synchronizationFailed( error ));
 }
 

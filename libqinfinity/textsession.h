@@ -49,6 +49,7 @@ class TextSession
          * @brief Convenience method for joining a session.
          */
         static UserRequest *joinUser( QPointer<SessionProxy> proxy,
+            TextSession &textSession,
             const QString &name,
             double hue,
             unsigned int caretPosition = 0,

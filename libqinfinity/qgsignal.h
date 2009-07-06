@@ -37,7 +37,8 @@ class QGSignal
             const char *gsignal_name,
             GCallback callback,
             void *data,
-               QObject *parent = 0 );
+               QObject *parent = 0,
+            bool connect_after = true );
         ~QGSignal();
 
     private:

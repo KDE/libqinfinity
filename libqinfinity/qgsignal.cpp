@@ -36,17 +36,24 @@ QGSignal::QGSignal( QGObject *instance,
     const char *gsignal_name,
     GCallback callback,
     void *data,
-    QObject *parent )
+    QObject *parent,
+    bool connect_after )
     : QObject( parent )
     , d( new QGSignalData )
 {
     d->qgobject = instance;
     if( d->qgobject )
     {
-        d->handlerId = g_signal_connect( d->qgobject->gobject(),
-            gsignal_name,
-            callback,
-            data );
+        if( connect_after )
+            d->handlerId = g_signal_connect_after( d->qgobject->gobject(),
+                gsignal_name,
+                callback,
+                data );
+        else
+            d->handlerId = g_signal_connect( d->qgobject->gobject(),
+                gsignal_name,
+                callback,
+                data );
     }
     else
     {
@@ -56,7 +63,7 @@ QGSignal::QGSignal( QGObject *instance,
 
 QGSignal::~QGSignal()
 {
-    if( d->qgobject && !G_IS_OBJECT(d->qgobject->gobject())
+    if( d->qgobject && G_IS_OBJECT(d->qgobject->gobject())
         && d->handlerId )
         g_signal_handler_disconnect( d->qgobject->gobject(),
             d->handlerId );
