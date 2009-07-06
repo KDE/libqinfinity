@@ -25,7 +25,7 @@ namespace QInfinity
 
 Request::Request( InfcRequest *infRequest,
     QObject *parent )
-    : QGObject( G_OBJECT( infRequest ), parent )
+    : QGObject( G_OBJECT( infRequest ), parent, false )
 {
     setupSignals();
 }
