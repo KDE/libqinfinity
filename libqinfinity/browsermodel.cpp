@@ -16,7 +16,6 @@
  */
 
 #include "browsermodel.h"
-#include "browsermodel_p.h"
 #include "browser.h"
 #include "xmlconnection.h"
 #include "tcpconnection.h"
@@ -29,6 +28,18 @@
 
 namespace QInfinity
 {
+
+class BrowserModelPrivate
+{
+
+    public:
+        BrowserItemFactory *itemFactory;
+        QHash<Browser*, ConnectionIndex*> browserToConnectionMap;
+        CommunicationManager comm_mgr;
+        QList<NotePlugin*> plugins;
+        QList<Browser*> browsers;
+
+};
 
 /**
  * @brief Manages data tied to a connection
@@ -105,8 +116,10 @@ void ConnectionIndex::removeIter( const BrowserIter &iter )
 
 BrowserModel::BrowserModel( QObject *parent )
     : QStandardItemModel( parent )
-    , d( new BrowserModelPrivate )
+    , d_ptr( new BrowserModelPrivate )
 {
+    Q_D(BrowserModel);
+    
     d->itemFactory = new BrowserItemFactory;
     QStringList headerlabels;
     headerlabels.append( tr("Name") );
@@ -116,8 +129,10 @@ BrowserModel::BrowserModel( QObject *parent )
 BrowserModel::BrowserModel( BrowserItemFactory *itemFactory,
     QObject *parent )
     : QStandardItemModel( parent )
-    , d( new BrowserModelPrivate )
+    , d_ptr( new BrowserModelPrivate )
 {
+    Q_D(BrowserModel);
+    
     d->itemFactory = itemFactory;
     if( !d->itemFactory)
         d->itemFactory = new BrowserItemFactory;
@@ -126,6 +141,8 @@ BrowserModel::BrowserModel( BrowserItemFactory *itemFactory,
 
 BrowserModel::~BrowserModel()
 {
+    Q_D(BrowserModel);
+    
     QList<ConnectionIndex*> connIdexes;
     ConnectionIndex *index;
     connIdexes = d->browserToConnectionMap.values();
@@ -138,6 +155,8 @@ BrowserModel::~BrowserModel()
 
 void BrowserModel::setItemFactory( BrowserItemFactory *factory )
 {
+    Q_D(BrowserModel);
+    
     if( !factory )
         return;
 
@@ -147,6 +166,8 @@ void BrowserModel::setItemFactory( BrowserItemFactory *factory )
 ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
     const QString &name )
 {
+    Q_D(BrowserModel);
+    
     Browser *browser;
     ConnectionIndex *index;
     ConnectionItem *connItem;
@@ -181,6 +202,7 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
 
 bool BrowserModel::hasChildren( const QModelIndex &parent ) const
 {
+    Q_D(const BrowserModel);
     if( !parent.isValid() )
         return true;
     QStandardItem *stdItem = itemFromIndex(parent);
@@ -201,6 +223,8 @@ bool BrowserModel::hasChildren( const QModelIndex &parent ) const
 
 void BrowserModel::addPlugin( NotePlugin &plugin )
 {
+    Q_D(BrowserModel);
+    
     plugin.setParent( this );
     ConnectionIndex *index;
     foreach( index, d->browserToConnectionMap.values() )
@@ -210,11 +234,15 @@ void BrowserModel::addPlugin( NotePlugin &plugin )
 
 QList<NotePlugin*> BrowserModel::plugins() const
 {
+    Q_D(const BrowserModel);
+    
     return d->plugins;
 }
 
 QList<Browser*> BrowserModel::browsers() const
 {
+    Q_D(const BrowserModel);
+    
     return d->browsers;
 }
 
@@ -275,7 +303,6 @@ bool BrowserModel::createNote( const QModelIndex &parent,
 bool BrowserModel::removeRows( int row, int count,
     const QModelIndex &parent )
 {
-    qDebug() << "Remove rows";
     int i;
     QStandardItem *item, *parentItem;
     QModelIndex curIndex;
@@ -314,6 +341,8 @@ void BrowserModel::itemActivated( const QModelIndex &parent )
 
 void BrowserModel::slotNodeAdded( const BrowserIter &itr )
 {
+    Q_D(BrowserModel);
+    
     NodeItem *item, *parentItem;
     Browser *browser;
     BrowserIter parentItr( itr );
@@ -348,6 +377,8 @@ void BrowserModel::slotNodeRemoved( const BrowserIter &itr )
 
 void BrowserModel::removeConnectionItem( ConnectionItem *item )
 {
+    Q_D(BrowserModel);
+    
     if( !item )
     {
         qDebug() << "Cant remove null connection item.";
@@ -370,6 +401,7 @@ void BrowserModel::indexIter( const BrowserIter &iter,
     Browser &browser,
     NodeItem &item )
 {
+    Q_D(BrowserModel);
     ConnectionIndex *index;
 
     index = d->browserToConnectionMap[&browser];
@@ -379,6 +411,7 @@ void BrowserModel::indexIter( const BrowserIter &iter,
 void BrowserModel::removeIterIndex( const BrowserIter &iter,
     Browser &browser )
 {
+    Q_D(BrowserModel);
     ConnectionIndex *index;
 
     index = d->browserToConnectionMap[&browser];
@@ -388,6 +421,7 @@ void BrowserModel::removeIterIndex( const BrowserIter &iter,
 NodeItem *BrowserModel::itemFromBrowserIter( const BrowserIter &iter,
     Browser &browser )
 {
+    Q_D(BrowserModel);
     ConnectionIndex *index;
     
     index = d->browserToConnectionMap[&browser];
@@ -417,6 +451,8 @@ NodeItem *BrowserModel::indexToNodeItem( const QModelIndex &item ) const
 Browser *BrowserModel::createBrowser( CommunicationManager &commMgr,
     XmlConnection &connection )
 {
+    Q_D(BrowserModel);
+    
     Browser *browser = new Browser( commMgr, connection, this );
     QList<NotePlugin*> pluginList = plugins();
     QList<NotePlugin*>::Iterator itr;

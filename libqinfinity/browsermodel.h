@@ -161,7 +161,8 @@ class BrowserModel
         Browser *createBrowser( CommunicationManager &commMgr,
             XmlConnection &connection );
 
-        BrowserModelPrivate *d;
+        BrowserModelPrivate *d_ptr;
+        Q_DECLARE_PRIVATE(BrowserModel)
 
 };
 
