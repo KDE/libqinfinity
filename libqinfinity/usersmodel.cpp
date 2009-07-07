@@ -53,6 +53,11 @@ UserItem::UserItem( User &user )
     d->user = &user;
 }
 
+User &UserItem::user() const
+{
+    return *d->user;
+}
+
 UserItemFactory::UserItemFactory()
 {
 }

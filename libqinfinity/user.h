@@ -49,12 +49,22 @@ class User
         unsigned int id();
         QString name();
         Status status();
+    
+    Q_SIGNALS:
+        void statusChanged();
 
     protected:
         User( InfUser *infUser,
-           QObject *parent = 0,
-           bool own_gobject = false );
+            QObject *parent = 0,
+            bool own_gobject = false );
 
+    private:
+        void emitStatusChanged();
+
+        static void status_changed_cb( InfUser *instance,
+            const char *property,
+            void *user_data );
+    
 };
 
 }
