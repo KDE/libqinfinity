@@ -49,7 +49,8 @@ class QGObject
             bool own_gobj = true );
 
     private:
-        QGObjectPrivate *d;
+        QGObjectPrivate *d_ptr;
+        Q_DECLARE_PRIVATE(QGObject)
 
 };
 

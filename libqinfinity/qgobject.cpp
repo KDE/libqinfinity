@@ -16,22 +16,32 @@
  */
 
 #include "qgobject.h"
-#include "qgobject_p.h"
 #include "wrapperstore.h"
 
 namespace QInfinity
 {
 
+class QGObjectPrivate
+{
+    public:
+        GObject *gobject;
+        bool own_gobj;
+};
+
 QGObject::QGObject( QObject *parent )
     : QObject( parent )
-    , d( new QGObjectPrivate )
+    , d_ptr( new QGObjectPrivate )
 {
+    Q_D(QGObject);
+    
     d->gobject = 0;
     d->own_gobj = 0;
 }
 
 QGObject::~QGObject()
 {
+    Q_D(QGObject);
+    
     if( d->own_gobj && d->gobject )
         if( G_IS_OBJECT(d->gobject) )
             g_object_unref( d->gobject );
@@ -40,12 +50,16 @@ QGObject::~QGObject()
 
 GObject *QGObject::gobject() const
 {
+    Q_D(const QGObject);
+    
     return d->gobject;
 }
 
 void QGObject::setGobject( GObject *obj,
     bool own_gobj )
 {
+    Q_D(QGObject);
+    
     d->gobject = obj;
     d->own_gobj = own_gobj;
     WrapperStore::insertWrapper( this );
@@ -53,6 +67,8 @@ void QGObject::setGobject( GObject *obj,
 
 bool QGObject::isOwner()
 {
+    Q_D(QGObject);
+    
     return d->own_gobj;
 }
 
@@ -60,8 +76,10 @@ QGObject::QGObject( GObject *obj,
     QObject *parent,
     bool own_gobj )
     : QObject( parent )
-    , d( new QGObjectPrivate )
+    , d_ptr( new QGObjectPrivate )
 {
+    Q_D(QGObject);
+    
     d->gobject = obj;
     d->own_gobj = own_gobj;
     WrapperStore::insertWrapper( this );
