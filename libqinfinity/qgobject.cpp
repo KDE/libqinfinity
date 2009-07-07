@@ -65,9 +65,9 @@ void QGObject::setGobject( GObject *obj,
     WrapperStore::insertWrapper( this );
 }
 
-bool QGObject::isOwner()
+bool QGObject::isOwner() const
 {
-    Q_D(QGObject);
+    Q_D(const QGObject);
     
     return d->own_gobj;
 }

@@ -41,7 +41,7 @@ class QGObject
         GObject *gobject() const;
         void setGobject( GObject *obj,
             bool own_gobj = true );
-        bool isOwner();
+        bool isOwner() const;
 
     protected:
         QGObject( GObject *obj,
