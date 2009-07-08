@@ -27,10 +27,17 @@
 namespace QInfinity
 {
 
+/**
+ * @brief A user joined to a Session.
+ */
 class User
     : public QGObject
 {
     Q_OBJECT
+    Q_PROPERTY(uint id READ id)
+    Q_PROPERTY(QString name READ name)
+    Q_PROPERTY(Status status READ status)
+    Q_ENUMS(Status)
 
     public:
         enum Status
@@ -46,11 +53,25 @@ class User
         static Status convertStatus( InfUserStatus status );
         static InfUserStatus convertStatus( Status status );
 
+        /**
+         * @brief Infinote user ID.
+         */
         unsigned int id();
+        
+        /**
+         * @brief Nickname of user.
+         */
         QString name();
+        
+        /**
+         * @brief Current user status.
+         */
         Status status();
     
     Q_SIGNALS:
+        /**
+         * @brief The user's status has changed.
+         */
         void statusChanged();
 
     protected:
