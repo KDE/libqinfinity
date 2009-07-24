@@ -83,7 +83,7 @@ User::Status User::convertStatus( InfUserStatus status )
 
 InfUserStatus User::convertStatus( Status status )
 {
-    InfUserStatus ret;
+    InfUserStatus ret = INF_USER_UNAVAILABLE;
     switch( status )
     {
         case Active:

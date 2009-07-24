@@ -202,7 +202,6 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
 
 bool BrowserModel::hasChildren( const QModelIndex &parent ) const
 {
-    Q_D(const BrowserModel);
     if( !parent.isValid() )
         return true;
     QStandardItem *stdItem = itemFromIndex(parent);
@@ -304,7 +303,7 @@ bool BrowserModel::removeRows( int row, int count,
     const QModelIndex &parent )
 {
     int i;
-    QStandardItem *item, *parentItem;
+    QStandardItem *item;
     QModelIndex curIndex;
     for( i = 0; i < count; i++ )
     {
