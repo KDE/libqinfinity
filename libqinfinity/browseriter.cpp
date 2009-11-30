@@ -137,6 +137,11 @@ QString BrowserIter::path()
     return "";
 }
 
+unsigned int BrowserIter::id()
+{
+    return m_infBrowserIter.node_id;
+}
+
 QPointer<Browser> BrowserIter::browser() const
 {
     return Browser::wrap( infBrowser() );
