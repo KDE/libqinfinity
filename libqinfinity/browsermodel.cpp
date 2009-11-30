@@ -77,7 +77,6 @@ ConnectionIndex::ConnectionIndex( XmlConnection &connection,
 
 ConnectionIndex::~ConnectionIndex()
 {
-    qDebug() << "deleting connection";
     QInfinity::TcpConnection *tcpConn;
     delete m_browser;
     tcpConn = m_xmlConnection->tcpConnection();
