@@ -61,7 +61,7 @@ class BrowserIter
         bool isExplored();
         QString name();
         QString path();
-        unsigned int id();
+        unsigned int id() const;
         QPointer<Browser> browser() const;
         InfcBrowser *infBrowser() const;
         const InfcBrowserIter *infBrowserIter() const;

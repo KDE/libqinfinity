@@ -137,7 +137,7 @@ QString BrowserIter::path()
     return "";
 }
 
-unsigned int BrowserIter::id()
+unsigned int BrowserIter::id() const
 {
     return m_infBrowserIter.node_id;
 }
