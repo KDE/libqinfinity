@@ -17,6 +17,7 @@
 
 #include "xmppconnection.h"
 #include "tcpconnection.h"
+#include "certificatecredentials.h"
 
 #include "xmppconnection.moc"
 
@@ -54,7 +55,7 @@ XmppConnection::XmppConnection( TcpConnection &tcpConnection,
     const QString &local_hostname,
     const QString &remote_hostname,
     SecurityPolicy securityPolicy,
-    gnutls_certificate_credentials_t cred,
+    CertificateCredentials *cred,
     Gsasl *sasl_context,
     const char *sasl_mechanisms,
        QObject *parent,
@@ -65,7 +66,7 @@ XmppConnection::XmppConnection( TcpConnection &tcpConnection,
         local_hostname.toAscii(),
         remote_hostname.toAscii(),
         XmppConnection::securityPolicyToInf( securityPolicy ),
-        cred,
+        (InfCertificateCredentials*)cred->gobject(),
         sasl_context,
         sasl_mechanisms )), parent, own_gobject )
 {

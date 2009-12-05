@@ -29,6 +29,7 @@ namespace QInfinity
 {
 
 class TcpConnection;
+class CertificateCredentials;
 
 class XmppConnection
     : public XmlConnection
@@ -58,7 +59,7 @@ class XmppConnection
             const QString &local_hostname,
             const QString &remote_hostname,
             SecurityPolicy securityPolicy,
-            gnutls_certificate_credentials_t cred = 0,
+            CertificateCredentials *cred = 0,
             Gsasl *sasl_context = 0,
             const char *sasl_mechanisms = 0,
                QObject *parent = 0,

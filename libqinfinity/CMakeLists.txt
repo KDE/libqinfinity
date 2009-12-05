@@ -15,6 +15,7 @@ set(QInfinity_SRCS
 	wrapperstore.cpp
 	qtio.cpp
 	qtiowatch.cpp
+	certificatecredentials.cpp
 	ipaddress.cpp
 	tcpconnection.cpp
 	xmlconnection.cpp
@@ -51,6 +52,7 @@ set(QInfinity_HDRS
 	wrapperstore.h
 	qtio.h
 	qtiowatch.h
+	certificatecredentials.h
 	ipaddress.h
 	tcpconnection.h
 	tcpconnection.h
