@@ -95,7 +95,7 @@ SET_TARGET_PROPERTIES(qinfinity
 TARGET_LINK_LIBRARIES(qinfinity ${LIBS})
 
 INSTALL(TARGETS qinfinity
-	DESTINATION lib)
+	DESTINATION lib${LIB_SUFFIX})
 
 INSTALL(FILES ${QInfinity_HDRS}
 	DESTINATION include/libqinfinity-1.0/libqinfinity)

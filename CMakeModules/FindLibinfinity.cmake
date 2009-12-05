@@ -53,6 +53,8 @@ else( LIBINFINITY_LIBRARIES AND LIBINFINITY_INCLUDES )
 			${_LIBINFINITY_LIBRARY_DIR}
 			/usr/lib
 			/usr/local/lib
+			/usr/lib${LIB_SUFFIX}
+			/usr/local/lib${LIB_SUFFIX}
 	)
 
 	set( LIBINFINITY_INCLUDES

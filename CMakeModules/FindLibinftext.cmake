@@ -48,6 +48,8 @@ else( LIBINFTEXT_LIBRARIES AND LIBINFTEXT_INCLUDES )
 			${_LIBINFTEXT_LIBRARY_DIR}
 			/usr/lib
 			/usr/local/lib
+			/usr/lib${LIB_SUFFIX}
+			/usr/local/lib${LIB_SUFFIX}
 	)
 
 	set(LIBINFTEXT_LIBRARIES ${LIBINFTEXT_LIBRARY})
