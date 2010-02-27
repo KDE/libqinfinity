@@ -18,6 +18,8 @@
 #ifndef QINFINITY_NOTE_PLUGIN_H
 #define QINFINITY_NOTE_PLUGIN_H
 
+#include "session.h"
+
 #include <libinfinity/client/infc-note-plugin.h>
 
 #include <QObject>
@@ -55,6 +57,7 @@ class NotePlugin
          * to join a session using a Browser.
          */
         virtual Session *createSession( CommunicationManager *commMgr,
+            Session::Status sess_status,
             CommunicationJoinedGroup *syncGroup,
             XmlConnection *syncConnection ) = 0;
 
@@ -66,6 +69,7 @@ class NotePlugin
     private:
         static InfSession *create_session_cb( InfIo *io,
             InfCommunicationManager *comm_mgr,
+            InfSessionStatus status,
             InfCommunicationJoinedGroup *sync_group,
             InfXmlConnection *sync_connection,
             void *user_data );

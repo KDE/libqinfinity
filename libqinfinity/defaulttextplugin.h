@@ -34,6 +34,7 @@ class DefaultTextPlugin
         DefaultTextPlugin( QObject *parent = 0 );
 
         Session *createSession( CommunicationManager *commMgr,
+            Session::Status sess_status,
             CommunicationJoinedGroup *syncGroup,
             XmlConnection *syncConnection );
 

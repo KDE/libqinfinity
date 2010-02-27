@@ -19,7 +19,6 @@
 #include "communicationmanager.h"
 #include "communicationjoinedgroup.h"
 #include "xmlconnection.h"
-#include "session.h"
 
 #include <QChar>
 #include <QDebug>
@@ -44,15 +43,17 @@ NotePlugin::~NotePlugin()
 
 InfSession *NotePlugin::create_session_cb( InfIo *io,
     InfCommunicationManager *comm_mgr,
+    InfSessionStatus status,
     InfCommunicationJoinedGroup *sync_group,
     InfXmlConnection *sync_connection,
     void *user_data )
 {
     NotePlugin *plugin = static_cast<NotePlugin*>(user_data);
     CommunicationManager *commMgr = CommunicationManager::wrap( comm_mgr, plugin );
+    Session::Status cpp_status = Session::infStatusToCpp(status);
     CommunicationJoinedGroup *joinedGroup = CommunicationJoinedGroup::wrap( sync_group, plugin );
     XmlConnection *connection = XmlConnection::wrap( sync_connection, plugin );
-    Session *session =  plugin->createSession( commMgr, joinedGroup, connection );
+    Session *session =  plugin->createSession( commMgr, cpp_status, joinedGroup, connection );
     return INF_SESSION(session->gobject());
 }
 

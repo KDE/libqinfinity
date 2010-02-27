@@ -57,6 +57,8 @@ class Session
         };
 
         static Status infStatusToCpp( InfSessionStatus );
+        static InfSessionStatus statusToInf( Status );
+
         static QPointer<Session> wrap( InfSession *session,
             QObject *parent = 0,
             bool own_gobject = false );

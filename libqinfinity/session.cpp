@@ -58,6 +58,25 @@ Session::Status Session::infStatusToCpp( InfSessionStatus infStatus )
     return status;
 }
 
+InfSessionStatus Session::statusToInf( Status status )
+{
+    InfSessionStatus infStatus;
+
+    switch( status )
+    {
+        case Synchronizing:
+            infStatus = INF_SESSION_SYNCHRONIZING;
+            break;
+        case Running:
+            infStatus = INF_SESSION_RUNNING;
+            break;
+        default:
+            infStatus = INF_SESSION_CLOSED;
+    }
+
+    return infStatus;
+}
+
 Session::~Session()
 {
 }

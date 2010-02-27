@@ -57,6 +57,7 @@ class TextSession
     
         TextSession( CommunicationManager &commMgr,
             TextBuffer &textBuffer,
+            Session::Status status,
             CommunicationJoinedGroup &commGroup,
             XmlConnection &connection );
 
