@@ -23,16 +23,18 @@
 namespace QInfinity
 {
 
-void AdoptedSession::undo( AdoptedUser &user )
+void AdoptedSession::undo( AdoptedUser &user,
+    int count )
 {
     inf_adopted_session_undo( INF_ADOPTED_SESSION(gobject()),
-        INF_ADOPTED_USER(user.gobject()) );
+        INF_ADOPTED_USER(user.gobject()), count );
 }
 
-void AdoptedSession::redo( AdoptedUser &user )
+void AdoptedSession::redo( AdoptedUser &user,
+    int count )
 {
     inf_adopted_session_redo( INF_ADOPTED_SESSION(gobject()),
-        INF_ADOPTED_USER(user.gobject()) );
+        INF_ADOPTED_USER(user.gobject()), count );
 }
 
 AdoptedSession::AdoptedSession( InfAdoptedSession *infSession,

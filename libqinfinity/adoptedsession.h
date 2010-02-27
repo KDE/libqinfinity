@@ -32,8 +32,16 @@ class AdoptedSession
 {
 
     public:
-        void undo( AdoptedUser &user );
-        void redo( AdoptedUser &user );
+        /**
+         * @brief Issue an undo request.
+         */
+        void undo( AdoptedUser &user,
+            int count );
+        /**
+         * @brief Issue a redo request.
+         */
+        void redo( AdoptedUser &user,
+            int count );
 
     protected:
         AdoptedSession( InfAdoptedSession *infSession,
