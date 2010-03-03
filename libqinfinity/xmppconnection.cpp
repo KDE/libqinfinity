@@ -66,7 +66,7 @@ XmppConnection::XmppConnection( TcpConnection &tcpConnection,
         local_hostname.toAscii(),
         remote_hostname.toAscii(),
         XmppConnection::securityPolicyToInf( securityPolicy ),
-        (InfCertificateCredentials*)cred->gobject(),
+        cred ? (InfCertificateCredentials*)cred->gobject(): 0,
         sasl_context,
         sasl_mechanisms )), parent, own_gobject )
 {
