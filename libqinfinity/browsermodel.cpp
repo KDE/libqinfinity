@@ -403,7 +403,8 @@ void BrowserModel::indexIter( const BrowserIter &iter,
     ConnectionIndex *index;
 
     index = d->browserToConnectionMap[&browser];
-    index->indexIter( iter, item );
+    if(index)
+        index->indexIter( iter, item );
 }
 
 void BrowserModel::removeIterIndex( const BrowserIter &iter,
@@ -413,7 +414,8 @@ void BrowserModel::removeIterIndex( const BrowserIter &iter,
     ConnectionIndex *index;
 
     index = d->browserToConnectionMap[&browser];
-    index->removeIter( iter );
+    if(index)
+        index->removeIter( iter );
 }
 
 NodeItem *BrowserModel::itemFromBrowserIter( const BrowserIter &iter,
@@ -423,7 +425,9 @@ NodeItem *BrowserModel::itemFromBrowserIter( const BrowserIter &iter,
     ConnectionIndex *index;
     
     index = d->browserToConnectionMap[&browser];
-    return index->itemFromIter( iter );
+    if(index)
+        return index->itemFromIter( iter );
+    return 0;
 }
 
 NodeItem *BrowserModel::indexToNodeItem( const QModelIndex &item ) const
