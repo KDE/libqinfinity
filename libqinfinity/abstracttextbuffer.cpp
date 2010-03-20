@@ -379,6 +379,15 @@ AbstractTextBuffer::~AbstractTextBuffer()
 {
 }
 
+InfTextChunk *AbstractTextBuffer::chunk()
+{
+    QInfTextAbstractBuffer *abs_buffer;
+    QInfTextAbstractBufferPrivate *priv;
+
+    abs_buffer = QINF_TEXT_ABSTRACT_BUFFER(gobject());
+    priv = QINF_TEXT_ABSTRACT_BUFFER_PRIVATE(abs_buffer);
+    return priv->chunk;
+}
 
 void AbstractTextBuffer::insert_text_cb( InfTextBuffer *buffer,
     unsigned int offset,

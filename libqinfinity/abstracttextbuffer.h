@@ -64,6 +64,8 @@ class AbstractTextBuffer
 
         virtual ~AbstractTextBuffer();
 
+        InfTextChunk *chunk();
+
     protected:
         /**
          * @brief Called to insert text into buffer.
