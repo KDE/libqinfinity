@@ -327,6 +327,12 @@ bool BrowserModel::removeRows( int row, int count,
     return true;
 }
 
+CommunicationManager &BrowserModel::communicationManager()
+{
+    Q_D(BrowserModel);
+    return d->comm_mgr;
+}
+
 void BrowserModel::itemActivated( const QModelIndex &parent )
 {
     if( !parent.isValid() )

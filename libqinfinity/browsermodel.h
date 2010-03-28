@@ -132,6 +132,8 @@ class BrowserModel
         bool removeRows( int row, int count,
             const QModelIndex &parent );
 
+        CommunicationManager &communicationManager();
+
     Q_SIGNALS:
         void browserAdded( QInfinity::Browser &browser );
         void connectionAdded( QInfinity::XmlConnection &connection );
