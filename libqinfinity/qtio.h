@@ -47,16 +47,26 @@ class QtIo
         QtIo( QObject *parent = 0 );
         virtual ~QtIo();
 
-        virtual void watch( InfNativeSocket *socket,
+        virtual InfIoWatch *addWatch( InfNativeSocket *socket,
             InfIoEvent events,
-            InfIoFunc func,
+            InfIoWatchFunc func,
             gpointer user_data,
             GDestroyNotify notify );
-        virtual void *addTimeout( unsigned int msecs,
+        virtual void updateWatch( InfIoWatch *watch,
+            InfIoEvent events );
+        virtual void removeWatch( InfIoWatch *watch );
+
+        virtual InfIoTimeout *addTimeout( unsigned int msecs,
             InfIoTimeoutFunc func,
             void *user_data,
             GDestroyNotify notify );
-        virtual void removeTimeout( void *timer );
+        virtual void removeTimeout( InfIoTimeout *timer );
+
+        virtual InfIoDispatch *addDispatch( InfIoDispatchFunc func,
+            gpointer user_data,
+            GDestroyNotify notify );
+        virtual void removeDispatch( InfIoDispatch *dispatch );
+
         GObject *gobject() const;
         void setOwner( bool own_gobject );
     

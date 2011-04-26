@@ -45,42 +45,57 @@ struct _QInfQtIo {
     int destroy_cpp_class;
 };
 
-
 GType qinf_qt_io_get_type();
 
 static GObjectClass *parent_class;
 
-static void qinf_qt_io_io_watch( InfIo *io,
+static InfIoWatch* qinf_qt_io_io_add_watch( InfIo *io,
     InfNativeSocket *socket,
     InfIoEvent events,
-    InfIoFunc func,
+    InfIoWatchFunc func,
     gpointer user_data,
     GDestroyNotify notify )
 {
+    InfIoWatch* watch;
     QInfQtIo *qtIo;
 
     qtIo = QINF_QT_IO(io);
     if( !qtIo->cpp_class )
-        return;
+        return NULL; // FIXME
 
-    qtIo->cpp_class->watch( socket,
+    qtIo->cpp_class->addWatch( socket,
         events,
         func,
         user_data,
         notify );
+    return NULL; // FIXME
 }
 
-static void *qinf_qt_io_io_add_timeout( InfIo *io,
+static void qinf_qt_io_io_update_watch( InfIo *io,
+    InfIoWatch* watch,
+    InfIoEvent events )
+{
+    // FIXME
+}
+
+static void qinf_qt_io_io_remove_watch( InfIo *io,
+    InfIoWatch* watch )
+{
+    // FIXME
+}
+
+static InfIoTimeout *qinf_qt_io_io_add_timeout( InfIo *io,
     guint msecs,
     InfIoTimeoutFunc func,
     void *user_data,
     GDestroyNotify notify )
 {
+    InfIoTimeout* timeout;
     QInfQtIo *qtIo;
 
     qtIo = QINF_QT_IO(io);
     if( !qtIo->cpp_class )
-        return 0;
+        return NULL;
 
     return qtIo->cpp_class->addTimeout( msecs,
         func,
@@ -89,7 +104,7 @@ static void *qinf_qt_io_io_add_timeout( InfIo *io,
 }
 
 static void qinf_qt_io_io_remove_timeout( InfIo *io,
-    void *timer )
+    InfIoTimeout *timer )
 {
     QInfQtIo *qtIo;
 
@@ -98,6 +113,20 @@ static void qinf_qt_io_io_remove_timeout( InfIo *io,
         return;
 
     qtIo->cpp_class->removeTimeout( timer );
+}
+
+static InfIoDispatch *qinf_qt_io_io_add_dispatch( InfIo *io,
+    InfIoDispatchFunc func,
+    gpointer user_data,
+    GDestroyNotify notify )
+{
+    return NULL; // FIXME
+}
+
+static void qinf_qt_io_io_remove_dispatch( InfIo* io,
+    InfIoDispatch* dispatch )
+{
+    // FIXME
 }
 
 static void qinf_qt_io_finalize( GObject *object )
@@ -141,9 +170,15 @@ static void qinf_qt_io_io_init( gpointer g_iface,
     InfIoIface *iface;
     iface = (InfIoIface*)g_iface;
 
-    iface->watch = qinf_qt_io_io_watch;
+    iface->add_watch = qinf_qt_io_io_add_watch;
+    iface->update_watch = qinf_qt_io_io_update_watch;
+    iface->remove_watch = qinf_qt_io_io_remove_watch;
+
     iface->add_timeout = qinf_qt_io_io_add_timeout;
     iface->remove_timeout = qinf_qt_io_io_remove_timeout;
+
+    iface->add_dispatch = qinf_qt_io_io_add_dispatch;
+    iface->remove_dispatch = qinf_qt_io_io_remove_dispatch;
 }
 
 GType qinf_qt_io_get_type()
@@ -223,9 +258,9 @@ QtIo::~QtIo()
         g_object_unref( m_gobject );
 }
 
-void QtIo::watch( InfNativeSocket *socket,
+InfIoWatch *QtIo::addWatch( InfNativeSocket *socket,
     InfIoEvent events,
-    InfIoFunc func,
+    InfIoWatchFunc func,
     gpointer user_data,
     GDestroyNotify notify )
 {
@@ -244,7 +279,18 @@ void QtIo::watch( InfNativeSocket *socket,
     socketToWatchMap[*socket] = watch;
 }
 
-void *QtIo::addTimeout( unsigned int msecs,
+void QtIo::updateWatch( InfIoWatch *watch,
+    InfIoEvent events )
+{
+    // FIXME
+}
+
+void QtIo::removeWatch( InfIoWatch *watch )
+{
+    // FIXME
+}
+
+InfIoTimeout *QtIo::addTimeout( unsigned int msecs,
     InfIoTimeoutFunc func,
     void *user_data,
     GDestroyNotify notify )
@@ -252,13 +298,25 @@ void *QtIo::addTimeout( unsigned int msecs,
     InfTimer *timer = new InfTimer( msecs, func,
         user_data, notify, this );
     timer->activate();
-    return timer;
+    return reinterpret_cast<InfIoTimeout*>(timer);
 }
 
-void QtIo::removeTimeout( void *timer )
+void QtIo::removeTimeout( InfIoTimeout *timer )
 {
-    InfTimer *t = static_cast<InfTimer*>(timer);
+    InfTimer *t = reinterpret_cast<InfTimer*>(timer);
     delete t;
+}
+
+InfIoDispatch *QtIo::addDispatch( InfIoDispatchFunc func,
+    gpointer user_data,
+    GDestroyNotify notify )
+{
+    // FIXME
+}
+
+void QtIo::removeDispatch( InfIoDispatch *dispatch )
+{
+    // FIXME
 }
 
 GObject *QtIo::gobject() const

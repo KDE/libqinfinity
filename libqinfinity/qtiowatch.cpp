@@ -28,7 +28,7 @@ namespace QInfinity
 
 QtIoWatch::QtIoWatch( int socket,
     InfIoEvent events,
-    InfIoFunc handler,
+    InfIoWatchFunc handler,
     void *user_data,
     GDestroyNotify destroy_notify,
     QObject *parent )

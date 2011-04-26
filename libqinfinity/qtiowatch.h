@@ -39,7 +39,7 @@ class QtIoWatch
     public:
         QtIoWatch( int socket,
             InfIoEvent events,
-            InfIoFunc handler,
+            InfIoWatchFunc handler,
             void *user_data,
             GDestroyNotify destroy_notify,
                QObject *parent = 0 );
@@ -58,7 +58,7 @@ class QtIoWatch
     private:
 
         int m_socket;
-        InfIoFunc m_handler;
+        InfIoWatchFunc m_handler;
         void *m_user_data;
         GDestroyNotify m_destroy_notify;
 
