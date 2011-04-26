@@ -56,7 +56,7 @@ XmppConnection::XmppConnection( TcpConnection &tcpConnection,
     const QString &remote_hostname,
     SecurityPolicy securityPolicy,
     CertificateCredentials *cred,
-    Gsasl *sasl_context,
+    InfSaslContext *sasl_context,
     const char *sasl_mechanisms,
        QObject *parent,
     bool own_gobject )

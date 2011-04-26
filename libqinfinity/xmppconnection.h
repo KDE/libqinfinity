@@ -21,9 +21,9 @@
 #include "xmlconnection.h"
 
 #include <libinfinity/common/inf-xmpp-connection.h>
+#include <libinfinity/common/inf-sasl-context.h>
 
 #include <gnutls/gnutls.h>
-#include <gsasl.h>
 
 namespace QInfinity
 {
@@ -60,7 +60,7 @@ class XmppConnection
             const QString &remote_hostname,
             SecurityPolicy securityPolicy,
             CertificateCredentials *cred = 0,
-            Gsasl *sasl_context = 0,
+            InfSaslContext *sasl_context = 0,
             const char *sasl_mechanisms = 0,
                QObject *parent = 0,
                bool own_gobject = true );
