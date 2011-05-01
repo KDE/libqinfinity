@@ -25,12 +25,15 @@
 #include <QHash>
 #include <QTimer>
 #include <QEvent>
+#include <QLinkedList>
+#include <QMutex>
 
 namespace QInfinity
 {
 
 class QtIo;
 class QtIoWatch;
+class InfEvent;
 
 typedef struct _QInfQtIoClass QInfQtIoClass;
 typedef struct _QInfQtIo QInfQtIo;
@@ -77,6 +80,8 @@ class QtIo
         QInfQtIo *m_gobject;
         bool own_gobject;
         QHash<int, QtIoWatch*> socketToWatchMap;
+        QLinkedList<InfEvent*> cancelledEvents;
+        QMutex cancelledEventsMutex;
 
 };
 

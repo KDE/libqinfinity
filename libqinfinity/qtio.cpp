@@ -356,7 +356,10 @@ InfIoDispatch *QtIo::addDispatch( InfIoDispatchFunc func,
 
 void QtIo::removeDispatch( InfIoDispatch *dispatch )
 {
-    // FIXME
+    InfEvent *event = reinterpret_cast<InfEvent*>( event );
+    cancelledEventsMutex.lock();
+    cancelledEvents.append( event );
+    cancelledEventsMutex.unlock();
 }
 
 bool QtIo::event( QEvent *e )
@@ -364,6 +367,21 @@ bool QtIo::event( QEvent *e )
     InfEvent *event = dynamic_cast<InfEvent*>(e);
     if (event == NULL)
         return false;
+
+    // Check if we got a pending event that got cancelled already.
+    cancelledEventsMutex.lock();
+    QLinkedList<InfEvent*>::iterator eventItr;
+    for( eventItr = cancelledEvents.begin(); eventItr != cancelledEvents.end(); eventItr++ )
+    {
+        // If so: ignore it in a positive way.
+        if( *eventItr == event ) {
+            event->accept();
+            cancelledEvents.erase( eventItr );
+            cancelledEventsMutex.unlock();
+            return true;
+        }
+    }
+    cancelledEventsMutex.unlock();
 
     event->accept();
     event->call();
