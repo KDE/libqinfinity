@@ -43,7 +43,7 @@ CommunicationManager::CommunicationManager( QObject *parent,
 }
 
 CommunicationManager::CommunicationManager( const CommunicationManager &other )
-    : QGObject( other.gobject(), false )
+    : QGObject( other.gobject(), other.parent(), false )
 {
 }
 
