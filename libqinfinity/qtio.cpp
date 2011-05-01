@@ -303,18 +303,28 @@ InfIoWatch *QtIo::addWatch( InfNativeSocket *socket,
         this );
     socketToWatchMap[*socket] = watch;
 
-    return NULL; // FIXME
+    return reinterpret_cast<InfIoWatch*>( watch );
 }
 
 void QtIo::updateWatch( InfIoWatch *watch,
     InfIoEvent events )
 {
-    // FIXME
+    QtIoWatch *qwatch = reinterpret_cast<QtIoWatch*>( watch );
+    qwatch->setEvents( events );
 }
 
 void QtIo::removeWatch( InfIoWatch *watch )
 {
-    // FIXME
+    QtIoWatch *qwatch = reinterpret_cast<QtIoWatch*>( watch );
+
+    QHash<int, QtIoWatch*>::iterator mapItr;
+    for( mapItr = socketToWatchMap.begin(); mapItr != socketToWatchMap.end(); mapItr++ )
+    {
+        if( mapItr.value() == qwatch )
+            socketToWatchMap.erase(mapItr);
+    }
+
+    delete qwatch;
 }
 
 InfIoTimeout *QtIo::addTimeout( unsigned int msecs,
