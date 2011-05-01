@@ -56,32 +56,43 @@ static InfIoWatch* qinf_qt_io_io_add_watch( InfIo *io,
     gpointer user_data,
     GDestroyNotify notify )
 {
-    InfIoWatch* watch;
     QInfQtIo *qtIo;
 
     qtIo = QINF_QT_IO(io);
     if( !qtIo->cpp_class )
-        return NULL; // FIXME
+        return NULL;
 
-    qtIo->cpp_class->addWatch( socket,
+    return qtIo->cpp_class->addWatch( socket,
         events,
         func,
         user_data,
         notify );
-    return NULL; // FIXME
 }
 
 static void qinf_qt_io_io_update_watch( InfIo *io,
     InfIoWatch* watch,
     InfIoEvent events )
 {
-    // FIXME
+    QInfQtIo *qtIo;
+
+    qtIo = QINF_QT_IO(io);
+    if( !qtIo->cpp_class )
+        return;
+
+    qtIo->cpp_class->updateWatch( watch,
+        events );
 }
 
 static void qinf_qt_io_io_remove_watch( InfIo *io,
     InfIoWatch* watch )
 {
-    // FIXME
+    QInfQtIo *qtIo;
+
+    qtIo = QINF_QT_IO(io);
+    if( !qtIo->cpp_class )
+        return;
+
+    qtIo->cpp_class->removeWatch( watch );
 }
 
 static InfIoTimeout *qinf_qt_io_io_add_timeout( InfIo *io,
@@ -120,13 +131,25 @@ static InfIoDispatch *qinf_qt_io_io_add_dispatch( InfIo *io,
     gpointer user_data,
     GDestroyNotify notify )
 {
-    return NULL; // FIXME
+    QInfQtIo *qtIo;
+
+    qtIo = QINF_QT_IO(io);
+    if (!qtIo->cpp_class )
+        return NULL;
+
+    return qtIo->cpp_class->addDispatch( func, user_data, notify );
 }
 
 static void qinf_qt_io_io_remove_dispatch( InfIo* io,
     InfIoDispatch* dispatch )
 {
-    // FIXME
+    QInfQtIo *qtIo;
+
+    qtIo = QINF_QT_IO(io);
+    if (!qtIo->cpp_class )
+        return;
+
+    qtIo->cpp_class->removeDispatch( dispatch );
 }
 
 static void qinf_qt_io_finalize( GObject *object )
