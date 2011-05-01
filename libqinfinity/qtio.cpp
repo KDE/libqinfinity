@@ -340,6 +340,8 @@ InfIoDispatch *QtIo::addDispatch( InfIoDispatchFunc func,
 {
     QEvent *event = new InfEvent( func, user_data, notify );
     QApplication::postEvent(this, event);
+
+    return reinterpret_cast<InfIoDispatch*>( event );
 }
 
 void QtIo::removeDispatch( InfIoDispatch *dispatch )
