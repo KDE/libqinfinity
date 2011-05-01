@@ -24,6 +24,7 @@
 #include <QList>
 #include <QHash>
 #include <QTimer>
+#include <QEvent>
 
 namespace QInfinity
 {
@@ -67,6 +68,8 @@ class QtIo
             GDestroyNotify notify );
         virtual void removeDispatch( InfIoDispatch *dispatch );
 
+        virtual bool event( QEvent *e );
+
         GObject *gobject() const;
         void setOwner( bool own_gobject );
     
@@ -103,6 +106,26 @@ class InfTimer
         void *m_user_data;
         GDestroyNotify m_notify;
 
+};
+
+/**
+ * @brief QEvent wrapper for addDispatch/postEvent
+ */
+class InfEvent
+    :  public QEvent
+{
+    public:
+        InfEvent( InfIoDispatchFunc func,
+            gpointer user_data,
+            GDestroyNotify notify );
+        ~InfEvent();
+
+        void call();
+
+    private:
+        InfIoDispatchFunc m_func;
+        gpointer m_user_data;
+        GDestroyNotify m_notify;
 };
 
 }

@@ -20,6 +20,8 @@
 
 #include <glib-object.h>
 
+#include <QApplication>
+#include <QEvent>
 #include <QTimer>
 #include <QDebug>
 
@@ -300,6 +302,8 @@ InfIoWatch *QtIo::addWatch( InfNativeSocket *socket,
         notify,
         this );
     socketToWatchMap[*socket] = watch;
+
+    return NULL; // FIXME
 }
 
 void QtIo::updateWatch( InfIoWatch *watch,
@@ -334,12 +338,25 @@ InfIoDispatch *QtIo::addDispatch( InfIoDispatchFunc func,
     gpointer user_data,
     GDestroyNotify notify )
 {
-    // FIXME
+    QEvent *event = new InfEvent( func, user_data, notify );
+    QApplication::postEvent(this, event);
 }
 
 void QtIo::removeDispatch( InfIoDispatch *dispatch )
 {
     // FIXME
+}
+
+bool QtIo::event( QEvent *e )
+{
+    InfEvent *event = dynamic_cast<InfEvent*>(e);
+    if (event == NULL)
+        return false;
+
+    event->accept();
+    event->call();
+
+    return true;
 }
 
 GObject *QtIo::gobject() const
@@ -380,6 +397,27 @@ void InfTimer::activate()
 }
 
 void InfTimer::activated()
+{
+    m_func( m_user_data );
+}
+
+InfEvent::InfEvent( InfIoDispatchFunc func,
+    gpointer user_data,
+    GDestroyNotify notify )
+    : QEvent( QEvent::User )
+    , m_func( func )
+    , m_user_data( user_data )
+    , m_notify( notify )
+{
+}
+
+InfEvent::~InfEvent()
+{
+    if( m_notify )
+        m_notify( m_user_data );
+}
+
+void InfEvent::call()
 {
     m_func( m_user_data );
 }
