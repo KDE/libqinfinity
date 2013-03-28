@@ -27,7 +27,7 @@
 #include <QMenuBar>
 #include <QContextMenuEvent>
 
-#include <glib/gerror.h>
+#include <glib.h>
 
 class Ui_newConnectionWidget;
 

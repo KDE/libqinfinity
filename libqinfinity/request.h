@@ -22,7 +22,7 @@
 
 #include <libinfinity/client/infc-request.h>
 
-#include <glib/gerror.h>
+#include <glib.h>
 
 namespace QInfinity
 {
