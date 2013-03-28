@@ -81,6 +81,11 @@ void TextBuffer::insertText( unsigned int pos,
     inf_text_buffer_insert_text( INF_TEXT_BUFFER(gobject()),
         pos, data.data(), data.length(), length,
         INF_USER(user->gobject()) );
+    // TODO test me, I don't think this is used anywhere in kobby
+    QInfinity::TextChunk chunk( encoding() );
+    chunk.insertText( 0, data, data.length(), user->id() );
+    inf_text_buffer_text_inserted( INF_TEXT_BUFFER(gobject()),
+        pos, chunk.infChunk(), INF_USER(user->gobject()) );
 }
 
 void TextBuffer::eraseText( unsigned int pos,
@@ -89,15 +94,20 @@ void TextBuffer::eraseText( unsigned int pos,
 {
     inf_text_buffer_erase_text( INF_TEXT_BUFFER(gobject()),
         pos, len, INF_USER(user->gobject()) );
+    inf_text_buffer_text_erased( INF_TEXT_BUFFER(gobject()),
+        pos, slice(pos, len)->infChunk(), INF_USER(user->gobject()) );
 }
 
 void TextBuffer::insertChunk( unsigned int pos,
     const TextChunk &chunk,
     User *user )
 {
+    InfTextBufferIface* iface = INF_TEXT_BUFFER_GET_IFACE(INF_TEXT_BUFFER(gobject()));
     inf_text_buffer_insert_chunk( INF_TEXT_BUFFER(gobject()),
         pos, chunk.infChunk(),
         INF_USER(user->gobject()) );
+    inf_text_buffer_text_inserted( INF_TEXT_BUFFER(gobject()),
+        pos, chunk.infChunk(), INF_USER(user->gobject()) );
 }
 
 TextBuffer::TextBuffer( InfTextBuffer *infBuffer,
@@ -111,10 +121,10 @@ TextBuffer::TextBuffer( InfTextBuffer *infBuffer,
     if( m_codec )
         m_encoder = m_codec->makeEncoder();
     erase_text_handler = g_signal_connect_after( gobject(),
-        "erase-text", G_CALLBACK(TextBuffer::text_erased_cb),
+        "text-erased", G_CALLBACK(TextBuffer::text_erased_cb),
         this );
     insert_text_handler = g_signal_connect_after( gobject(),
-        "insert-text", G_CALLBACK(TextBuffer::text_inserted_cb),
+        "text-inserted", G_CALLBACK(TextBuffer::text_inserted_cb),
         this );
 }
 
