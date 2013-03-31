@@ -59,8 +59,8 @@ class BrowserIter
         bool isDirectory();
         InfcExploreRequest *explore();
         bool isExplored();
-        QString name();
-        QString path();
+        QString name() const;
+        QString path() const;
         unsigned int id() const;
         QPointer<Browser> browser() const;
         InfcBrowser *infBrowser() const;

@@ -123,14 +123,14 @@ bool BrowserIter::isExplored()
     return 0;
 }
 
-QString BrowserIter::name()
+QString BrowserIter::name() const
 {
     if( m_infBrowser )
         return infc_browser_iter_get_name( m_infBrowser, &m_infBrowserIter );
     return "";
 }
 
-QString BrowserIter::path()
+QString BrowserIter::path() const
 {
     if( m_infBrowser )
         return infc_browser_iter_get_path( m_infBrowser, &m_infBrowserIter );

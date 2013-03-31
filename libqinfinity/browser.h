@@ -68,6 +68,11 @@ class Browser
             QObject *parent = 0 );
 
         /**
+         * @brief Get the connection status of the underlying infinity browser object.
+         */
+        InfcBrowserStatus connectionStatus();
+
+        /**
          * @brief Add plugin to browser session.
          */
         bool addPlugin( NotePlugin &plugin );
