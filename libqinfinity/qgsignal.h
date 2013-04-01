@@ -26,7 +26,7 @@ class QGObject;
 class QGSignalData;
 
 /**
- * @brief GObject signal wrapper which adds intance-checking.
+ * @brief GObject signal wrapper which adds instance-checking.
  */
 class QGSignal
     : public QObject
