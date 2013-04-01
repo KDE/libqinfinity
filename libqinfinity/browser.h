@@ -168,6 +168,16 @@ class Browser
          */
         void nodeRemoved( const BrowserIter &iter );
 
+        /**
+         * @brief The connection status of the browser has changed.
+         */
+        void statusChanged( InfcBrowserStatus status );
+
+        /**
+         * @brief The browser is now fully connected.
+         */
+        void connectionEstablished( const QInfinity::Browser* self );
+
     private:
         void setupSignals();
 
@@ -179,6 +189,7 @@ class Browser
             InfcSessionProxy *proxy );
         void signalNodeAdded( InfcBrowserIter *infIter );
         void signalNodeRemoved( InfcBrowserIter *infIter );
+        void signalStatusChanged( InfcBrowserStatus status );
 
         static void begin_explore_cb( InfcBrowser *browser,
             InfcBrowserIter *iter,
@@ -197,6 +208,8 @@ class Browser
             void *user_data );
         static void node_removed_cb( InfcBrowser *browser,
             InfcBrowserIter *iter,
+            void *user_data );
+        static void status_changed_cb( InfcBrowser *browser,
             void *user_data );
 
 };

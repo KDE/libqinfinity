@@ -32,6 +32,8 @@
 
 #include <QDebug>
 
+#include <glib-object.h>
+
 #include "browser.moc"
 
 namespace QInfinity
@@ -132,6 +134,9 @@ void Browser::setupSignals()
         G_CALLBACK(Browser::node_added_cb), this, this );
     new QGSignal( this, "node-removed", 
         G_CALLBACK(Browser::node_removed_cb), this, this );
+    qDebug() << "connecting browser instance" << this;
+    g_signal_connect_data(INFC_BROWSER(gobject()), "notify",
+                           G_CALLBACK(Browser::status_changed_cb), 0, NULL, G_CONNECT_AFTER );
 }
 
 // GObject signals
@@ -168,6 +173,22 @@ void Browser::signalNodeRemoved( InfcBrowserIter *infIter )
 {
     BrowserIter iter( infIter, INFC_BROWSER(this->gobject()) );
     emit(nodeRemoved( iter ));
+}
+
+void Browser::signalStatusChanged(InfcBrowserStatus status)
+{
+    qDebug() << "status changed to" << status << "(connected:" << INFC_BROWSER_CONNECTED << ")" << "on" << this;
+    if ( status == INFC_BROWSER_CONNECTED ) {
+        qDebug() << "emitting connection established for browser" << this;
+        emit(connectionEstablished( this ));
+    }
+}
+
+void Browser::status_changed_cb(InfcBrowser* browser, void* user_data)
+{
+    qDebug() << "got status changed callback";
+    QPointer<Browser> qbrowser = wrap(browser);
+    qbrowser->signalStatusChanged( qbrowser->connectionStatus() );
 }
 
 void Browser::begin_explore_cb( InfcBrowser *browser,
