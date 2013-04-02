@@ -92,10 +92,11 @@ void TextBuffer::eraseText( unsigned int pos,
     unsigned int len,
     User *user )
 {
-    inf_text_buffer_erase_text( INF_TEXT_BUFFER(gobject()),
-        pos, len, INF_USER(user->gobject()) );
+    qDebug() << "erasing text:" << slice(pos, len)->text() << pos << len;
     inf_text_buffer_text_erased( INF_TEXT_BUFFER(gobject()),
         pos, slice(pos, len)->infChunk(), INF_USER(user->gobject()) );
+    inf_text_buffer_erase_text( INF_TEXT_BUFFER(gobject()),
+        pos, len, INF_USER(user->gobject()) );
 }
 
 void TextBuffer::insertChunk( unsigned int pos,
@@ -103,11 +104,11 @@ void TextBuffer::insertChunk( unsigned int pos,
     User *user )
 {
     InfTextBufferIface* iface = INF_TEXT_BUFFER_GET_IFACE(INF_TEXT_BUFFER(gobject()));
+    inf_text_buffer_text_inserted( INF_TEXT_BUFFER(gobject()),
+        pos, chunk.infChunk(), INF_USER(user->gobject()) );
     inf_text_buffer_insert_chunk( INF_TEXT_BUFFER(gobject()),
         pos, chunk.infChunk(),
         INF_USER(user->gobject()) );
-    inf_text_buffer_text_inserted( INF_TEXT_BUFFER(gobject()),
-        pos, chunk.infChunk(), INF_USER(user->gobject()) );
 }
 
 TextBuffer::TextBuffer( InfTextBuffer *infBuffer,
