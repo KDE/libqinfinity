@@ -45,6 +45,14 @@ class NotePlugin
 {
 
     public:
+        // You will be given this data to your createSession method.
+        // TODO URGENT -- is this safe thread-wise? It should be,
+        // as long as only one thread talks to libinfinity.
+#warning Does this make sense? Could lead to random crashes or weird behaviour
+#warning when multiple documents are being opened in rapid succession
+#warning eventually add a mutex locker for joining?
+        void setUserData(void* userData);
+
         NotePlugin( QString name, QObject *parent = 0 );
         virtual ~NotePlugin();
 
@@ -59,14 +67,22 @@ class NotePlugin
         virtual Session *createSession( CommunicationManager *commMgr,
             Session::Status sess_status,
             CommunicationJoinedGroup *syncGroup,
-            XmlConnection *syncConnection ) = 0;
+            XmlConnection *syncConnection,
+            void* clientPluginUserData = 0 ) = 0;
 
         /**
          * @brief Get underlying note plugin.
          */
         InfcNotePlugin *infPlugin();
-    
+
     private:
+        struct UserData {
+            NotePlugin* self;
+            // allows the client plugin to pass custom user data
+            // when subscribing a session
+            void* clientPluginUserData;
+        };
+
         static InfSession *create_session_cb( InfIo *io,
             InfCommunicationManager *comm_mgr,
             InfSessionStatus status,

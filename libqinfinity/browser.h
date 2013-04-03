@@ -40,6 +40,7 @@ class XmlConnection;
 class NotePlugin;
 class SessionProxy;
 class Session;
+class AbstractTextBuffer;
 
 /**
  * @brief Browse an infinote server.
@@ -120,8 +121,11 @@ class Browser
         /**
          * @brief Subscribe to editing session.
          * @param node Note to subscribe to.
+         * @param plugin The plugin used for subscription
+         * @param textBuffer The text buffer which will be given to your createSession method as user data
          */
-        InfcNodeRequest *subscribeSession( BrowserIter node );
+        InfcNodeRequest *subscribeSession( BrowserIter node, NotePlugin* plugin = 0,
+                                           QInfinity::AbstractTextBuffer* textBuffer = 0 );
 
     protected:
         Browser( InfcBrowser *infBrowser,
@@ -156,7 +160,8 @@ class Browser
          * session is likely still synchronizing.
          */
         void subscribeSession( const QInfinity::BrowserIter &iter,
-            QPointer<QInfinity::SessionProxy> proxy );
+                               QPointer<QInfinity::SessionProxy> proxy );
+
 
         /**
          * @brief A node has been created.

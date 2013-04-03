@@ -103,8 +103,11 @@ InfcNodeRequest *Browser::removeNode( BrowserIter node )
         node.infBrowserIter() );
 }
 
-InfcNodeRequest *Browser::subscribeSession( BrowserIter node )
+InfcNodeRequest *Browser::subscribeSession( BrowserIter node, NotePlugin* plugin, QInfinity::AbstractTextBuffer* textBuffer )
 {
+    if ( plugin && textBuffer ) {
+        plugin->setUserData(textBuffer);
+    }
     return infc_browser_iter_subscribe_session( INFC_BROWSER(this->gobject()),
         node.infBrowserIter() );
 }

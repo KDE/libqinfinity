@@ -32,7 +32,8 @@ DefaultTextPlugin::DefaultTextPlugin( QObject *parent )
 Session *DefaultTextPlugin::createSession( CommunicationManager *commMgr,
     Session::Status sess_status,
     CommunicationJoinedGroup *syncGroup,
-    XmlConnection *syncConnection )
+    XmlConnection *syncConnection,
+    void* /*pluginUserData*/ )
 {
     TextBuffer *buffer = new TextDefaultBuffer( "UTF-8" );
     TextSession *textSession = new TextSession( *commMgr,

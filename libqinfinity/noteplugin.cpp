@@ -33,12 +33,21 @@ NotePlugin::NotePlugin( QString name, QObject *parent )
     strcpy(m_name, name.toAscii());
     m_infPlugin.note_type = m_name;
     m_infPlugin.session_new = NotePlugin::create_session_cb;
-    m_infPlugin.user_data = this;
+    UserData* d = new NotePlugin::UserData();
+    d->self = this;
+    d->clientPluginUserData = 0;
+    m_infPlugin.user_data = d;
+}
+
+void NotePlugin::setUserData(void* userData)
+{
+    static_cast<UserData*>(m_infPlugin.user_data)->clientPluginUserData = userData;
 }
 
 NotePlugin::~NotePlugin()
 {
     delete m_name;
+    delete m_infPlugin.user_data;
 }
 
 InfSession *NotePlugin::create_session_cb( InfIo *io,
@@ -48,12 +57,13 @@ InfSession *NotePlugin::create_session_cb( InfIo *io,
     InfXmlConnection *sync_connection,
     void *user_data )
 {
-    NotePlugin *plugin = static_cast<NotePlugin*>(user_data);
+    UserData* my_user_data = static_cast<UserData*>(user_data);
+    NotePlugin *plugin = my_user_data->self;
     CommunicationManager *commMgr = CommunicationManager::wrap( comm_mgr, plugin );
     Session::Status cpp_status = Session::infStatusToCpp(status);
     CommunicationJoinedGroup *joinedGroup = CommunicationJoinedGroup::wrap( sync_group, plugin );
     XmlConnection *connection = XmlConnection::wrap( sync_connection, plugin );
-    Session *session =  plugin->createSession( commMgr, cpp_status, joinedGroup, connection );
+    Session *session =  plugin->createSession( commMgr, cpp_status, joinedGroup, connection, my_user_data->clientPluginUserData );
     return INF_SESSION(session->gobject());
 }
 
