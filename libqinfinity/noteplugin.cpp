@@ -47,7 +47,7 @@ void NotePlugin::setUserData(void* userData)
 NotePlugin::~NotePlugin()
 {
     delete m_name;
-    delete m_infPlugin.user_data;
+    delete static_cast<NotePlugin::UserData*>(m_infPlugin.user_data);
 }
 
 InfSession *NotePlugin::create_session_cb( InfIo *io,
