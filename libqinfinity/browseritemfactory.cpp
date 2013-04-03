@@ -101,14 +101,14 @@ ConnectionItem::ConnectionItem( XmlConnection &connection,
     setEditable( false );
 }
 
-XmlConnection &ConnectionItem::connection() const
+XmlConnection* ConnectionItem::connection() const
 {
-    return *m_connection;
+    return m_connection;
 }
 
-Browser &ConnectionItem::browser() const
+Browser* ConnectionItem::browser() const
 {
-    return *m_browser;
+    return m_browser;
 }
 
 int ConnectionItem::type() const

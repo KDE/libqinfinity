@@ -64,8 +64,8 @@ class Browser
         /**
          * @brief Create Browser for connection.
          */
-        Browser( CommunicationManager &comm_manager,
-            XmlConnection &connection,
+        Browser( CommunicationManager& comm_manager,
+            XmlConnection* connection,
             QObject *parent = 0 );
 
         /**

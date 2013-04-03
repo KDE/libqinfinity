@@ -78,8 +78,8 @@ class ConnectionItem
             const QIcon &icon,
             const QString &text );
 
-        XmlConnection &connection() const;
-        Browser &browser() const;
+        XmlConnection* connection() const;
+        Browser* browser() const;
         int type() const;
 
     private:

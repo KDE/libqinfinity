@@ -162,7 +162,7 @@ void BrowserModel::setItemFactory( BrowserItemFactory *factory )
     d->itemFactory = factory;
 }
 
-ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
+ConnectionItem *BrowserModel::addConnection( XmlConnection* connection,
     const QString &name )
 {
     Q_D(BrowserModel);
@@ -173,20 +173,20 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection &connection,
     NodeItem *nodeItem;
     NotePlugin* plugin;
 
-    connection.setParent( this );
+    connection->setParent( this );
 
     // Create and initialive a new browser
     browser = createBrowser( d->comm_mgr, connection );
     foreach( plugin, plugins() )
         browser->addPlugin( *plugin );
-    index = new ConnectionIndex( connection, *browser );
+    index = new ConnectionIndex( *connection, *browser );
     d->browserToConnectionMap[browser] = index;
     connect( browser, SIGNAL(nodeAdded( const BrowserIter&)),
         this, SLOT(slotNodeAdded( const BrowserIter&)) );
     connect( browser, SIGNAL(nodeRemoved( const BrowserIter& )),
         this, SLOT(slotNodeRemoved( const BrowserIter& )) );
 
-    connItem = d->itemFactory->createConnectionItem( connection,
+    connItem = d->itemFactory->createConnectionItem( *connection,
         *browser,
         name );
     connItem->setParent( this );
@@ -365,6 +365,11 @@ void BrowserModel::slotNodeAdded( const BrowserIter &itr )
     parentItem->insertRow( 0, item );
 }
 
+NodeItem* BrowserModel::itemForPath(QString path, NodeItem* start)
+{
+    
+}
+
 void BrowserModel::slotNodeRemoved( const BrowserIter &itr )
 {
     qDebug() << "Removing node";
@@ -389,8 +394,8 @@ void BrowserModel::removeConnectionItem( ConnectionItem *item )
         return;
     }
     ConnectionIndex *index;
-    index = d->browserToConnectionMap[&item->browser()];
-    d->browserToConnectionMap.remove(&item->browser());
+    index = d->browserToConnectionMap[item->browser()];
+    d->browserToConnectionMap.remove(item->browser());
     emit( connectionRemoved( item->connection() ) );
     delete index;
 }
@@ -456,8 +461,8 @@ NodeItem *BrowserModel::indexToNodeItem( const QModelIndex &item ) const
 /*
  * Creates a browser and adds all plugins to it.
  */
-Browser *BrowserModel::createBrowser( CommunicationManager &commMgr,
-    XmlConnection &connection )
+Browser *BrowserModel::createBrowser( CommunicationManager& commMgr,
+    XmlConnection* connection )
 {
     Q_D(BrowserModel);
     

@@ -28,9 +28,9 @@ QString Connection::hostname() const
     return m_hostname;
 }
 
-QInfinity::XmppConnection &Connection::xmppConnection() const
+QInfinity::XmppConnection* Connection::xmppConnection() const
 {
-    return *m_xmppConnection;
+    return m_xmppConnection;
 }
 
 QString Connection::name() const

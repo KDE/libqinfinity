@@ -94,7 +94,7 @@ class BrowserModel
          * You can remove the connection by removing the appropriate
          * row from the model.
          */
-        ConnectionItem *addConnection( XmlConnection &connection,
+        ConnectionItem *addConnection( XmlConnection* connection,
             const QString &name );
 
         bool hasChildren( const QModelIndex &parent = QModelIndex() ) const;
@@ -132,12 +132,14 @@ class BrowserModel
         bool removeRows( int row, int count,
             const QModelIndex &parent );
 
+        NodeItem* itemForPath( QString path, NodeItem* start );
+
         CommunicationManager &communicationManager();
 
     Q_SIGNALS:
         void browserAdded( QInfinity::Browser &browser );
-        void connectionAdded( QInfinity::XmlConnection &connection );
-        void connectionRemoved( QInfinity::XmlConnection &connection );
+        void connectionAdded( QInfinity::XmlConnection* connection );
+        void connectionRemoved( QInfinity::XmlConnection* connection );
 
     public Q_SLOTS:
         /**
@@ -161,7 +163,7 @@ class BrowserModel
             Browser &browser );
         NodeItem *indexToNodeItem( const QModelIndex &index ) const;
         Browser *createBrowser( CommunicationManager &commMgr,
-            XmlConnection &connection );
+            XmlConnection* connection );
 
         BrowserModelPrivate *d_ptr;
         Q_DECLARE_PRIVATE(BrowserModel)

@@ -21,7 +21,7 @@ class Connection
 
         void open();
         QString hostname() const;
-        QInfinity::XmppConnection &xmppConnection() const;
+        QInfinity::XmppConnection* xmppConnection() const;
         QString name() const;
     
     Q_SIGNALS:
