@@ -76,8 +76,8 @@ void WrapperStore::storeWrapper( QGObject *wrapper )
         delete old_wrapper;
     }
     (*table)[obj] = wrapper;
-    connect( wrapper, SIGNAL(destroyed( QObject* )),
-        this, SLOT(slotWrapperDeleted( QObject* )) );
+    connect( wrapper, SIGNAL(aboutToDestroy(QGObject*)),
+        this, SLOT(slotWrapperDeleted( QGObject* )) );
 }
 
 WrapperStore::WrapperStore()
@@ -88,12 +88,10 @@ WrapperStore::~WrapperStore()
 {
 }
 
-void WrapperStore::slotWrapperDeleted( QObject *wrapper )
+void WrapperStore::slotWrapperDeleted( QGObject *wrapper )
 {
-    if( wrapper )
-    {
-        // We cant dynamic_cast because the object has been deleted
-        removeWrapper( (QGObject*)wrapper );
+    if( wrapper ) {
+        removeWrapper( wrapper );
     }
 }
 

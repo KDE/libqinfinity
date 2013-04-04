@@ -1,5 +1,6 @@
 /*
  * Copyright 2009  Gregory Haynes <greg@greghaynes.net>
+ * Copyright 2013  Sven Brauch <svenbrauch@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -33,7 +34,7 @@ class QGObjectPrivate;
 class QGObject
     : public QObject
 {
-
+Q_OBJECT
     public:
         QGObject( QObject *parent = 0 );
         ~QGObject();
@@ -52,6 +53,8 @@ class QGObject
         QGObjectPrivate *d_ptr;
         Q_DECLARE_PRIVATE(QGObject)
 
+    signals:
+        void aboutToDestroy(QGObject* self);
 };
 
 }

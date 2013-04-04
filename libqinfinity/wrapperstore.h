@@ -74,7 +74,7 @@ class WrapperStore
         ~WrapperStore();
 
     private Q_SLOTS:
-        void slotWrapperDeleted( QObject *wrapper );
+        void slotWrapperDeleted( QGObject* wrapper );
 
     private:
         void removeWrapper( QGObject *wrapper );

@@ -1,5 +1,6 @@
 /*
  * Copyright 2009  Gregory Haynes <greg@greghaynes.net>
+ * Copyright 2013  Sven Brauch <svenbrauch@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -41,6 +42,7 @@ QGObject::QGObject( QObject *parent )
 QGObject::~QGObject()
 {
     Q_D(QGObject);
+    emit aboutToDestroy(this);
     
     if( d->own_gobj && d->gobject )
         if( G_IS_OBJECT(d->gobject) )
@@ -86,4 +88,8 @@ QGObject::QGObject( GObject *obj,
 }
 
 }
+
+#include "qgobject.moc"
+
+
 
