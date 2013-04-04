@@ -46,7 +46,7 @@ void NotePlugin::setUserData(void* userData)
 
 NotePlugin::~NotePlugin()
 {
-    delete m_name;
+    delete[] m_name;
     delete static_cast<NotePlugin::UserData*>(m_infPlugin.user_data);
 }
 
