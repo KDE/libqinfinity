@@ -103,6 +103,9 @@ XmlConnection::XmlConnection( InfXmlConnection *infXmlConnection,
     bool own_gobject )
     : QGObject( G_OBJECT(infXmlConnection), parent, own_gobject )
 {
+    if ( INF_IS_SIMULATED_CONNECTION(infXmlConnection) ) {
+        inf_simulated_connection_set_mode(INF_SIMULATED_CONNECTION(infXmlConnection), INF_SIMULATED_CONNECTION_IMMEDIATE);
+    }
     registerSignals();
 }
 

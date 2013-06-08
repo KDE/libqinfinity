@@ -19,6 +19,8 @@
 #include "tcpconnection.h"
 #include "certificatecredentials.h"
 
+#include <libinfinity/common/inf-simulated-connection.h>
+
 #include "xmppconnection.moc"
 
 namespace QInfinity
@@ -70,6 +72,21 @@ XmppConnection::XmppConnection( TcpConnection &tcpConnection,
         sasl_context,
         sasl_mechanisms )), parent, own_gobject )
 {
+}
+
+XmppConnection::XmppConnection(QObject* parent)
+    : XmlConnection(INF_XML_CONNECTION(inf_simulated_connection_new()), parent, true)
+{
+    qDebug() << "creating new *simulated* Xmpp connection";
+}
+
+void XmppConnection::connectSimulatedConnection(XmppConnection* other)
+{
+    Q_ASSERT( INF_IS_SIMULATED_CONNECTION(gobject()) );
+    Q_ASSERT( INF_IS_SIMULATED_CONNECTION(other->gobject()) );
+    qDebug() << "connecting simulated connections" << gobject() << other->gobject();
+    inf_simulated_connection_connect( INF_SIMULATED_CONNECTION(gobject()),
+                                      INF_SIMULATED_CONNECTION(other->gobject()) );
 }
 
 }

@@ -19,6 +19,7 @@
 #define QINFINITY_XMLCONNECTION_H
 
 #include <libinfinity/common/inf-xml-connection.h>
+#include <libinfinity/common/inf-simulated-connection.h>
 
 #include "qgobject.h"
 

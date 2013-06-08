@@ -54,6 +54,14 @@ class XmppConnection
         static InfXmppConnectionSite siteToInf( Site );
         static InfXmppConnectionSecurityPolicy securityPolicyToInf( SecurityPolicy );
 
+        void connectSimulatedConnection( XmppConnection* other );
+
+        // Creates a new SIMULATED xmpp Connection object.
+        // Only for use in unit tests!
+        // Connect it with the connectSimulatedConnection() method.
+        XmppConnection( QObject* parent );
+
+        // Creates a new xmpp Connection object.
         XmppConnection( TcpConnection &tcpConnection,
             Site site,
             const QString &local_hostname,
