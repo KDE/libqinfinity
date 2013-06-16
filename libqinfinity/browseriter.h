@@ -26,6 +26,8 @@
 namespace QInfinity
 {
 
+class ExploreRequest;
+
 class Browser;
 
 /**
@@ -57,7 +59,7 @@ class BrowserIter
         bool child();
         bool parent();
         bool isDirectory();
-        InfcExploreRequest *explore();
+        ExploreRequest* explore();
         bool isExplored();
         QString name() const;
         QString path() const;

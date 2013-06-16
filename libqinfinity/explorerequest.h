@@ -1,5 +1,5 @@
 /*
- * Copyright 2009  Gregory Haynes <greg@greghaynes.net>
+ * Copyright 2013  Sven Brauch <svenbrauch@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -15,47 +15,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QINFINITY_EXPLORE_REQUEST_H
-#define QINFINITY_EXPLORE_REQUEST_H
+#ifndef QINFINITY_EXPLOREREQUEST_H
+#define QINFINITY_EXPLOREREQUEST_H
 
+#include "qgobject.h"
 #include "request.h"
-
 #include <libinfinity/client/infc-explore-request.h>
 
-namespace QInfinity
-{
+typedef struct _InfcExploreRequest InfcExploreRequest;
+
+namespace QInfinity {
 
 class ExploreRequest
     : public Request
 {
-    Q_OBJECT;
+Q_OBJECT
+public:
+    ExploreRequest(InfcExploreRequest* req, QObject* parent = 0);
+    static ExploreRequest* wrap(InfcExploreRequest* request, QObject* parent = 0, bool own_gobject = true);
 
-    public:
-        ExploreRequest( InfcExploreRequest *infRequest,
-            QObject *parent = 0 );
+signals:
+    void finished(ExploreRequest* self);
 
-        unsigned int nodeId();
-
-        /**
-         * @brief Cause emission of progress signal.
-         */
-        bool emitProgress( GError **error );
-
-        bool isInitiated();
-        bool isFinished();
-    
-    Q_SIGNALS:
-        void finished();
-        void initiated( unsigned int nodes );
-        void progress( unsigned int nodes,
-            unsigned int total );
-
-    private:
-        void setupSignals();
-
+private:
+    void signalFinished();
+    static void finished_cb(InfcRequest*, void* user_data);
 };
 
 }
 
 #endif
-

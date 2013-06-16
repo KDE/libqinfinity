@@ -1,5 +1,5 @@
 /*
- * Copyright 2009  Gregory Haynes <greg@greghaynes.net>
+ * Copyright 2013  Sven Brauch <svenbrauch@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -16,27 +16,42 @@
  */
 
 #include "explorerequest.h"
+#include "wrapperstore.h"
+#include "qgsignal.h"
+
+#include <QDebug>
 
 #include "explorerequest.moc"
 
-namespace QInfinity
-{
+namespace QInfinity {
 
-ExploreRequest::ExploreRequest( InfcExploreRequest *infRequest,
-    QObject *parent )
-    : Request( INFC_REQUEST( infRequest ), parent )
+ExploreRequest::ExploreRequest(InfcExploreRequest* req, QObject* parent)
+    : Request(INFC_REQUEST(req), parent)
 {
-    setupSignals();
+    new QGSignal(this, "finished",
+                 G_CALLBACK(ExploreRequest::finished_cb), this, this);
 }
 
-unsigned int ExploreRequest::nodeId()
+ExploreRequest* ExploreRequest::wrap(InfcExploreRequest* request, QObject* parent, bool own_gobject)
 {
-    return infc_explore_request_get_node_id( INFC_EXPLORE_REQUEST(gobject()) );
+    QGObject* wrapptr = WrapperStore::getWrapper(G_OBJECT(request), own_gobject);
+    if ( wrapptr ) {
+        return qobject_cast<ExploreRequest*>(wrapptr);
+    }
+    ExploreRequest* wrapper = new ExploreRequest(request, parent);
+    return wrapper;
 }
 
-void ExploreRequest::setupSignals()
+void ExploreRequest::signalFinished()
 {
+    qDebug() << "emitting finished" << this;
+    emit finished(this);
+}
+
+void ExploreRequest::finished_cb(InfcRequest* /*req*/, void* user_data)
+{
+    qDebug() << "node request finished" << user_data;
+    static_cast<ExploreRequest*>(user_data)->signalFinished();
 }
 
 }
-

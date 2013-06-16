@@ -17,6 +17,7 @@
 
 #include "browseriter.h"
 #include "browser.h"
+#include "explorerequest.h"
 
 namespace QInfinity
 {
@@ -109,10 +110,10 @@ bool BrowserIter::isDirectory()
     return 0;
 }
 
-InfcExploreRequest *BrowserIter::explore()
+ExploreRequest* BrowserIter::explore()
 {
     if( m_infBrowser )
-        return infc_browser_iter_explore( m_infBrowser, &m_infBrowserIter );
+        return ExploreRequest::wrap(infc_browser_iter_explore( m_infBrowser, &m_infBrowserIter ));
     return 0;
 }
 
