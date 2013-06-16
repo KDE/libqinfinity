@@ -43,7 +43,9 @@ set(QInfinity_SRCS
 	abstracttextbuffer.cpp
 	textdefaultbuffer.cpp
 	noteplugin.cpp
-	defaulttextplugin.cpp)
+	defaulttextplugin.cpp
+	noderequest.cpp
+)
 
 set(QInfinity_HDRS
 	init.h
@@ -81,7 +83,9 @@ set(QInfinity_HDRS
 	abstracttextbuffer.h
 	textdefaultbuffer.h
 	noteplugin.h
-	defaulttextplugin.h)
+	defaulttextplugin.h
+	noderequest.h
+)
 
 QT4_AUTOMOC(${QInfinity_SRCS})
 

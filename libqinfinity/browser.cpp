@@ -24,6 +24,7 @@
 #include "communicationmanager.h"
 #include "wrapperstore.h"
 #include "qgsignal.h"
+#include "noderequest.h"
 
 #include <libinfinity/common/inf-buffer.h>
 #include <libinfinity/client/infc-browser.h>
@@ -38,54 +39,6 @@
 
 namespace QInfinity
 {
-
-NodeRequest::NodeRequest(InfcNodeRequest* req, QObject* parent)
-    : QGObject(G_OBJECT(req), parent)
-{
-    setupSignals();
-}
-
-NodeRequest* NodeRequest::wrap(InfcNodeRequest* request, QObject* parent, bool own_gobject)
-{
-    QGObject* wrapptr = WrapperStore::getWrapper(G_OBJECT(request), own_gobject);
-    if ( wrapptr ) {
-        return qobject_cast<NodeRequest*>(wrapptr);
-    }
-    NodeRequest* wrapper = new NodeRequest(request, parent);
-    return wrapper;
-}
-
-void NodeRequest::setupSignals()
-{
-    qDebug() << "setting up node request signals" << this;
-    new QGSignal(this, "finished",
-                 G_CALLBACK(NodeRequest::finished_cb), this, this);
-    new QGSignal(this, "failed",
-                 G_CALLBACK(NodeRequest::error_cb), this, this);
-}
-
-void NodeRequest::signalError(QString message)
-{
-    emit error(this, message);
-}
-
-void NodeRequest::signalFinished()
-{
-    qDebug() << "emitting finished" << this;
-    emit finished(this);
-}
-
-void NodeRequest::error_cb(InfcRequest* /*req*/, GError* error, void* user_data)
-{
-    qDebug() << "node request error:" << error->message;
-    reinterpret_cast<NodeRequest*>(user_data)->signalError(QString(error->message));
-}
-
-void NodeRequest::finished_cb(InfcRequest* /*req*/, InfcBrowserIter* /*iter*/, void* user_data)
-{
-    qDebug() << "node request finished" << user_data;
-    reinterpret_cast<NodeRequest*>(user_data)->signalFinished();
-}
 
 QPointer<Browser> Browser::wrap( InfcBrowser *infObject,
     QObject *parent,

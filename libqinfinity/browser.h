@@ -41,27 +41,7 @@ class NotePlugin;
 class SessionProxy;
 class Session;
 class AbstractTextBuffer;
-
-class NodeRequest
-    : public QGObject
-{
-Q_OBJECT
-public:
-    NodeRequest(InfcNodeRequest* req, QObject* parent = 0);
-    static NodeRequest* wrap(InfcNodeRequest* request, QObject* parent = 0, bool own_gobject = true);
-
-signals:
-    void error(NodeRequest* self, QString message);
-    void finished(NodeRequest* self);
-
-private:
-    void setupSignals();
-
-    void signalError(QString);
-    static void error_cb(InfcRequest* req, GError* error, void* user_data);
-    void signalFinished();
-    static void finished_cb(InfcRequest* req, InfcBrowserIter* iter, void* user_data);
-};
+class NodeRequest;
 
 /**
  * @brief Browse an infinote server.
