@@ -42,6 +42,27 @@ class SessionProxy;
 class Session;
 class AbstractTextBuffer;
 
+class NodeRequest
+    : public QGObject
+{
+Q_OBJECT
+public:
+    NodeRequest(InfcNodeRequest* req, QObject* parent = 0);
+    static NodeRequest* wrap(InfcNodeRequest* request, QObject* parent = 0, bool own_gobject = true);
+
+signals:
+    void error(NodeRequest* self, QString message);
+    void finished(NodeRequest* self);
+
+private:
+    void setupSignals();
+
+    void signalError(QString);
+    static void error_cb(InfcRequest* req, GError* error, void* user_data);
+    void signalFinished();
+    static void finished_cb(InfcRequest* req, InfcBrowserIter* iter, void* user_data);
+};
+
 /**
  * @brief Browse an infinote server.
  *
@@ -84,7 +105,7 @@ class Browser
          * @param name Name of new directory.
          * @return Request for monitoring node creation.
          */
-        InfcNodeRequest *addSubdirectory( BrowserIter parent,
+        NodeRequest* addSubdirectory( BrowserIter parent,
             const char *name );
 
         /**
@@ -94,7 +115,7 @@ class Browser
          * @param plugin Plugin used for note.
          * @param initial_subscribe Subscribe to note on creation.
          */
-        InfcNodeRequest *addNote( BrowserIter parent,
+        NodeRequest* addNote( BrowserIter parent,
             const char *name,
             NotePlugin &plugin,
             bool initial_subscribe );
@@ -106,7 +127,7 @@ class Browser
          * @param plugin Plugin used for note.
          * @param initial_subscribe Subscribe to note on creation.
          */
-        InfcNodeRequest *addNoteWithContent( BrowserIter parent,
+        NodeRequest* addNoteWithContent( BrowserIter parent,
             const char *name,
             NotePlugin &plugin,
             Session &session,
@@ -116,7 +137,7 @@ class Browser
          * @brief Delete node.
          * @param node Node to be deleted.
          */
-        InfcNodeRequest *removeNode( BrowserIter node );
+        NodeRequest* removeNode( BrowserIter node );
 
         /**
          * @brief Subscribe to editing session.
@@ -124,7 +145,7 @@ class Browser
          * @param plugin The plugin used for subscription
          * @param textBuffer The text buffer which will be given to your createSession method as user data
          */
-        InfcNodeRequest *subscribeSession( BrowserIter node, NotePlugin* plugin = 0,
+        NodeRequest* subscribeSession( BrowserIter node, NotePlugin* plugin = 0,
                                            QInfinity::AbstractTextBuffer* textBuffer = 0 );
 
     protected:
@@ -162,6 +183,10 @@ class Browser
         void subscribeSession( const QInfinity::BrowserIter &iter,
                                QPointer<QInfinity::SessionProxy> proxy );
 
+        /**
+         * @brief An error has occured.
+         */
+        void error( const QInfinity::Browser* self, const QString error );
 
         /**
          * @brief A node has been created.
@@ -195,6 +220,7 @@ class Browser
         void signalNodeAdded( InfcBrowserIter *infIter );
         void signalNodeRemoved( InfcBrowserIter *infIter );
         void signalStatusChanged( InfcBrowserStatus status );
+        void signalError( const QString message );
 
         static void begin_explore_cb( InfcBrowser *browser,
             InfcBrowserIter *iter,
@@ -216,6 +242,7 @@ class Browser
             void *user_data );
         static void status_changed_cb( InfcBrowser *browser,
             void *user_data );
+        static void error_cb( InfcBrowser *browser, const GError *error);
 
 };
 

@@ -39,6 +39,54 @@
 namespace QInfinity
 {
 
+NodeRequest::NodeRequest(InfcNodeRequest* req, QObject* parent)
+    : QGObject(G_OBJECT(req), parent)
+{
+    setupSignals();
+}
+
+NodeRequest* NodeRequest::wrap(InfcNodeRequest* request, QObject* parent, bool own_gobject)
+{
+    QGObject* wrapptr = WrapperStore::getWrapper(G_OBJECT(request), own_gobject);
+    if ( wrapptr ) {
+        return qobject_cast<NodeRequest*>(wrapptr);
+    }
+    NodeRequest* wrapper = new NodeRequest(request, parent);
+    return wrapper;
+}
+
+void NodeRequest::setupSignals()
+{
+    qDebug() << "setting up node request signals" << this;
+    new QGSignal(this, "finished",
+                 G_CALLBACK(NodeRequest::finished_cb), this, this);
+    new QGSignal(this, "failed",
+                 G_CALLBACK(NodeRequest::error_cb), this, this);
+}
+
+void NodeRequest::signalError(QString message)
+{
+    emit error(this, message);
+}
+
+void NodeRequest::signalFinished()
+{
+    qDebug() << "emitting finished" << this;
+    emit finished(this);
+}
+
+void NodeRequest::error_cb(InfcRequest* /*req*/, GError* error, void* user_data)
+{
+    qDebug() << "node request error:" << error->message;
+    reinterpret_cast<NodeRequest*>(user_data)->signalError(QString(error->message));
+}
+
+void NodeRequest::finished_cb(InfcRequest* /*req*/, InfcBrowserIter* /*iter*/, void* user_data)
+{
+    qDebug() << "node request finished" << user_data;
+    reinterpret_cast<NodeRequest*>(user_data)->signalFinished();
+}
+
 QPointer<Browser> Browser::wrap( InfcBrowser *infObject,
     QObject *parent,
     bool own_gobject )
@@ -67,49 +115,49 @@ bool Browser::addPlugin( NotePlugin &plugin )
         plugin.infPlugin() ) != 0;
 }
 
-InfcNodeRequest *Browser::addSubdirectory( BrowserIter parent,
+NodeRequest *Browser::addSubdirectory( BrowserIter parent,
     const char *name )
 {
-    return infc_browser_add_subdirectory( INFC_BROWSER(this->gobject()),
-        parent.infBrowserIter(), name );
+    return NodeRequest::wrap(infc_browser_add_subdirectory( INFC_BROWSER(this->gobject()),
+        parent.infBrowserIter(), name ));
 }
 
-InfcNodeRequest *Browser::addNote( BrowserIter parent,
+NodeRequest *Browser::addNote( BrowserIter parent,
     const char *name,
     NotePlugin &plugin,
     bool initial_subscribe )
 {
-    return infc_browser_add_note( INFC_BROWSER(this->gobject()),
+    return NodeRequest::wrap(infc_browser_add_note( INFC_BROWSER(this->gobject()),
         parent.infBrowserIter(), name,
         plugin.infPlugin(),
-        initial_subscribe );
+        initial_subscribe ));
 }
 
-InfcNodeRequest *Browser::addNoteWithContent( BrowserIter parent,
+NodeRequest *Browser::addNoteWithContent( BrowserIter parent,
     const char *name,
     NotePlugin &plugin,
     Session &session,
     bool initial_subscribe )
 {
-    return infc_browser_add_note_with_content(INFC_BROWSER(this->gobject()),
+    return NodeRequest::wrap(infc_browser_add_note_with_content(INFC_BROWSER(this->gobject()),
         parent.infBrowserIter(), name,
         plugin.infPlugin(), INF_SESSION(session.gobject()),
-        initial_subscribe);
+        initial_subscribe));
 }
 
-InfcNodeRequest *Browser::removeNode( BrowserIter node )
+NodeRequest *Browser::removeNode( BrowserIter node )
 {
-    return infc_browser_remove_node( INFC_BROWSER(this->gobject()),
-        node.infBrowserIter() );
+    return NodeRequest::wrap(infc_browser_remove_node( INFC_BROWSER(this->gobject()),
+        node.infBrowserIter() ));
 }
 
-InfcNodeRequest *Browser::subscribeSession( BrowserIter node, NotePlugin* plugin, QInfinity::AbstractTextBuffer* textBuffer )
+NodeRequest *Browser::subscribeSession( BrowserIter node, NotePlugin* plugin, QInfinity::AbstractTextBuffer* textBuffer )
 {
     if ( plugin && textBuffer ) {
         plugin->setUserData(textBuffer);
     }
-    return infc_browser_iter_subscribe_session( INFC_BROWSER(this->gobject()),
-        node.infBrowserIter() );
+    return NodeRequest::wrap(infc_browser_iter_subscribe_session( INFC_BROWSER(this->gobject()),
+        node.infBrowserIter() ));
 }
 
 Browser::Browser( InfcBrowser *browser,
@@ -137,6 +185,8 @@ void Browser::setupSignals()
         G_CALLBACK(Browser::node_added_cb), this, this );
     new QGSignal( this, "node-removed", 
         G_CALLBACK(Browser::node_removed_cb), this, this );
+    new QGSignal( this, "error",
+        G_CALLBACK(Browser::error_cb), this, this );
     qDebug() << "connecting browser instance" << this;
     g_signal_connect_data(INFC_BROWSER(gobject()), "notify",
                            G_CALLBACK(Browser::status_changed_cb), 0, NULL, G_CONNECT_AFTER );
@@ -178,6 +228,12 @@ void Browser::signalNodeRemoved( InfcBrowserIter *infIter )
     emit(nodeRemoved( iter ));
 }
 
+void Browser::signalError(const QString message)
+{
+    qDebug() << "browser error:" << message;
+    emit(error( this, message ));
+}
+
 void Browser::signalStatusChanged(InfcBrowserStatus status)
 {
     qDebug() << "status changed to" << status << "(connected:" << INFC_BROWSER_CONNECTED << ")" << "on" << this;
@@ -216,6 +272,14 @@ void Browser::subscribe_session_cb( InfcBrowser *browser,
     void *user_data )
 {
     static_cast<Browser*>(user_data)->signalSubscribeSession( iter, proxy );
+}
+
+void Browser::error_cb( InfcBrowser* browser,
+    const GError* gerror )
+{
+    QString message(gerror->message);
+    QPointer<Browser> qbrowser = wrap(browser);
+    qbrowser->signalError(message);
 }
 
 void Browser::node_added_cb( InfcBrowser *browser,
