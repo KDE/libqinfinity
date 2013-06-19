@@ -321,9 +321,9 @@ void QtIo::removeWatch( InfIoWatch *watch )
     for( mapItr = socketToWatchMap.begin(); mapItr != socketToWatchMap.end(); mapItr++ )
     {
         if( mapItr.value() == qwatch )
-            socketToWatchMap.erase(mapItr);
+            break;
     }
-
+    socketToWatchMap.erase(mapItr);
     delete qwatch;
 }
 
