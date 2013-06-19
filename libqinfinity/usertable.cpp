@@ -30,6 +30,15 @@ void user_cb( InfUser *user, void *user_data )
     userlist->append( User::wrap( user ) );
 }
 
+void active_user_cb( InfUser *user, void *user_data )
+{
+    if ( inf_user_get_status(user) != INF_USER_ACTIVE ) {
+        return;
+    }
+    QList<QPointer<User> > *userlist = static_cast<QList<QPointer<User> >* >(user_data);
+    userlist->append( User::wrap( user ) );
+}
+
 QPointer<UserTable> UserTable::wrap( InfUserTable *infObject,
     QObject *parent,
     bool own_gobject )
@@ -80,6 +89,14 @@ QList<QPointer<User> > UserTable::users()
     QList<QPointer<User> > userList;
     inf_user_table_foreach_user( INF_USER_TABLE(gobject()),
         user_cb, &userList );
+    return userList;
+}
+
+QList< QPointer< User > > UserTable::activeUsers()
+{
+    QList<QPointer<User> > userList;
+    inf_user_table_foreach_user( INF_USER_TABLE(gobject()),
+        active_user_cb, &userList );
     return userList;
 }
 

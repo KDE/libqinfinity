@@ -44,6 +44,7 @@ class UserTable
         QPointer<User> lookupUser( const QString &name );
         QList<QPointer<User> > localUsers();
         QList<QPointer<User> > users();
+        QList<QPointer<User> > activeUsers();
 
     Q_SIGNALS:
         void localUserAdded( User *user );
