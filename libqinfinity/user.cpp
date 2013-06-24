@@ -68,7 +68,7 @@ const QColor User::color() const
     const uint sat = 180 + ((hash % 2814) * 11) % 75;
     const uint val = 180 + ((hash % 3741) * 17) % 75;
     QColor color = QColor::fromHsv(hue, sat, val);
-    while ( 0.299*color.red() + 0.587*color.green() + 0.114*color.blue() < 0.65*255 ) {
+    while ( 0.299*color.red() + 0.587*color.green() + 0.114*color.blue() < 0.78*255 ) {
         color = color.lighter(120);
     }
     return color;
