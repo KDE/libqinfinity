@@ -57,22 +57,22 @@ class User
         /**
          * @brief Infinote user ID.
          */
-        unsigned int id();
+        unsigned int id() const;
         
         /**
          * @brief Nickname of user.
          */
-        QString name();
+        QString name() const;
         
         /**
          * @brief A (calculated) color for this user.
          */
-        const QColor color();
+        const QColor color() const;
 
         /**
          * @brief Current user status.
          */
-        Status status();
+        Status status() const;
     
     Q_SIGNALS:
         /**

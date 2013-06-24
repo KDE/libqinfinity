@@ -50,17 +50,17 @@ QPointer<User> User::wrap( InfUser *infObject,
     return wrapper;
 }
 
-unsigned int User::id()
+unsigned int User::id() const
 {
     return inf_user_get_id( INF_USER(gobject()) );
 }
 
-QString User::name()
+QString User::name() const
 {
     return inf_user_get_name( INF_USER(gobject()) );
 }
 
-const QColor User::color()
+const QColor User::color() const
 {
     // This uses the Y'UV color model, for colors of predictable brightness
     const uint hash = qHash(name());
@@ -74,7 +74,7 @@ const QColor User::color()
     return color;
 }
 
-User::Status User::status()
+User::Status User::status() const
 {
     return User::convertStatus( inf_user_get_status( INF_USER(gobject()) ) );
 }
