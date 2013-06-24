@@ -24,6 +24,7 @@
 
 #include <QPointer>
 
+class QColor;
 namespace QInfinity
 {
 
@@ -63,6 +64,11 @@ class User
          */
         QString name();
         
+        /**
+         * @brief A (calculated) color for this user.
+         */
+        const QColor color();
+
         /**
          * @brief Current user status.
          */
