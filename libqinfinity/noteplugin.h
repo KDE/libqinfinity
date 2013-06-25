@@ -46,11 +46,6 @@ class NotePlugin
 
     public:
         // You will be given this data to your createSession method.
-        // TODO URGENT -- is this safe thread-wise? It should be,
-        // as long as only one thread talks to libinfinity.
-#warning Does this make sense? Could lead to random crashes or weird behaviour
-#warning when multiple documents are being opened in rapid succession
-#warning eventually add a mutex locker for joining?
         void setUserData(void* userData);
 
         NotePlugin( QString name, QObject *parent = 0 );
