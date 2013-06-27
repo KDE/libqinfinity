@@ -60,20 +60,6 @@ QString User::name() const
     return inf_user_get_name( INF_USER(gobject()) );
 }
 
-const QColor User::color() const
-{
-    // This uses the Y'UV color model, for colors of predictable brightness
-    const uint hash = qHash(name());
-    const uint hue = ((hash % 19) * 4129) % 360;
-    const uint sat = 180 + ((hash % 2814) * 11) % 75;
-    const uint val = 180 + ((hash % 3741) * 17) % 75;
-    QColor color = QColor::fromHsv(hue, sat, val);
-    while ( 0.299*color.red() + 0.587*color.green() + 0.114*color.blue() < 0.78*255 ) {
-        color = color.lighter(120);
-    }
-    return color;
-}
-
 User::Status User::status() const
 {
     return User::convertStatus( inf_user_get_status( INF_USER(gobject()) ) );

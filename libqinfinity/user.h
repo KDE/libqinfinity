@@ -63,11 +63,6 @@ class User
          * @brief Nickname of user.
          */
         QString name() const;
-        
-        /**
-         * @brief A (calculated) color for this user.
-         */
-        const QColor color() const;
 
         /**
          * @brief Current user status.
