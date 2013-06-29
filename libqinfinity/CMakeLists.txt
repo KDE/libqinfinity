@@ -1,11 +1,11 @@
-PROJECT(libqinfinity)
+project(libqinfinity)
 
 find_package(Libinfinity REQUIRED)
 find_package(Libinftext REQUIRED)
 find_package(Qt4 REQUIRED)
 
 set(QT_USE_QTNETWORK true)
-INCLUDE(${QT_USE_FILE})
+include(${QT_USE_FILE})
 
 set(LIBS ${LIBS} ${LIBINFINITY_LIBRARIES} ${LIBINFTEXT_LIBRARIES} ${QT_LIBRARIES})
 set(QInfinity_SRCS
@@ -87,22 +87,22 @@ set(QInfinity_HDRS
 	noderequest.h
 )
 
-QT4_AUTOMOC(${QInfinity_SRCS})
+qt4_automoc(${QInfinity_SRCS})
 
 include_directories(${LIBINFINITY_INCLUDES} ${LIBINFTEXT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 
-ADD_LIBRARY(qinfinity SHARED ${QInfinity_SRCS})
+add_library(qinfinity SHARED ${QInfinity_SRCS})
 
-SET_TARGET_PROPERTIES(qinfinity
+set_target_properties(qinfinity
 	PROPERTIES
 	VERSION 3.0.0
 	SOVERSION 3)
 
-TARGET_LINK_LIBRARIES(qinfinity ${LIBS})
+target_link_libraries(qinfinity ${LIBS})
 
-INSTALL(TARGETS qinfinity
+install(TARGETS qinfinity
 	DESTINATION lib${LIB_SUFFIX})
 
-INSTALL(FILES ${QInfinity_HDRS}
+install(FILES ${QInfinity_HDRS}
 	DESTINATION include/libqinfinity-1.0/libqinfinity)
 
