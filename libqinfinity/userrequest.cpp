@@ -17,6 +17,9 @@
 
 #include "userrequest.h"
 #include "qgsignal.h"
+#include "adopteduser.h"
+
+#include <libinfinity/adopted/inf-adopted-session.h>
 
 #include "userrequest.moc"
 
@@ -36,7 +39,14 @@ void UserRequest::finished_cb( InfcUserRequest *infcUserRequest,
     void *user_data )
 {
     UserRequest *userRequest = static_cast<UserRequest*>(user_data);
-    userRequest->emit_finished( User::wrap( user ) );
+    QPointer<QInfinity::User> wrappedUser;
+    if ( INF_ADOPTED_IS_USER(user) ) {
+        wrappedUser = AdoptedUser::wrap( INF_ADOPTED_USER(user) );
+    }
+    else {
+        wrappedUser = User::wrap( user );
+    }
+    userRequest->emit_finished( wrappedUser );
 }
 
 void UserRequest::emit_finished( QPointer<QInfinity::User> user )
