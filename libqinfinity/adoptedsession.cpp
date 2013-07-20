@@ -19,6 +19,7 @@
 #include "adopteduser.h"
 
 #include <libinfinity/adopted/inf-adopted-session.h>
+#include <libinftext/inf-text-undo-grouping.h>
 
 namespace QInfinity
 {
@@ -35,6 +36,18 @@ void AdoptedSession::redo( AdoptedUser &user,
 {
     inf_adopted_session_redo( INF_ADOPTED_SESSION(gobject()),
         INF_ADOPTED_USER(user.gobject()), count );
+}
+
+bool AdoptedSession::canUndo( QInfinity::AdoptedUser& user )
+{
+    return inf_adopted_algorithm_can_undo( inf_adopted_session_get_algorithm(
+        INF_ADOPTED_SESSION(gobject())), INF_ADOPTED_USER(user.gobject()) );
+}
+
+bool AdoptedSession::canRedo( QInfinity::AdoptedUser& user )
+{
+    return inf_adopted_algorithm_can_redo( inf_adopted_session_get_algorithm(
+        INF_ADOPTED_SESSION(gobject())), INF_ADOPTED_USER(user.gobject()) );
 }
 
 AdoptedSession::AdoptedSession( InfAdoptedSession *infSession,

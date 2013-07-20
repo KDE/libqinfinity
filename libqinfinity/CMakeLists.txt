@@ -45,6 +45,7 @@ set(QInfinity_SRCS
 	noteplugin.cpp
 	defaulttextplugin.cpp
 	noderequest.cpp
+	undogrouping.cpp
 )
 
 set(QInfinity_HDRS
@@ -85,6 +86,7 @@ set(QInfinity_HDRS
 	noteplugin.h
 	defaulttextplugin.h
 	noderequest.h
+	undogrouping.h
 )
 
 qt4_automoc(${QInfinity_SRCS})

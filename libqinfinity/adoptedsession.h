@@ -43,6 +43,14 @@ class AdoptedSession
         void redo( AdoptedUser &user,
             int count );
 
+        /**
+         * @brief Determine whether an undo is possible
+         *
+         * @return true if possible, false otherwise
+         */
+        bool canUndo( AdoptedUser &user );
+        bool canRedo( AdoptedUser &user );
+
     protected:
         AdoptedSession( InfAdoptedSession *infSession,
             QObject *parent = 0,
