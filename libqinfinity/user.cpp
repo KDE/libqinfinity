@@ -39,7 +39,7 @@ QPointer<User> User::wrap( InfUser *infObject,
         return dynamic_cast<User*>(wrapptr);
     // Make sure we instantiate the most specific user type
     User *wrapper;
-    if( !INF_ADOPTED_IS_USER(infObject) )
+    if( INF_ADOPTED_IS_USER(infObject) )
     {
         wrapper = AdoptedUser::wrap( INF_ADOPTED_USER(infObject), parent, own_gobject );
     }
