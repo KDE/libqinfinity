@@ -38,11 +38,49 @@ class UndoGrouping
             QObject *parent = 0,
             bool own_gobject = false );
 
+        /**
+         * @brief Sets the algorithm and user from the given session and user.
+         * You must call this before calling beginGroup() or endGroup().
+         * @param session The Session instance for the document in question
+         * @param user The user for the document
+         */
         void initialize(const QInfinity::Session* session, const QInfinity::User* user);
+
+        /**
+         * @brief Begins a new undo group.
+         * All requests doine until the next call to endGroup() will be undone in one chunk.
+         */
         void beginGroup();
+
+        /**
+         * @brief Ends an undo group.
+         * The calls have to match a beginGroup() call done before.
+         * @see beginGroup()
+         */
         void endGroup();
+
+        /**
+         * @brief Returns true of there's an active undo group (started with beginGroup()).
+         * @return bool true if there is a group, false otherwise.
+         */
         bool hasOpenGroup() const;
+
+        /**
+         * @brief Return the amount of operations which should be undone if the user request an undo operation now.
+         * Pass this value to Session::undo as its second parameter, if you want to
+         * perform a grouped undo.
+         * @see redoSize
+         * @return unsigned int amount of operations to be undone
+         */
         unsigned int undoSize() const;
+
+        /**
+         * @brief Returns the amount of operations which should be redone if the user request a redo operation now.
+         * Pass this value to Session::redo as its second parameter, if you want to
+         * perform a grouped redo.
+         * @see undoSize
+         * @return unsigned int amount of operations to be redone
+         */
         unsigned int redoSize() const;
 
     protected:
