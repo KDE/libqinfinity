@@ -36,7 +36,6 @@ class Request
         // TODO: This should really use a wrap method
         Request( InfcRequest *infRequest,
             QObject *parent = 0 );
-        ~Request();
 
     Q_SIGNALS:
         void failed( GError *error );

@@ -46,6 +46,7 @@ void ExploreRequest::signalFinished()
 {
     qDebug() << "emitting finished" << this;
     emit finished(this);
+    delete this;
 }
 
 void ExploreRequest::finished_cb(InfcRequest* /*req*/, void* user_data)

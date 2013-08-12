@@ -30,10 +30,6 @@ Request::Request( InfcRequest *infRequest,
     setupSignals();
 }
 
-Request::~Request()
-{
-}
-
 void Request::setupSignals()
 {
     new QGSignal( this, "failed",
