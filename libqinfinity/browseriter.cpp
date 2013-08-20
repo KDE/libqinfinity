@@ -112,8 +112,14 @@ bool BrowserIter::isDirectory()
 
 ExploreRequest* BrowserIter::explore()
 {
-    if( m_infBrowser )
-        return ExploreRequest::wrap(infc_browser_iter_explore( m_infBrowser, &m_infBrowserIter ));
+    if( m_infBrowser ) {
+        if ( InfcExploreRequest* req = infc_browser_iter_get_explore_request( m_infBrowser, &m_infBrowserIter ) ) {
+            return ExploreRequest::wrap(req);
+        }
+        else {
+            return ExploreRequest::wrap(infc_browser_iter_explore( m_infBrowser, &m_infBrowserIter ));
+        }
+    }
     return 0;
 }
 
