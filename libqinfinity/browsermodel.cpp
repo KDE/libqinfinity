@@ -367,7 +367,8 @@ void BrowserModel::slotNodeAdded( const BrowserIter &itr )
 
 NodeItem* BrowserModel::itemForPath(QString path, NodeItem* start)
 {
-    
+#warning remove this function!
+    return 0;
 }
 
 void BrowserModel::slotNodeRemoved( const BrowserIter &itr )
