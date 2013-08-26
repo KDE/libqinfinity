@@ -132,8 +132,6 @@ class BrowserModel
         bool removeRows( int row, int count,
             const QModelIndex &parent );
 
-        NodeItem* itemForPath( QString path, NodeItem* start );
-
         CommunicationManager &communicationManager();
 
     Q_SIGNALS:
