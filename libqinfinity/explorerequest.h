@@ -32,7 +32,7 @@ class ExploreRequest
 Q_OBJECT
 public:
     ExploreRequest(InfcExploreRequest* req, QObject* parent = 0);
-    static ExploreRequest* wrap(InfcExploreRequest* request, QObject* parent = 0, bool own_gobject = true);
+    static ExploreRequest* wrap(InfcExploreRequest* request, QObject* parent = 0, bool own_gobject = false);
 
 signals:
     void finished(ExploreRequest* self);
