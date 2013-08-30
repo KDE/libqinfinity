@@ -42,7 +42,7 @@ class UserRequest
         void finished( QPointer<QInfinity::User> user );
 
     private:
-        static void finished_cb( InfUserRequest* infUserRequest, InfUser* user, void* user_data );
+        static void finished_cb( InfUserRequest* infUserRequest, InfUser* user, GError* error, void* user_data );
 
         void emit_finished( QPointer<QInfinity::User> user );
 

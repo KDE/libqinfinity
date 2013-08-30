@@ -33,10 +33,10 @@ QPointer<Session> Session::wrap( InfSession *infObj,
     bool own_gobject )
 {
     QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObj), own_gobject );
-    if( wrapptr)
+    if( wrapptr )
         return dynamic_cast<Session*>(wrapptr);
-    Session *wrapper = new Session( infObj, parent, own_gobject );
-    return wrapper;
+
+    return  new Session( infObj, parent, own_gobject );
 }
 
 Session::Status Session::infStatusToCpp( InfSessionStatus infStatus )

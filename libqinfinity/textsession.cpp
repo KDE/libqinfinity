@@ -105,7 +105,7 @@ TextSession::TextSession( CommunicationManager &commMgr,
             INF_IO(QtIo::instance()->gobject()),
             Session::statusToInf(sess_status),
             INF_COMMUNICATION_GROUP(commGroup.gobject()),
-            INF_XML_CONNECTION(connection.gobject()) )) )
+            INF_XML_CONNECTION(connection.gobject()) )), 0, true )
 {
 }
 

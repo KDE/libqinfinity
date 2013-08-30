@@ -36,6 +36,7 @@ UserRequest::UserRequest( InfUserRequest *infRequest,
 
 void UserRequest::finished_cb( InfUserRequest *infUserRequest,
     InfUser *user,
+    GError* error,
     void *user_data )
 {
     UserRequest *userRequest = static_cast<UserRequest*>(user_data);
