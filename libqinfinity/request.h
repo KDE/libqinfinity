@@ -20,7 +20,7 @@
 
 #include "qgobject.h"
 
-#include <libinfinity/client/infc-request.h>
+#include <libinfinity/common/inf-request.h>
 
 #include <glib.h>
 
@@ -30,11 +30,11 @@ namespace QInfinity
 class Request
     : public QGObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         // TODO: This should really use a wrap method
-        Request( InfcRequest *infRequest,
+        Request( InfRequest *infRequest,
             QObject *parent = 0 );
 
     Q_SIGNALS:
@@ -44,7 +44,7 @@ class Request
         void setupSignals();
         void signalFailed( GError *error );
 
-        static void signalFailed_cb( InfcRequest *request,
+        static void signalFailed_cb( InfRequest *request,
             GError *error,
             void *user_data );
 

@@ -20,9 +20,10 @@
 
 #include "qgobject.h"
 #include "request.h"
-#include <libinfinity/client/infc-explore-request.h>
+#include <libinfinity/common/inf-explore-request.h>
 
-typedef struct _InfcExploreRequest InfcExploreRequest;
+typedef struct _InfExploreRequest InfExploreRequest;
+typedef struct _InfBrowserIter InfBrowserIter;
 
 namespace QInfinity {
 
@@ -31,15 +32,15 @@ class ExploreRequest
 {
 Q_OBJECT
 public:
-    ExploreRequest(InfcExploreRequest* req, QObject* parent = 0);
-    static ExploreRequest* wrap(InfcExploreRequest* request, QObject* parent = 0, bool own_gobject = false);
+    ExploreRequest(InfExploreRequest* req, QObject* parent = 0);
+    static ExploreRequest* wrap(InfExploreRequest* request, QObject* parent = 0, bool own_gobject = false);
 
 signals:
     void finished(ExploreRequest* self);
 
 private:
     void signalFinished();
-    static void finished_cb(InfcRequest*, void* user_data);
+    static void finished_cb(InfExploreRequest* req, InfBrowserIter* iter, GError* error, void* user_data);
 };
 
 }

@@ -19,6 +19,7 @@
 #define QINFINITY_BROWSER_ITER_H
 
 #include <libinfinity/client/infc-browser.h>
+#include <libinfinity/common/inf-browser-iter.h>
 
 #include <QString>
 #include <QPointer>
@@ -44,7 +45,7 @@ class BrowserIter
          * @brief Create an iterator pointing to root node of browser
          */
         BrowserIter( const Browser &browser );
-        BrowserIter( const InfcBrowserIter *infIter,
+        BrowserIter( const InfBrowserIter *infIter,
             InfcBrowser *infBrowser );
         BrowserIter( const BrowserIter &other );
 
@@ -60,19 +61,20 @@ class BrowserIter
         bool parent();
         bool isDirectory();
         ExploreRequest* explore();
+        ExploreRequest* exploreRequest() const;
         bool isExplored();
         QString name() const;
         QString path() const;
         unsigned int id() const;
         QPointer<Browser> browser() const;
         InfcBrowser *infBrowser() const;
-        const InfcBrowserIter *infBrowserIter() const;
-        InfcBrowserIter *infBrowserIter();
+        const InfBrowserIter *infBrowserIter() const;
+        InfBrowserIter *infBrowserIter();
         QString noteType();
 
     private:
         InfcBrowser *m_infBrowser;
-        InfcBrowserIter m_infBrowserIter;
+        InfBrowserIter m_infBrowserIter;
 
 };
 

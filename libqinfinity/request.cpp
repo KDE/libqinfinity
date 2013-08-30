@@ -23,7 +23,7 @@
 namespace QInfinity
 {
 
-Request::Request( InfcRequest *infRequest,
+Request::Request( InfRequest *infRequest,
     QObject *parent )
     : QGObject( G_OBJECT( infRequest ), parent, false )
 {
@@ -32,8 +32,9 @@ Request::Request( InfcRequest *infRequest,
 
 void Request::setupSignals()
 {
-    new QGSignal( this, "failed",
-        G_CALLBACK(Request::signalFailed_cb), this, this );
+#warning "re-enable fail signal"
+//     new QGSignal( this, "fail",
+//         G_CALLBACK(Request::signalFailed_cb), this, this );
 }
 
 void Request::signalFailed( GError *error )
@@ -41,7 +42,7 @@ void Request::signalFailed( GError *error )
     emit( failed( error ) );
 }
 
-void Request::signalFailed_cb( InfcRequest *request,
+void Request::signalFailed_cb( InfRequest *request,
     GError *error,
     void *user_data )
 {

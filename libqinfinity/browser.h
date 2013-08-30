@@ -24,7 +24,7 @@
 #include <QPointer>
 
 typedef struct _InfcBrowser InfcBrowser;
-typedef struct _InfcBrowserIter InfcBrowserIter;
+typedef struct _InfBrowserIter InfBrowserIter;
 typedef struct _InfcExploreRequest InfcExploreRequest;
 typedef struct _InfcNodeRequest InfcNodeRequest;
 typedef struct _InfcSessionProxy InfcSessionProxy;
@@ -72,7 +72,7 @@ class Browser
         /**
          * @brief Get the connection status of the underlying infinity browser object.
          */
-        InfcBrowserStatus connectionStatus();
+        InfBrowserStatus connectionStatus() const;
 
         /**
          * @brief Add plugin to browser session.
@@ -125,8 +125,7 @@ class Browser
          * @param plugin The plugin used for subscription
          * @param textBuffer The text buffer which will be given to your createSession method as user data
          */
-        NodeRequest* subscribeSession( BrowserIter node, NotePlugin* plugin = 0,
-                                           QInfinity::AbstractTextBuffer* textBuffer = 0 );
+        NodeRequest* subscribeSession( BrowserIter node, NotePlugin* plugin = 0, QInfinity::AbstractTextBuffer* textBuffer = 0);
 
     protected:
         Browser( InfcBrowser *infBrowser,
@@ -181,7 +180,7 @@ class Browser
         /**
          * @brief The connection status of the browser has changed.
          */
-        void statusChanged( InfcBrowserStatus status );
+        void statusChanged( InfBrowserStatus status );
 
         /**
          * @brief The browser is now fully connected.
@@ -191,34 +190,34 @@ class Browser
     private:
         void setupSignals();
 
-        void signalBeginExplore( InfcBrowserIter *infIter,
+        void signalBeginExplore( InfBrowserIter *infIter,
             InfcExploreRequest *request );
-        void signalBeginSubscribe( InfcBrowserIter *iter,
+        void signalBeginSubscribe( InfBrowserIter *iter,
             InfcNodeRequest *request );
-        void signalSubscribeSession( InfcBrowserIter *infIter,
+        void signalSubscribeSession( InfBrowserIter *infIter,
             InfcSessionProxy *proxy );
-        void signalNodeAdded( InfcBrowserIter *infIter );
-        void signalNodeRemoved( InfcBrowserIter *infIter );
-        void signalStatusChanged( InfcBrowserStatus status );
+        void signalNodeAdded( InfBrowserIter *infIter );
+        void signalNodeRemoved( InfBrowserIter *infIter );
+        void signalStatusChanged( InfBrowserStatus status );
         void signalError( const QString message );
 
         static void begin_explore_cb( InfcBrowser *browser,
-            InfcBrowserIter *iter,
+            InfBrowserIter *iter,
             InfcExploreRequest *request,
             void *user_data );
         static void begin_subscribe_cb( InfcBrowser *browser,
-            InfcBrowserIter *iter,
+            InfBrowserIter *iter,
             InfcNodeRequest *request,
             void *user_data );
         static void subscribe_session_cb( InfcBrowser *browser,
-            InfcBrowserIter *iter,
+            InfBrowserIter *iter,
             InfcSessionProxy *proxy,
             void *user_data );
         static void node_added_cb( InfcBrowser *browser,
-            InfcBrowserIter *iter,
+            InfBrowserIter *iter,
             void *user_data );
         static void node_removed_cb( InfcBrowser *browser,
-            InfcBrowserIter *iter,
+            InfBrowserIter *iter,
             void *user_data );
         static void status_changed_cb( InfcBrowser *browser,
             void *user_data );

@@ -26,15 +26,15 @@
 namespace QInfinity
 {
 
-UserRequest::UserRequest( InfcUserRequest *infRequest,
+UserRequest::UserRequest( InfUserRequest *infRequest,
     QObject *parent )
-    : Request( INFC_REQUEST( infRequest ), parent )
+    : Request( INF_REQUEST( infRequest ), parent )
 {
     new QGSignal( this, "finished",
         G_CALLBACK(UserRequest::finished_cb), this, this );
 }
 
-void UserRequest::finished_cb( InfcUserRequest *infcUserRequest,
+void UserRequest::finished_cb( InfUserRequest *infUserRequest,
     InfUser *user,
     void *user_data )
 {

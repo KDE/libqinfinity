@@ -144,6 +144,7 @@ class BrowserModel
          * @brief Call this when an item has been expanded.
          */
         void itemActivated( const QModelIndex &item = QModelIndex() );
+    void connectionEstablished(const QInfinity::Browser*);
 
     private Q_SLOTS:
         void slotNodeAdded( const BrowserIter &itr );
@@ -153,10 +154,10 @@ class BrowserModel
         void removeConnectionItem( ConnectionItem *item );
         void deleteNodeItem( NodeItem *item );
         void indexIter( const BrowserIter &iter,
-            Browser &browser,
+            const Browser* browser,
             NodeItem &item );
         void removeIterIndex( const BrowserIter &iter,
-            Browser &browser );
+            const Browser* browser );
         NodeItem *itemFromBrowserIter( const BrowserIter &iter,
             Browser &browser );
         NodeItem *indexToNodeItem( const QModelIndex &index ) const;

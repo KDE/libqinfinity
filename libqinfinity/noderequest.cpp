@@ -25,14 +25,14 @@
 
 namespace QInfinity {
 
-NodeRequest::NodeRequest(InfcNodeRequest* req, QObject* parent)
-    : Request(INFC_REQUEST(req), parent)
+NodeRequest::NodeRequest(InfNodeRequest* req, QObject* parent)
+    : Request(INF_REQUEST(req), parent)
 {
     new QGSignal(this, "finished",
                  G_CALLBACK(NodeRequest::finished_cb), this, this);
 }
 
-NodeRequest* NodeRequest::wrap(InfcNodeRequest* request, QObject* parent, bool own_gobject)
+NodeRequest* NodeRequest::wrap(InfNodeRequest* request, QObject* parent, bool own_gobject)
 {
     QGObject* wrapptr = WrapperStore::getWrapper(G_OBJECT(request), own_gobject);
     if ( wrapptr ) {
@@ -48,9 +48,9 @@ void NodeRequest::signalFinished()
     emit finished(this);
 }
 
-void NodeRequest::finished_cb(InfcRequest* /*req*/, InfcBrowserIter* /*iter*/, void* user_data)
+void NodeRequest::finished_cb(InfNodeRequest* req, InfBrowserIter* iter, GError* error, void* user_data)
 {
-    qDebug() << "node request finished" << user_data;
+    qDebug() << "node request finished" << req << iter << error << user_data;
     static_cast<NodeRequest*>(user_data)->signalFinished();
 }
 

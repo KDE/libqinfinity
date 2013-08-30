@@ -34,7 +34,7 @@ class BrowserModelPrivate
 
     public:
         BrowserItemFactory *itemFactory;
-        QHash<Browser*, ConnectionIndex*> browserToConnectionMap;
+        QHash<const Browser*, ConnectionIndex*> browserToConnectionMap;
         CommunicationManager comm_mgr;
         QList<NotePlugin*> plugins;
         QList<Browser*> browsers;
@@ -170,7 +170,6 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection* connection,
     Browser *browser;
     ConnectionIndex *index;
     ConnectionItem *connItem;
-    NodeItem *nodeItem;
     NotePlugin* plugin;
 
     connection->setParent( this );
@@ -185,18 +184,34 @@ ConnectionItem *BrowserModel::addConnection( XmlConnection* connection,
         this, SLOT(slotNodeAdded( const BrowserIter&)) );
     connect( browser, SIGNAL(nodeRemoved( const BrowserIter& )),
         this, SLOT(slotNodeRemoved( const BrowserIter& )) );
+    connect( browser, SIGNAL(connectionEstablished(const QInfinity::Browser*)),
+        this, SLOT(connectionEstablished(const QInfinity::Browser*)) );
 
     connItem = d->itemFactory->createConnectionItem( *connection,
         *browser,
         name );
     connItem->setParent( this );
     insertRow( 0, connItem );
-    BrowserIter rootNode( *browser );
-    nodeItem = d->itemFactory->createRootNodeItem( rootNode );
-    indexIter( rootNode, *browser, *nodeItem );
-    connItem->setChild( 0, nodeItem );
     emit( connectionAdded( connection ) );
     return connItem;
+}
+
+void BrowserModel::connectionEstablished(const Browser* browser)
+{
+    Q_D(BrowserModel);
+
+    qDebug() << "CONNECTION ESTABLISHED";
+    NodeItem *nodeItem;
+    BrowserIter rootNode( *browser );
+    nodeItem = d->itemFactory->createRootNodeItem( rootNode );
+    for ( int i = 0; i < rowCount(QModelIndex()); i++ ) {
+        QInfinity::ConnectionItem* connItem = dynamic_cast<QInfinity::ConnectionItem*>(itemFromIndex(index(i, 0, QModelIndex())));
+        if ( connItem && connItem->browser() == browser ) {
+            indexIter( rootNode, browser, *nodeItem );
+            connItem->setChild( 0, nodeItem );
+            break;
+        }
+    }
 }
 
 bool BrowserModel::hasChildren( const QModelIndex &parent ) const
@@ -353,7 +368,7 @@ void BrowserModel::slotNodeAdded( const BrowserIter &itr )
 
     item = d->itemFactory->createNodeItem( itr );
     browser = dynamic_cast<Browser*>(sender());
-    indexIter( itr, *browser, *item );
+    indexIter( itr, browser, *item );
 
     parentItr.parent();
     parentItem = itemFromBrowserIter( parentItr, *browser );
@@ -376,7 +391,7 @@ void BrowserModel::slotNodeRemoved( const BrowserIter &itr )
         return;
     }
     QStandardItemModel::removeRows( nodeItem->row(), 1, nodeItem->parent()->index() );
-    removeIterIndex( itr, *itr.browser() );
+    removeIterIndex( itr, itr.browser() );
 }
 
 void BrowserModel::removeConnectionItem( ConnectionItem *item )
@@ -402,24 +417,24 @@ void BrowserModel::deleteNodeItem( NodeItem *item )
 }
 
 void BrowserModel::indexIter( const BrowserIter &iter,
-    Browser &browser,
+    const Browser* browser,
     NodeItem &item )
 {
     Q_D(BrowserModel);
     ConnectionIndex *index;
 
-    index = d->browserToConnectionMap[&browser];
+    index = d->browserToConnectionMap[browser];
     if(index)
         index->indexIter( iter, item );
 }
 
 void BrowserModel::removeIterIndex( const BrowserIter &iter,
-    Browser &browser )
+    const Browser* browser )
 {
     Q_D(BrowserModel);
     ConnectionIndex *index;
 
-    index = d->browserToConnectionMap[&browser];
+    index = d->browserToConnectionMap[browser];
     if(index)
         index->removeIter( iter );
 }

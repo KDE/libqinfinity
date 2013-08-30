@@ -25,10 +25,11 @@ namespace QInfinity
 BrowserIter::BrowserIter( const Browser &browser )
     : m_infBrowser( INFC_BROWSER(browser.gobject()) )
 {
-    infc_browser_iter_get_root( m_infBrowser, &m_infBrowserIter );
+    Q_ASSERT(browser.connectionStatus() == INF_BROWSER_OPEN);
+    inf_browser_get_root(INF_BROWSER(m_infBrowser), &m_infBrowserIter);
 }
 
-BrowserIter::BrowserIter( const InfcBrowserIter *infIter,
+BrowserIter::BrowserIter( const InfBrowserIter *infIter,
     InfcBrowser *infBrowser )
     : m_infBrowser( infBrowser )
 {
@@ -78,47 +79,67 @@ BrowserIter &BrowserIter::operator=( const BrowserIter &other )
 bool BrowserIter::next()
 {
     if( m_infBrowser )
-        return infc_browser_iter_get_next( m_infBrowser, &m_infBrowserIter ) != 0;
+        return inf_browser_get_next( INF_BROWSER(m_infBrowser), &m_infBrowserIter ) != 0;
     return 0;
 }
 
 bool BrowserIter::prev()
 {
     if( m_infBrowser )
-        return infc_browser_iter_get_prev( m_infBrowser, &m_infBrowserIter ) != 0;
+        return inf_browser_get_prev( INF_BROWSER(m_infBrowser), &m_infBrowserIter ) != 0;
     return 0;
 }
 
 bool BrowserIter::child()
 {
     if( m_infBrowser )
-        return infc_browser_iter_get_child( m_infBrowser, &m_infBrowserIter ) != 0;
+        return inf_browser_get_child( INF_BROWSER(m_infBrowser), &m_infBrowserIter ) != 0;
     return 0;
 }
 
 bool BrowserIter::parent()
 {
     if( m_infBrowser )
-        return infc_browser_iter_get_parent( m_infBrowser, &m_infBrowserIter ) != 0;
+        return inf_browser_get_parent( INF_BROWSER(m_infBrowser), &m_infBrowserIter ) != 0;
     return 0;
 }
 
 bool BrowserIter::isDirectory()
 {
     if( m_infBrowser )
-        return infc_browser_iter_is_subdirectory( m_infBrowser, &m_infBrowserIter ) != 0;
+        return inf_browser_is_subdirectory( INF_BROWSER(m_infBrowser), &m_infBrowserIter ) != 0;
     return 0;
 }
 
 ExploreRequest* BrowserIter::explore()
 {
     if( m_infBrowser ) {
-        if ( InfcExploreRequest* req = infc_browser_iter_get_explore_request( m_infBrowser, &m_infBrowserIter ) ) {
+        InfExploreRequest* req = INF_EXPLORE_REQUEST( inf_browser_get_pending_request(
+            INF_BROWSER(m_infBrowser),
+            &m_infBrowserIter,
+            "explore-node" )
+        );
+        if ( req ) {
             return ExploreRequest::wrap(req, 0, false);
         }
         else {
-            return ExploreRequest::wrap(infc_browser_iter_explore( m_infBrowser, &m_infBrowserIter ));
+            return ExploreRequest::wrap( INF_EXPLORE_REQUEST(inf_browser_explore(
+                INF_BROWSER(m_infBrowser), &m_infBrowserIter
+            )) );
         }
+    }
+    return 0;
+}
+
+ExploreRequest* BrowserIter::exploreRequest() const
+{
+    if( m_infBrowser ) {
+        InfExploreRequest* req = INF_EXPLORE_REQUEST( inf_browser_get_pending_request(
+            INF_BROWSER(m_infBrowser),
+            &m_infBrowserIter,
+            "explore-node" )
+        );
+        return ExploreRequest::wrap(req, 0, false);
     }
     return 0;
 }
@@ -126,21 +147,21 @@ ExploreRequest* BrowserIter::explore()
 bool BrowserIter::isExplored()
 {
     if( m_infBrowser )
-        return infc_browser_iter_get_explored( m_infBrowser, &m_infBrowserIter ) != 0;
+        return inf_browser_get_explored( INF_BROWSER(m_infBrowser), &m_infBrowserIter ) != 0;
     return 0;
 }
 
 QString BrowserIter::name() const
 {
     if( m_infBrowser )
-        return infc_browser_iter_get_name( m_infBrowser, &m_infBrowserIter );
+        return inf_browser_get_node_name( INF_BROWSER(m_infBrowser), &m_infBrowserIter );
     return "";
 }
 
 QString BrowserIter::path() const
 {
     if( m_infBrowser )
-        return infc_browser_iter_get_path( m_infBrowser, &m_infBrowserIter );
+        return inf_browser_get_path( INF_BROWSER(m_infBrowser), &m_infBrowserIter );
     return "";
 }
 
@@ -161,14 +182,14 @@ InfcBrowser *BrowserIter::infBrowser() const
     return 0;
 }
 
-const InfcBrowserIter *BrowserIter::infBrowserIter() const
+const InfBrowserIter *BrowserIter::infBrowserIter() const
 {
     if( m_infBrowser )
         return &m_infBrowserIter;
     return 0;
 }
 
-InfcBrowserIter *BrowserIter::infBrowserIter()
+InfBrowserIter *BrowserIter::infBrowserIter()
 {
     if( m_infBrowser )
         return &m_infBrowserIter;
@@ -178,7 +199,7 @@ InfcBrowserIter *BrowserIter::infBrowserIter()
 QString BrowserIter::noteType()
 {
     if( m_infBrowser )
-        return infc_browser_iter_get_note_type( m_infBrowser, &m_infBrowserIter );
+        return inf_browser_get_node_type( INF_BROWSER(m_infBrowser), &m_infBrowserIter );
     return "";
 }
 

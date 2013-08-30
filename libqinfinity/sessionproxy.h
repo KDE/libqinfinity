@@ -25,7 +25,7 @@
 
 typedef struct _InfcSessionProxy InfcSessionProxy;
 typedef struct _InfSession InfSession;
-typedef struct _InfcUserRequest InfcUserRequest;
+typedef struct _InfUserRequest InfUserRequest;
 typedef struct _GParameter GParameter;
 
 namespace QInfinity
@@ -45,9 +45,8 @@ class SessionProxy
             QObject *parent,
             bool own_gobject = true );
 
-        InfcUserRequest *joinUser( const GParameter *params,
-            unsigned int n_params,
-            GError **error );
+        InfUserRequest *joinUser( const GParameter *params,
+            unsigned int n_params );
 
         /**
          * @brief Get the session for this proxy.

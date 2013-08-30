@@ -84,7 +84,7 @@ UserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
     g_value_set_uint( &params[3].value, caretPosition );
     g_value_set_enum( &params[4].value, User::convertStatus( userStatus ) );
     
-    InfcUserRequest *req = proxy->joinUser( params, 5, 0 );
+    InfUserRequest *req = proxy->joinUser( params, 5 );
 
     g_value_unset(&params[0].value);
     g_value_unset(&params[1].value);

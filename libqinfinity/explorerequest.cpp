@@ -18,6 +18,7 @@
 #include "explorerequest.h"
 #include "wrapperstore.h"
 #include "qgsignal.h"
+#include "noderequest.h"
 
 #include <QDebug>
 
@@ -25,14 +26,16 @@
 
 namespace QInfinity {
 
-ExploreRequest::ExploreRequest(InfcExploreRequest* req, QObject* parent)
-    : Request(INFC_REQUEST(req), parent)
+ExploreRequest::ExploreRequest(InfExploreRequest* req, QObject* parent)
+    : Request(INF_REQUEST(req), parent)
 {
+    qDebug() << "creating node request" << this << req;
+    Q_ASSERT(req != 0);
     new QGSignal(this, "finished",
                  G_CALLBACK(ExploreRequest::finished_cb), this, this);
 }
 
-ExploreRequest* ExploreRequest::wrap(InfcExploreRequest* request, QObject* parent, bool own_gobject)
+ExploreRequest* ExploreRequest::wrap(InfExploreRequest* request, QObject* parent, bool own_gobject)
 {
     QGObject* wrapptr = WrapperStore::getWrapper(G_OBJECT(request), own_gobject);
     if ( wrapptr ) {
@@ -49,9 +52,9 @@ void ExploreRequest::signalFinished()
     delete this;
 }
 
-void ExploreRequest::finished_cb(InfcRequest* /*req*/, void* user_data)
+void ExploreRequest::finished_cb(InfExploreRequest* req, InfBrowserIter* iter, GError* error, void* user_data)
 {
-    qDebug() << "node request finished" << user_data;
+    qDebug() << "node request finished" << req << iter << error << user_data;
     static_cast<ExploreRequest*>(user_data)->signalFinished();
 }
 

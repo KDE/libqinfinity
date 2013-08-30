@@ -19,6 +19,7 @@
 #include "session.h"
 #include "wrapperstore.h"
 
+#include <libinfinity/common/inf-session-proxy.h>
 #include <libinfinity/client/infc-session-proxy.h>
 
 namespace QInfinity
@@ -35,19 +36,17 @@ QPointer<SessionProxy> SessionProxy::wrap( InfcSessionProxy *infObject,
     return wrapper;
 }
 
-InfcUserRequest *SessionProxy::joinUser( const GParameter *params,
-    unsigned int n_params,
-    GError **error )
+InfUserRequest *SessionProxy::joinUser( const GParameter *params,
+    unsigned int n_params )
 {
-    return infc_session_proxy_join_user( INFC_SESSION_PROXY(gobject()),
-        params,
-        n_params,
-        error );
+    return inf_session_proxy_join_user( INF_SESSION_PROXY(gobject()), n_params, params );
 }
 
 QPointer<Session> SessionProxy::session() const
 {
-    return Session::wrap( infc_session_proxy_get_session( INFC_SESSION_PROXY(gobject()) ) );
+    InfSession* session;
+    g_object_get( G_OBJECT(gobject()), "session", &session, NULL );
+    return Session::wrap(session, 0, true);
 }
 
 SessionProxy::SessionProxy( InfcSessionProxy *infProxy,
