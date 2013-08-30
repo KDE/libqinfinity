@@ -40,6 +40,10 @@ void UserRequest::finished_cb( InfUserRequest *infUserRequest,
     void *user_data )
 {
     UserRequest *userRequest = static_cast<UserRequest*>(user_data);
+    if ( error ) {
+        userRequest->signalFailed(error);
+        return;
+    }
     QPointer<QInfinity::User> wrappedUser;
     if ( INF_ADOPTED_IS_USER(user) ) {
         wrappedUser = AdoptedUser::wrap( INF_ADOPTED_USER(user) );

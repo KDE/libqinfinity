@@ -40,14 +40,8 @@ class Request
     Q_SIGNALS:
         void failed( GError *error );
     
-    private:
-        void setupSignals();
+    protected:
         void signalFailed( GError *error );
-
-        static void signalFailed_cb( InfRequest *request,
-            GError *error,
-            void *user_data );
-
 };
 
 }

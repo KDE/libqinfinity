@@ -51,7 +51,13 @@ void NodeRequest::signalFinished()
 void NodeRequest::finished_cb(InfNodeRequest* req, InfBrowserIter* iter, GError* error, void* user_data)
 {
     qDebug() << "node request finished" << req << iter << error << user_data;
-    static_cast<NodeRequest*>(user_data)->signalFinished();
+    NodeRequest* qreq = static_cast<NodeRequest*>(user_data);
+    if ( error ) {
+        qreq->signalFailed(error);
+    }
+    else {
+        qreq->signalFinished();
+    }
 }
 
 }

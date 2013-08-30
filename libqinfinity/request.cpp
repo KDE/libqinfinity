@@ -27,27 +27,12 @@ Request::Request( InfRequest *infRequest,
     QObject *parent )
     : QGObject( G_OBJECT( infRequest ), parent, false )
 {
-    setupSignals();
-}
 
-void Request::setupSignals()
-{
-#warning "re-enable fail signal"
-//     new QGSignal( this, "fail",
-//         G_CALLBACK(Request::signalFailed_cb), this, this );
 }
 
 void Request::signalFailed( GError *error )
 {
     emit( failed( error ) );
-}
-
-void Request::signalFailed_cb( InfRequest *request,
-    GError *error,
-    void *user_data )
-{
-    Request *sender = static_cast<Request*>(user_data);
-    sender->signalFailed( error );
 }
 
 }
