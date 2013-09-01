@@ -106,9 +106,6 @@ NodeRequest *Browser::removeNode( BrowserIter node )
 
 NodeRequest *Browser::subscribeSession( BrowserIter node, NotePlugin* plugin, QInfinity::AbstractTextBuffer* textBuffer )
 {
-    if ( plugin && textBuffer ) {
-        plugin->setUserData(textBuffer);
-    }
     return NodeRequest::wrap(inf_browser_subscribe( INF_BROWSER(this->gobject()), node.infBrowserIter() ));
 }
 
