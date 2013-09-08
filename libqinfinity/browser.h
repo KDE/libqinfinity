@@ -128,6 +128,13 @@ class Browser
         NodeRequest* subscribeSession( BrowserIter node, NotePlugin* plugin = 0,
                                            QInfinity::AbstractTextBuffer* textBuffer = 0 );
 
+        /**
+         * @brief Gets the connection for this browser.
+         *
+         * @return QInfinity::XmlConnection* the connection associated with the browser
+         */
+        XmlConnection* connection() const;
+
     protected:
         Browser( InfcBrowser *infBrowser,
             QObject *parent = 0,
