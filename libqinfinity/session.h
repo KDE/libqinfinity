@@ -78,6 +78,7 @@ class Session
         void synchronizationBegin();
         void synchronizationComplete();
         void synchronizationFailed( GError *error );
+        void progress( double percentage );
         void statusChanged();
 
     protected:
@@ -92,6 +93,7 @@ class Session
         void signalSynchronizationBegin();
         void signalSynchronizationComplete();
         void signalSynchronizationFailed( GError* );
+        void signalProgress( double );
         void signalStatusChanged();
         static void close_cb( InfSession *session,
             void *user_data );
@@ -106,6 +108,10 @@ class Session
             InfXmlConnection *connection,
             GError *error,
             void *user_data );
+        static void synchronization_progress_cb( InfSession* session,
+            InfXmlConnection* connection,
+            gdouble progress,
+            void* user_data);
         static void status_changed_cb( InfSession *session,
             const char *property,
             void *user_data );

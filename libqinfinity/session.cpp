@@ -139,6 +139,8 @@ void Session::setupSignals()
         G_CALLBACK(Session::synchronization_complete_cb), this, this );
     new QGSignal( this, "synchronization-failed",
         G_CALLBACK(Session::synchronization_failed_cb), this, this );
+    new QGSignal( this, "synchronization_progress",
+        G_CALLBACK(Session::synchronization_progress_cb), this, this );
     new QGSignal( this, "notify::status",
         G_CALLBACK(Session::status_changed_cb), this, this );
 }
@@ -161,6 +163,11 @@ void Session::signalSynchronizationComplete()
 void Session::signalSynchronizationFailed( GError *error )
 {
     emit(synchronizationFailed( error ));
+}
+
+void Session::signalProgress(double percentage)
+{
+    emit(progress(percentage));
 }
 
 void Session::signalStatusChanged()
@@ -195,6 +202,14 @@ void Session::synchronization_failed_cb( InfSession *session,
     void *user_data )
 {
     static_cast<Session*>(user_data)->signalSynchronizationFailed( error );
+}
+
+void Session::synchronization_progress_cb( InfSession* session,
+    InfXmlConnection* connection,
+    gdouble progress,
+    void *user_data )
+{
+    static_cast<Session*>(user_data)->signalProgress( progress );
 }
 
 void Session::status_changed_cb( InfSession *session,
