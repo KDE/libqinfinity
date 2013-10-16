@@ -106,5 +106,5 @@ install(TARGETS qinfinity
 	DESTINATION lib${LIB_SUFFIX})
 
 install(FILES ${QInfinity_HDRS}
-	DESTINATION include/libqinfinity-1.0/libqinfinity)
+	DESTINATION include/libqinfinity)
 
