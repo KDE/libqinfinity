@@ -98,7 +98,7 @@ add_library(qinfinity SHARED ${QInfinity_SRCS})
 set_target_properties(qinfinity
 	PROPERTIES
 	VERSION 3.1.0
-	SOVERSION 3)
+	SOVERSION 4)
 
 target_link_libraries(qinfinity ${LIBS})
 
@@ -106,5 +106,5 @@ install(TARGETS qinfinity
 	DESTINATION lib${LIB_SUFFIX})
 
 install(FILES ${QInfinity_HDRS}
-	DESTINATION include/libqinfinity-1.0/libqinfinity)
+	DESTINATION include/libqinfinity)
 
