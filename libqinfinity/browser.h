@@ -218,12 +218,10 @@ class Browser
             InfBrowserIter *iter,
             InfcRequest *request,
             void *user_data );
-        static void subscribe_session_cb( InfcBrowser *browser,
-            InfBrowserIter *iter,
-            InfcSessionProxy *proxy,
-            void *user_data );
+        static void subscribe_session_cb( InfcBrowser* browser, InfBrowserIter* iter, InfcSessionProxy* proxy, InfRequest* req, void* user_data );
         static void node_added_cb( InfcBrowser *browser,
             InfBrowserIter *iter,
+            InfRequest* request,
             void *user_data );
         static void node_removed_cb( InfcBrowser *browser,
             InfBrowserIter *iter,

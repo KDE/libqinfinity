@@ -224,6 +224,7 @@ void Browser::begin_subscribe_cb( InfcBrowser *browser,
 void Browser::subscribe_session_cb( InfcBrowser *browser,
     InfBrowserIter *iter,
     InfcSessionProxy *proxy,
+    InfRequest* req,
     void *user_data )
 {
     static_cast<Browser*>(user_data)->signalSubscribeSession( iter, proxy );
@@ -239,6 +240,7 @@ void Browser::error_cb( InfcBrowser* browser,
 
 void Browser::node_added_cb( InfcBrowser *browser,
     InfBrowserIter *iter,
+    InfRequest* req,
     void *user_data )
 {
     static_cast<Browser*>(user_data)->signalNodeAdded( iter );

@@ -20,6 +20,7 @@
 #include "adopteduser.h"
 
 #include <libinfinity/adopted/inf-adopted-session.h>
+#include <libinfinity/common/inf-request-result.h>
 
 #include "userrequest.moc"
 
@@ -34,10 +35,10 @@ UserRequest::UserRequest( InfRequest *infRequest,
         G_CALLBACK(UserRequest::finished_cb), this, this );
 }
 
-void UserRequest::finished_cb( InfcRequest *infUserRequest,
-    InfUser *user,
-    GError* error,
-    void *user_data )
+void UserRequest::finished_cb( InfRequest* request,
+                               const InfRequestResult* result,
+                               const GError* error,
+                               void *user_data )
 {
     UserRequest *userRequest = static_cast<UserRequest*>(user_data);
     if ( error ) {
@@ -45,6 +46,9 @@ void UserRequest::finished_cb( InfcRequest *infUserRequest,
         return;
     }
     QPointer<QInfinity::User> wrappedUser;
+    InfSessionProxy* sproxy;
+    InfUser* user;
+    inf_request_result_get_join_user(result, &sproxy, &user);
     if ( INF_ADOPTED_IS_USER(user) ) {
         wrappedUser = AdoptedUser::wrap( INF_ADOPTED_USER(user) );
     }

@@ -35,13 +35,13 @@ class Request
     public:
         // TODO: This should really use a wrap method
         Request( InfRequest *infRequest,
-            QObject *parent = 0 );
+                 QObject *parent = 0 );
 
     Q_SIGNALS:
-        void failed( GError *error );
-    
+        void failed( const GError *error );
+
     protected:
-        void signalFailed( GError *error );
+        void signalFailed( const GError *error );
 };
 
 }
