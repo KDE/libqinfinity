@@ -26,7 +26,7 @@
 
 namespace QInfinity {
 
-ExploreRequest::ExploreRequest(InfExploreRequest* req, QObject* parent)
+ExploreRequest::ExploreRequest(InfRequest* req, QObject* parent)
     : Request(INF_REQUEST(req), parent)
 {
     qDebug() << "creating node request" << this << req;
@@ -35,7 +35,7 @@ ExploreRequest::ExploreRequest(InfExploreRequest* req, QObject* parent)
                  G_CALLBACK(ExploreRequest::finished_cb), this, this);
 }
 
-ExploreRequest* ExploreRequest::wrap(InfExploreRequest* request, QObject* parent, bool own_gobject)
+ExploreRequest* ExploreRequest::wrap(InfRequest* request, QObject* parent, bool own_gobject)
 {
     QGObject* wrapptr = WrapperStore::getWrapper(G_OBJECT(request), own_gobject);
     if ( wrapptr ) {
@@ -52,7 +52,7 @@ void ExploreRequest::signalFinished()
     delete this;
 }
 
-void ExploreRequest::finished_cb(InfExploreRequest* req, InfBrowserIter* iter, GError* error, void* user_data)
+void ExploreRequest::finished_cb(InfRequest* req, InfBrowserIter* iter, GError* error, void* user_data)
 {
     qDebug() << "node request finished" << req << iter << error << user_data;
     ExploreRequest* qreq = static_cast<ExploreRequest*>(user_data);

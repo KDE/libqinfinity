@@ -36,10 +36,9 @@ QPointer<SessionProxy> SessionProxy::wrap( InfcSessionProxy *infObject,
     return wrapper;
 }
 
-InfUserRequest *SessionProxy::joinUser( const GParameter *params,
-    unsigned int n_params )
+InfRequest *SessionProxy::joinUser( const GParameter* params, unsigned int n_params )
 {
-    return inf_session_proxy_join_user( INF_SESSION_PROXY(gobject()), n_params, params );
+    return inf_session_proxy_join_user( INF_SESSION_PROXY(gobject()), n_params, params, 0, 0 );
 }
 
 QPointer<Session> SessionProxy::session() const

@@ -22,7 +22,7 @@
 #include "sessionproxy.h"
 #include "user.h"
 
-#include <libinfinity/client/infc-user-request.h>
+#include <libinfinity/client/infc-request.h>
 #include <libinftext/inf-text-session.h>
 
 #include <QPointer>
@@ -32,7 +32,7 @@ namespace QInfinity
 
 class CommunicationManager;
 class TextBuffer;
-class CommunicationJoinedGroup;
+class CommunicationGroup;
 class XmlConnection;
 class UserRequest;
 
@@ -58,7 +58,7 @@ class TextSession
         TextSession( CommunicationManager &commMgr,
             TextBuffer &textBuffer,
             Session::Status status,
-            CommunicationJoinedGroup &commGroup,
+            CommunicationGroup &commGroup,
             XmlConnection &connection );
 
         Session::Type type() const;

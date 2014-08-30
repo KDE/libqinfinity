@@ -20,7 +20,7 @@
 #include "qtio.h"
 #include "textbuffer.h"
 #include "communicationmanager.h"
-#include "communicationjoinedgroup.h"
+#include "communicationgroup.h"
 #include "xmlconnection.h"
 #include "userrequest.h"
 
@@ -84,7 +84,7 @@ UserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
     g_value_set_uint( &params[3].value, caretPosition );
     g_value_set_enum( &params[4].value, User::convertStatus( userStatus ) );
     
-    InfUserRequest *req = proxy->joinUser( params, 5 );
+    InfRequest *req = proxy->joinUser( params, 5 );
 
     g_value_unset(&params[0].value);
     g_value_unset(&params[1].value);
@@ -98,7 +98,7 @@ UserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
 TextSession::TextSession( CommunicationManager &commMgr,
     TextBuffer &textBuffer,
     Session::Status sess_status,
-    CommunicationJoinedGroup &commGroup,
+    CommunicationGroup &commGroup,
     XmlConnection &connection )
     : AdoptedSession( INF_ADOPTED_SESSION(inf_text_session_new( INF_COMMUNICATION_MANAGER(commMgr.gobject()),
             INF_TEXT_BUFFER(textBuffer.gobject()),

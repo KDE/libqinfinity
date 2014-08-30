@@ -26,7 +26,7 @@
 namespace QInfinity
 {
 
-UserRequest::UserRequest( InfUserRequest *infRequest,
+UserRequest::UserRequest( InfRequest *infRequest,
     QObject *parent )
     : Request( INF_REQUEST( infRequest ), parent )
 {
@@ -34,7 +34,7 @@ UserRequest::UserRequest( InfUserRequest *infRequest,
         G_CALLBACK(UserRequest::finished_cb), this, this );
 }
 
-void UserRequest::finished_cb( InfUserRequest *infUserRequest,
+void UserRequest::finished_cb( InfcRequest *infUserRequest,
     InfUser *user,
     GError* error,
     void *user_data )

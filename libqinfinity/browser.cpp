@@ -28,8 +28,7 @@
 
 #include <libinfinity/common/inf-buffer.h>
 #include <libinfinity/client/infc-browser.h>
-#include <libinfinity/client/infc-explore-request.h>
-#include <libinfinity/client/infc-node-request.h>
+#include <libinfinity/client/infc-request.h>
 
 #include <QDebug>
 
@@ -72,7 +71,7 @@ NodeRequest *Browser::addSubdirectory( BrowserIter parent,
     const char *name )
 {
     return NodeRequest::wrap(inf_browser_add_subdirectory( INF_BROWSER(this->gobject()),
-        parent.infBrowserIter(), name, 0 ));
+        parent.infBrowserIter(), name, 0, 0, 0));
 }
 
 NodeRequest *Browser::addNote( BrowserIter parent,
@@ -83,7 +82,7 @@ NodeRequest *Browser::addNote( BrowserIter parent,
     return NodeRequest::wrap(inf_browser_add_note( INF_BROWSER(this->gobject()),
         parent.infBrowserIter(), name,
         plugin.infPlugin()->note_type, 0, 0,
-        initial_subscribe ));
+        initial_subscribe, 0, 0 ));
 }
 
 NodeRequest *Browser::addNoteWithContent( BrowserIter parent,
@@ -95,18 +94,18 @@ NodeRequest *Browser::addNoteWithContent( BrowserIter parent,
     return NodeRequest::wrap(inf_browser_add_note(INF_BROWSER(this->gobject()),
         parent.infBrowserIter(), name,
         plugin.infPlugin()->note_type, 0, INF_SESSION(session.gobject()),
-        initial_subscribe));
+        initial_subscribe, 0, 0));
 }
 
 NodeRequest *Browser::removeNode( BrowserIter node )
 {
     return NodeRequest::wrap(inf_browser_remove_node( INF_BROWSER(this->gobject()),
-        node.infBrowserIter() ));
+        node.infBrowserIter(), 0, 0 ));
 }
 
 NodeRequest *Browser::subscribeSession( BrowserIter node, NotePlugin* plugin, QInfinity::AbstractTextBuffer* textBuffer )
 {
-    return NodeRequest::wrap(inf_browser_subscribe( INF_BROWSER(this->gobject()), node.infBrowserIter() ));
+    return NodeRequest::wrap(inf_browser_subscribe( INF_BROWSER(this->gobject()), node.infBrowserIter(), 0, 0 ));
 }
 
 Browser::Browser( InfcBrowser *browser,
@@ -151,14 +150,14 @@ void Browser::setupSignals()
 // GObject signals
 
 void Browser::signalBeginExplore( InfBrowserIter *infIter,
-    InfcExploreRequest *request )
+                                  InfcRequest *request )
 {
     BrowserIter iter( infIter, INFC_BROWSER(this->gobject()) );
     emit(beginExplore( iter, request ));
 }
 
 void Browser::signalBeginSubscribe( InfBrowserIter *infIter,
-    InfcNodeRequest *request )
+                                    InfcRequest *request )
 {
     BrowserIter iter( infIter, INFC_BROWSER(this->gobject()) );
     emit(beginSubscribe( iter, request ));
@@ -208,7 +207,7 @@ void Browser::status_changed_cb(InfcBrowser* browser, void* user_data)
 
 void Browser::begin_explore_cb( InfcBrowser *browser,
     InfBrowserIter *iter,
-    InfcExploreRequest *request,
+    InfcRequest *request,
     void *user_data )
 {
     static_cast<Browser*>(user_data)->signalBeginExplore( iter, request );
@@ -216,7 +215,7 @@ void Browser::begin_explore_cb( InfcBrowser *browser,
 
 void Browser::begin_subscribe_cb( InfcBrowser *browser,
     InfBrowserIter *iter,
-    InfcNodeRequest *request,
+    InfcRequest *request,
     void *user_data )
 {
     static_cast<Browser*>(user_data)->signalBeginSubscribe( iter, request );

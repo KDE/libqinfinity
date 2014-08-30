@@ -15,35 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QINFINITY_COMMUNICATION_JOINED_GROUP_H
-#define QINFINITY_COMMUNICATION_JOINED_GROUP_H
+#include "communicationgroup.h"
+#include "wrapperstore.h"
 
-#include "qgobject.h"
-
-#include <QPointer>
-
-typedef struct _InfCommunicationJoinedGroup InfCommunicationJoinedGroup;
+#include <libinfinity/communication/inf-communication-group.h>
 
 namespace QInfinity
 {
 
-class CommunicationJoinedGroup
-    : public QGObject
+QPointer<CommunicationGroup> CommunicationGroup::wrap( InfCommunicationGroup *infObject,
+    QObject *parent,
+    bool own_gobject )
 {
-
-    public:
-        static QPointer<CommunicationJoinedGroup> wrap( InfCommunicationJoinedGroup *infGroup,
-            QObject *parent = 0,
-            bool own_gobject = true );
-
-    protected:
-        CommunicationJoinedGroup( InfCommunicationJoinedGroup *infGroup,
-            QObject *parent = 0,
-            bool own_gobject = true );
-
-};
-
+    QGObject *wrapptr = WrapperStore::getWrapper( G_OBJECT(infObject), own_gobject );
+    if( wrapptr)
+        return dynamic_cast<CommunicationGroup*>(wrapptr);
+    CommunicationGroup *wrapper = new CommunicationGroup( infObject, parent, own_gobject );
+    return wrapper;
 }
 
-#endif
+CommunicationGroup::CommunicationGroup( InfCommunicationGroup *infGroup,
+    QObject *parent,
+    bool own_gobject )
+    : QGObject( G_OBJECT(infGroup), parent, own_gobject )
+{
+}
+
+}
 
