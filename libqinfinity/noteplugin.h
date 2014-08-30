@@ -19,6 +19,7 @@
 #define QINFINITY_NOTE_PLUGIN_H
 
 #include "session.h"
+#include "communicationgroup.h"
 
 #include <libinfinity/client/infc-note-plugin.h>
 
@@ -58,7 +59,7 @@ class NotePlugin
          */
         virtual Session *createSession( CommunicationManager *commMgr,
             Session::Status sess_status,
-            CommunicationJoinedGroup *syncGroup,
+            CommunicationGroup *syncGroup,
             XmlConnection *syncConnection,
             const QString& path ) = 0;
 
@@ -71,9 +72,9 @@ class NotePlugin
         static InfSession *create_session_cb( InfIo* io,
                                               InfCommunicationManager* comm_mgr,
                                               InfSessionStatus status,
-                                              InfCommunicationJoinedGroup* sync_group,
+                                              InfCommunicationGroup* sync_group,
                                               InfXmlConnection* sync_connection,
-                                              const char* filename,
+//                                               const char* filename,
                                               void* user_data );
 
         char *m_name;

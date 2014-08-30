@@ -114,18 +114,18 @@ bool BrowserIter::isDirectory()
 ExploreRequest* BrowserIter::explore()
 {
     if( m_infBrowser ) {
-        InfExploreRequest* req = INF_EXPLORE_REQUEST( inf_browser_get_pending_request(
+        InfRequest* req = inf_browser_get_pending_request(
             INF_BROWSER(m_infBrowser),
             &m_infBrowserIter,
-            "explore-node" )
+            "explore-node"
         );
         if ( req ) {
             return ExploreRequest::wrap(req, 0, false);
         }
         else {
-            return ExploreRequest::wrap( INF_EXPLORE_REQUEST(inf_browser_explore(
-                INF_BROWSER(m_infBrowser), &m_infBrowserIter
-            )) );
+            return ExploreRequest::wrap( inf_browser_explore(
+                INF_BROWSER(m_infBrowser), &m_infBrowserIter, 0, 0
+            ) );
         }
     }
     return 0;
@@ -134,10 +134,10 @@ ExploreRequest* BrowserIter::explore()
 ExploreRequest* BrowserIter::exploreRequest() const
 {
     if( m_infBrowser ) {
-        InfExploreRequest* req = INF_EXPLORE_REQUEST( inf_browser_get_pending_request(
+        InfRequest* req = inf_browser_get_pending_request(
             INF_BROWSER(m_infBrowser),
             &m_infBrowserIter,
-            "explore-node" )
+            "explore-node"
         );
         return ExploreRequest::wrap(req, 0, false);
     }

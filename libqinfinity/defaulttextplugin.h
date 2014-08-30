@@ -35,7 +35,7 @@ class DefaultTextPlugin
 
         Session *createSession( CommunicationManager *commMgr,
             Session::Status sess_status,
-            CommunicationJoinedGroup *syncGroup,
+            CommunicationGroup *syncGroup,
             XmlConnection *syncConnection,
             void* pluginUserData = 0 );
 

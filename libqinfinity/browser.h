@@ -21,6 +21,8 @@
 #include "qgobject.h"
 #include "browseriter.h"
 
+#include <libinfinity/client/infc-request.h>
+
 #include <QPointer>
 
 typedef struct _InfcBrowser InfcBrowser;
@@ -147,7 +149,7 @@ class Browser
          * handler.
          */
         void beginExplore( const BrowserIter &iter,
-            InfcExploreRequest *request );
+                           InfcRequest *request );
 
         /**
          * @brief A subscription request has been made.
@@ -158,7 +160,7 @@ class Browser
          * handler
          */
         void beginSubscribe( const BrowserIter &iter,
-            InfcNodeRequest *request );
+                             InfcRequest *request );
 
         /**
          * @brief A subscription to a note has been made.
@@ -198,11 +200,11 @@ class Browser
         void setupSignals();
 
         void signalBeginExplore( InfBrowserIter *infIter,
-            InfcExploreRequest *request );
+                                 InfcRequest *request );
         void signalBeginSubscribe( InfBrowserIter *iter,
-            InfcNodeRequest *request );
+                                   InfcRequest *request );
         void signalSubscribeSession( InfBrowserIter *infIter,
-            InfcSessionProxy *proxy );
+                                     InfcSessionProxy *proxy );
         void signalNodeAdded( InfBrowserIter *infIter );
         void signalNodeRemoved( InfBrowserIter *infIter );
         void signalStatusChanged( InfBrowserStatus status );
@@ -210,11 +212,11 @@ class Browser
 
         static void begin_explore_cb( InfcBrowser *browser,
             InfBrowserIter *iter,
-            InfcExploreRequest *request,
+            InfcRequest *request,
             void *user_data );
         static void begin_subscribe_cb( InfcBrowser *browser,
             InfBrowserIter *iter,
-            InfcNodeRequest *request,
+            InfcRequest *request,
             void *user_data );
         static void subscribe_session_cb( InfcBrowser *browser,
             InfBrowserIter *iter,

@@ -21,7 +21,7 @@ set(QInfinity_SRCS
 	xmlconnection.cpp
 	xmppconnection.cpp
 	communicationmanager.cpp
-	communicationjoinedgroup.cpp
+	communicationgroup.cpp
 	user.cpp
 	adopteduser.cpp
 	usertable.cpp
@@ -62,7 +62,7 @@ set(QInfinity_HDRS
 	xmlconnection.h
 	xmppconnection.h
 	communicationmanager.h
-	communicationjoinedgroup.h
+	communicationgroup.h
 	user.h
 	adopteduser.h
 	usertable.h

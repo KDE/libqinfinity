@@ -20,7 +20,7 @@
 
 #include "qgobject.h"
 #include "request.h"
-#include <libinfinity/common/inf-node-request.h>
+#include <libinfinity/common/inf-request.h>
 
 typedef struct _InfNodeRequest InfNodeRequest;
 typedef struct _InfBrowserIter InfBrowserIter;
@@ -32,15 +32,15 @@ class NodeRequest
 {
 Q_OBJECT
 public:
-    NodeRequest(InfNodeRequest* req, QObject* parent = 0);
-    static NodeRequest* wrap(InfNodeRequest* request, QObject* parent = 0, bool own_gobject = true);
+    NodeRequest(InfRequest* req, QObject* parent = 0);
+    static NodeRequest* wrap(InfRequest* request, QObject* parent = 0, bool own_gobject = true);
 
 signals:
     void finished(NodeRequest* self);
 
 private:
     void signalFinished();
-    static void finished_cb(InfNodeRequest* req, InfBrowserIter* iter, GError* error, void* user_data);
+    static void finished_cb(InfRequest* req, InfBrowserIter* iter, GError* error, void* user_data);
 };
 
 }

@@ -18,7 +18,7 @@
 #include "defaulttextplugin.h"
 #include "textdefaultbuffer.h"
 #include "textsession.h"
-#include "communicationjoinedgroup.h"
+#include "communicationgroup.h"
 #include "xmlconnection.h"
 
 namespace QInfinity
@@ -31,7 +31,7 @@ DefaultTextPlugin::DefaultTextPlugin( QObject *parent )
 
 Session *DefaultTextPlugin::createSession( CommunicationManager *commMgr,
     Session::Status sess_status,
-    CommunicationJoinedGroup *syncGroup,
+    CommunicationGroup *syncGroup,
     XmlConnection *syncConnection,
     void* /*pluginUserData*/ )
 {
