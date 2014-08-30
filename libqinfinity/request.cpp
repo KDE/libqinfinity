@@ -30,7 +30,7 @@ Request::Request( InfRequest *infRequest,
 
 }
 
-void Request::signalFailed( GError *error )
+void Request::signalFailed( const GError *error )
 {
     emit( failed( error ) );
 }
