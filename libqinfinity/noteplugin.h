@@ -74,7 +74,7 @@ class NotePlugin
                                               InfSessionStatus status,
                                               InfCommunicationGroup* sync_group,
                                               InfXmlConnection* sync_connection,
-//                                               const char* filename,
+                                              const char* filename,
                                               void* user_data );
 
         char *m_name;

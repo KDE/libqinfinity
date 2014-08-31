@@ -46,11 +46,11 @@ InfSession *NotePlugin::create_session_cb( InfIo *io,
     InfSessionStatus status,
     InfCommunicationGroup *sync_group,
     InfXmlConnection *sync_connection,
-//     const char *filename,
+    const char *filename,
     void *user_data )
 {
     NotePlugin *plugin = static_cast<NotePlugin*>(user_data);
-    QString path = "TODO TODO FIXME"; // QString::fromUtf8(filename);
+    QString path = filename;
     CommunicationManager *commMgr = CommunicationManager::wrap( comm_mgr, plugin );
     Session::Status cpp_status = Session::infStatusToCpp(status);
     CommunicationGroup *group = CommunicationGroup::wrap( sync_group, plugin );
