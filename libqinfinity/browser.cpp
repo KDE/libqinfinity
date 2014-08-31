@@ -131,6 +131,11 @@ XmlConnection* Browser::connection() const
     return XmlConnection::wrap(infc_browser_get_connection(INFC_BROWSER(gobject())));
 }
 
+XmlConnection* Browser::connection() const
+{
+    return XmlConnection::wrap(infc_browser_get_connection(INFC_BROWSER(gobject())));
+}
+
 void Browser::setupSignals()
 {
     new QGSignal( this, "begin-request::explore",

@@ -136,6 +136,13 @@ class Browser
          */
         XmlConnection* connection() const;
 
+        /**
+         * @brief Gets the connection for this browser.
+         *
+         * @return QInfinity::XmlConnection* the connection associated with the browser
+         */
+        XmlConnection* connection() const;
+
     protected:
         Browser( InfcBrowser *infBrowser,
             QObject *parent = 0,
