@@ -46,6 +46,9 @@ class NotePlugin
 {
 
     public:
+        // You will be given this data to your createSession method.
+        void setUserData(void* userData);
+
         NotePlugin( QString name, QObject *parent = 0 );
         virtual ~NotePlugin();
 
@@ -61,7 +64,7 @@ class NotePlugin
             Session::Status sess_status,
             CommunicationGroup *syncGroup,
             XmlConnection *syncConnection,
-            const QString& path ) = 0;
+            void* clientPluginUserData = 0 ) = 0;
 
         /**
          * @brief Get underlying note plugin.
@@ -74,8 +77,13 @@ class NotePlugin
                                               InfSessionStatus status,
                                               InfCommunicationGroup* sync_group,
                                               InfXmlConnection* sync_connection,
-                                              const char* filename,
                                               void* user_data );
+        struct UserData {
+            NotePlugin* self;
+            // allows the client plugin to pass custom user data
+            // when subscribing a session
+            void* clientPluginUserData;
+        };
 
         char *m_name;
         InfcNotePlugin m_infPlugin;
