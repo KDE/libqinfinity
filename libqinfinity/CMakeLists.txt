@@ -98,7 +98,7 @@ add_library(qinfinity SHARED ${QInfinity_SRCS})
 set_target_properties(qinfinity
 	PROPERTIES
 	VERSION 3.1.0
-	SOVERSION 4)
+	SOVERSION 5)
 
 target_link_libraries(qinfinity ${LIBS})
 
