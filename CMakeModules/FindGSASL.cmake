@@ -22,7 +22,7 @@ IF (NOT WIN32)
    # use pkg-config to get the directories and then use these values
    # in the FIND_PATH() and FIND_LIBRARY() calls
    FIND_PACKAGE(PkgConfig)
-   PKG_CHECK_MODULES(PC_GSASL gsasl) 
+   PKG_SEARCH_MODULE(PC_GSASL gsasl libgsasl)
    #MESSAGE(STATUS "DEBUG: GSASL include directory = ${GSASL_INCLUDE_DIRS}")
    #MESSAGE(STATUS "DEBUG: GSASL link directory = ${GSASL_LIBRARY_DIRS}")
    #MESSAGE(STATUS "DEBUG: GSASL CFlags = ${GSASL_CFLAGS}")
