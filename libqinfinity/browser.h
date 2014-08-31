@@ -223,12 +223,10 @@ class Browser
             InfBrowserIter *iter,
             InfRequest* request,
             void *user_data );
-        static void node_removed_cb( InfcBrowser *browser,
-            InfBrowserIter *iter,
-            void *user_data );
+        static void node_removed_cb( InfcBrowser* browser, InfBrowserIter* iter, InfRequest* req, void* user_data );
         static void status_changed_cb( InfcBrowser *browser,
             void *user_data );
-        static void error_cb( InfcBrowser *browser, const GError *error);
+        static void error_cb( InfcBrowser *browser, const GError *error, InfRequest* req);
 
 };
 

@@ -234,7 +234,8 @@ void Browser::subscribe_session_cb( InfcBrowser *browser,
 }
 
 void Browser::error_cb( InfcBrowser* browser,
-    const GError* gerror )
+                        const GError* gerror,
+                        InfRequest* req )
 {
     QString message(gerror->message);
     QPointer<Browser> qbrowser = wrap(browser);
@@ -251,6 +252,7 @@ void Browser::node_added_cb( InfcBrowser *browser,
 
 void Browser::node_removed_cb( InfcBrowser *browser,
     InfBrowserIter *iter,
+    InfRequest* req,
     void *user_data )
 {
     static_cast<Browser*>(user_data)->signalNodeRemoved( iter );
