@@ -23,7 +23,7 @@
 #include <QPointer>
 #include <QList>
 
-#include "usersmodel.moc"
+
 
 namespace QInfinity
 {

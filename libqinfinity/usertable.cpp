@@ -19,7 +19,7 @@
 #include "wrapperstore.h"
 #include "qgsignal.h"
 
-#include "usertable.moc"
+
 
 namespace QInfinity
 {
@@ -69,7 +69,7 @@ QPointer<User> UserTable::lookupUser( unsigned int id )
 QPointer<User> UserTable::lookupUser( const QString &name )
 {
     InfUser *user = inf_user_table_lookup_user_by_name( INF_USER_TABLE(gobject()),
-        name.toAscii() );
+        name.toUtf8() );
     if( user )
         return User::wrap( user, this );
     else

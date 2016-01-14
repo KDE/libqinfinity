@@ -30,7 +30,7 @@ NotePlugin::NotePlugin( QString name, QObject *parent )
     : QObject( parent )
 {
     m_name = new char[name.size()+1];
-    strcpy(m_name, name.toAscii());
+    strcpy(m_name, name.toUtf8());
     m_infPlugin.note_type = m_name;
     m_infPlugin.session_new = NotePlugin::create_session_cb;
     UserData* d = new NotePlugin::UserData();

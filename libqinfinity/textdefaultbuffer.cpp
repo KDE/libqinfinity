@@ -24,7 +24,7 @@ namespace QInfinity
 
 TextDefaultBuffer::TextDefaultBuffer( QString encoding,
     QObject *parent )
-    : TextBuffer( INF_TEXT_BUFFER(inf_text_default_buffer_new( encoding.toAscii() )), parent )
+    : TextBuffer( INF_TEXT_BUFFER(inf_text_default_buffer_new( encoding.toUtf8() )), parent )
 {
 }
 

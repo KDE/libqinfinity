@@ -22,7 +22,7 @@
 #include <libinfinity/adopted/inf-adopted-session.h>
 #include <libinfinity/common/inf-request-result.h>
 
-#include "userrequest.moc"
+
 
 namespace QInfinity
 {

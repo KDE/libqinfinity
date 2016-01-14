@@ -22,7 +22,7 @@
 
 #include <QDebug>
 
-#include "explorerequest.moc"
+
 
 namespace QInfinity {
 

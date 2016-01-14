@@ -24,7 +24,7 @@
 
 #include <QDebug>
 
-#include "browsermodel.moc"
+
 
 namespace QInfinity
 {
@@ -282,7 +282,7 @@ bool BrowserModel::createDirectory( const QModelIndex &parent,
         qDebug() << "Could not find parent items' browser.";
         return false;
     }
-    return browser->addSubdirectory( parentItem->iter(), name.toAscii() );
+    return browser->addSubdirectory( parentItem->iter(), name.toUtf8() );
 }
 
 bool BrowserModel::createNote( const QModelIndex &parent,
@@ -309,7 +309,7 @@ bool BrowserModel::createNote( const QModelIndex &parent,
         qDebug() << "Could not find parent items' browser.";
         return false;
     }
-    browser->addNote( parentItem->iter(), name.toAscii(), plugin, false );
+    browser->addNote( parentItem->iter(), name.toUtf8(), plugin, false );
     return true;
 }
 

@@ -18,7 +18,7 @@
 #include "wrapperstore.h"
 #include "qgobject.h"
 
-#include "wrapperstore.moc"
+
 
 #include <QDebug>
 

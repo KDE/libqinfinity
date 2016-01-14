@@ -28,7 +28,7 @@ TextChunk::TextChunk( InfTextChunk *infChunk,
 }
 
 TextChunk::TextChunk( const QString &encoding )
-    : m_infChunk( inf_text_chunk_new( encoding.toAscii() ) )
+    : m_infChunk( inf_text_chunk_new( encoding.toUtf8() ) )
     , m_own_chunk( true )
 {
 }

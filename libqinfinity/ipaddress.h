@@ -18,7 +18,7 @@
 #ifndef QINFINITY_IPADDRESS_H
 #define QINFINITY_IPADDRESS_H
 
-#include <QHostAddress>
+#include <QtNetwork/QHostAddress>
 #include <QString>
 
 typedef struct _InfIpAddress InfIpAddress;

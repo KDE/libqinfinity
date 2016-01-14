@@ -25,7 +25,7 @@
 #include <QDebug>
 #include <QColor>
 
-#include "user.moc"
+
 
 namespace QInfinity
 {

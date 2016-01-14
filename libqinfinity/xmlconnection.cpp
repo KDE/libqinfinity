@@ -21,7 +21,7 @@
 
 #include <QDebug>
 
-#include "xmlconnection.moc"
+
 
 namespace QInfinity
 {

@@ -345,7 +345,7 @@ void AbstractTextBuffer::textBufferIfaceInit( gpointer g_iface,
 
 AbstractTextBuffer::AbstractTextBuffer( const QString &encoding,
     QObject *parent )
-    : TextBuffer( INF_TEXT_BUFFER(qinf_text_abstract_buffer_new( encoding.toAscii(), this )),
+    : TextBuffer( INF_TEXT_BUFFER(qinf_text_abstract_buffer_new( encoding.toUtf8(), this )),
         parent )
 {
     QInfTextAbstractBuffer *absBuffer = QINF_TEXT_ABSTRACT_BUFFER(gobject());

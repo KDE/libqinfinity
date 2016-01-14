@@ -18,7 +18,7 @@
 #include "request.h"
 #include "qgsignal.h"
 
-#include "request.moc"
+
 
 namespace QInfinity
 {

@@ -21,7 +21,7 @@
 
 #include <libinfinity/common/inf-simulated-connection.h>
 
-#include "xmppconnection.moc"
+
 
 namespace QInfinity
 {
@@ -65,8 +65,8 @@ XmppConnection::XmppConnection( TcpConnection &tcpConnection,
     : XmlConnection( INF_XML_CONNECTION(inf_xmpp_connection_new(
         INF_TCP_CONNECTION(tcpConnection.gobject()),
         XmppConnection::siteToInf( site ),
-        local_hostname.toAscii(),
-        remote_hostname.toAscii(),
+        local_hostname.toUtf8(),
+        remote_hostname.toUtf8(),
         XmppConnection::securityPolicyToInf( securityPolicy ),
         cred ? (InfCertificateCredentials*)cred->gobject(): 0,
         sasl_context,

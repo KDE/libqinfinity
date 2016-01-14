@@ -23,7 +23,7 @@
 
 #include <QDebug>
 
-#include "session.moc"
+
 
 namespace QInfinity
 {

@@ -22,7 +22,7 @@
 
 #include <QDebug>
 
-#include "adopteduser.moc"
+
 
 namespace QInfinity
 {

@@ -20,12 +20,12 @@
 
 #include <glib-object.h>
 
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include <QEvent>
 #include <QTimer>
 #include <QDebug>
 
-#include "qtio.moc"
+
 
 namespace QInfinity
 {

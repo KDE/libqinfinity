@@ -60,7 +60,7 @@ UserRequest *TextSession::joinUser( QPointer<SessionProxy> proxy,
         qDebug() << "Session not a TextSession.  Cannot join.";
         return 0;
     }
-    QByteArray nameAscii = name.toAscii();
+    QByteArray nameAscii = name.toUtf8();
 
     GParameter params[5] = {
         { "name", { 0 } },

@@ -23,7 +23,7 @@ namespace QInfinity
 {
 
 IpAddress::IpAddress( const QHostAddress &address )
-    : m_gobject( inf_ip_address_new_from_string( address.toString().toAscii() ) )
+    : m_gobject( inf_ip_address_new_from_string( address.toString().toUtf8() ) )
 {
 }
 

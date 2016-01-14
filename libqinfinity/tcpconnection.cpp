@@ -18,7 +18,7 @@
 #include "tcpconnection.h"
 #include "wrapperstore.h"
 
-#include "tcpconnection.moc"
+
 
 namespace QInfinity
 {

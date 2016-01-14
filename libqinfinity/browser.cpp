@@ -34,7 +34,7 @@
 
 #include <glib-object.h>
 
-#include "browser.moc"
+
 
 namespace QInfinity
 {

@@ -19,7 +19,7 @@
 
 #include <QAbstractEventDispatcher>
 
-#include "qtiowatch.moc"
+
 
 #include <QDebug>
 

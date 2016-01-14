@@ -20,7 +20,7 @@
 #include "user.h"
 #include "wrapperstore.h"
 
-#include "textbuffer.moc"
+
 
 #include <libinftext/inf-text-chunk.h>
 
@@ -118,7 +118,7 @@ TextBuffer::TextBuffer( InfTextBuffer *infBuffer,
     , m_codec( 0 )
     , m_encoder( 0 )
 {
-    m_codec = QTextCodec::codecForName( encoding().toAscii() );
+    m_codec = QTextCodec::codecForName( encoding().toUtf8() );
     if( m_codec )
         m_encoder = m_codec->makeEncoder();
     erase_text_handler = g_signal_connect_after( gobject(),

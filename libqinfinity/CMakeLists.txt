@@ -2,12 +2,10 @@ project(libqinfinity)
 
 find_package(Libinfinity REQUIRED)
 find_package(Libinftext REQUIRED)
-find_package(Qt4 REQUIRED)
+find_package(Qt5 REQUIRED Core Widgets Network)
 
 set(QT_USE_QTNETWORK true)
-include(${QT_USE_FILE})
 
-set(LIBS ${LIBS} ${LIBINFINITY_LIBRARIES} ${LIBINFTEXT_LIBRARIES} ${QT_LIBRARIES})
 set(QInfinity_SRCS
 	init.cpp
 	qgobject.cpp
@@ -89,8 +87,6 @@ set(QInfinity_HDRS
 	undogrouping.h
 )
 
-qt4_automoc(${QInfinity_SRCS})
-
 include_directories(${LIBINFINITY_INCLUDES} ${LIBINFTEXT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 
 add_library(qinfinity SHARED ${QInfinity_SRCS})
@@ -100,7 +96,14 @@ set_target_properties(qinfinity
 	VERSION 3.1.0
 	SOVERSION 5)
 
-target_link_libraries(qinfinity ${LIBS})
+target_link_libraries(qinfinity
+    PUBLIC
+    ${LIBINFINITY_LIBRARIES}
+    ${LIBINFTEXT_LIBRARIES}
+    Qt5::Core
+    Qt5::Widgets
+    Qt5::Network
+)
 
 install(TARGETS qinfinity
 	DESTINATION lib${LIB_SUFFIX})

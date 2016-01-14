@@ -89,7 +89,7 @@ QGObject::QGObject( GObject *obj,
 
 }
 
-#include "qgobject.moc"
+
 
 
 

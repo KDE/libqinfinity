@@ -21,7 +21,7 @@
 
 #include <QDebug>
 
-#include "noderequest.moc"
+
 
 namespace QInfinity {
 
