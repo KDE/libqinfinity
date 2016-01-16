@@ -4,7 +4,7 @@ find_package(Libinfinity REQUIRED)
 find_package(Libinftext REQUIRED)
 find_package(Qt5 REQUIRED Core Widgets Network)
 
-set(QT_USE_QTNETWORK true)
+set(CMAKE_AUTOMOC ON)
 
 set(QInfinity_SRCS
 	init.cpp
